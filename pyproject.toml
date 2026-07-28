@@ -47,6 +47,7 @@ dev = [
     "ruff>=0.6,<1",
     "mypy>=1.11,<2",
     "types-PyYAML>=6,<7",
+    "matplotlib>=3.8,<4",
 ]
 report = ["matplotlib>=3.8,<4"]
 

@@ -18,6 +18,8 @@ and the source text does not encode what the instruction is talking about.
 So the model guesses, or it hedges and edits several. That is the phenomenon this
 repository measures.
 
+![The information gap](assets/figures/fig01_ambiguity.png)
+
 **The question it actually answers.** Supplying the missing facts obviously helps. But an
 enriched prompt changes two things at once - it adds geometric information, *and* it adds
 an enumerated list of elements the model can point at. Enumeration alone could move the
@@ -28,6 +30,40 @@ score with no geometry in it at all.
 
 That is the contribution. Everything else in this repository exists to make that one
 comparison trustworthy.
+
+---
+
+## This is a measurement instrument, not a task set
+
+A benchmark says *"here are some tasks"*. An instrument says *"here is what I measure,
+how it is calibrated, where it fails, and what you may conclude from a reading."* This
+repository is built as the second thing, which is why it ships calibration data, a
+register of failed assumptions, and a validity argument alongside the code.
+
+| Document | What it holds |
+|---|---|
+| [`CLAIMS.md`](CLAIMS.md) | Every claim, and the gate: build nothing that does not strengthen one |
+| [`EVIDENCE.md`](EVIDENCE.md) | Measured values per claim, regenerated rather than recalled |
+| [`VALIDITY.md`](VALIDITY.md) | Internal, construct, external and statistical-conclusion validity in one place |
+| [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) | Every time the project proved itself wrong, and what it would have cost |
+| [`docs/adr/`](docs/adr/) | Each non-obvious decision, its alternatives, and what was traded away |
+
+Two figures that summarise the instrument's condition before any model has run:
+
+**Ground truth is corroborated by two independent implementations**, not asserted by one.
+Maximum disagreement between a Rust rasteriser and a Python path-algebra library across
+110 elements is 0.14%, against a 2% tolerance; they agree on element *ranking* in 12/12
+SVGs, which is what the ordinal instructions actually depend on.
+
+![Witness agreement](assets/figures/fig02_witness_agreement.png)
+
+**A mathematically unique answer is not a humanly unique answer.** A sample may host a
+predicate only when every reasonable reading of the instruction picks the same element -
+`leftmost` by centroid, by left edge, and by bounding-box midpoint; `top_left` by
+Euclidean, Manhattan and nearest-corner distance. 9.4% of predicate slots are refused
+because those readings disagree, despite being perfectly well measured.
+
+![Construct validity gate](assets/figures/fig03_construct_validity.png)
 
 ---
 
@@ -149,8 +185,9 @@ decision, with the alternatives considered and what was traded away.
 
 ## Threats to validity
 
-Split the way a paper would split it. The full treatment, including what is actively
-checked versus merely acknowledged, is in [`LIMITATIONS.md`](LIMITATIONS.md).
+Split the way a paper would split it. The full argument - what is established, what is
+planned, and what cannot be established at all - is in [`VALIDITY.md`](VALIDITY.md), with
+the plain-language version in [`LIMITATIONS.md`](LIMITATIONS.md).
 
 **Internal validity** — is the measured difference caused by the manipulated variable?
 The dominant threat is that `enhanced` changes two things at once: it adds geometric facts

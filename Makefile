@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install check lint format typecheck test audit status generate freeze verify run evaluate report clean
+.PHONY: help install check lint format typecheck test audit figures status generate freeze verify run evaluate report clean
 
 PY ?= python
 
@@ -27,6 +27,9 @@ test:  ## Run the test suite
 
 audit:  ## Run only the publication-gating audit checks
 	pytest -m audit
+
+figures:  ## Regenerate publication figures from the live corpus
+	$(PY) scripts/make_figures.py
 
 status:  ## Show which pipeline steps are implemented
 	$(PY) -m svgbench.cli status
