@@ -133,7 +133,7 @@ def _cmd_status(_args: argparse.Namespace) -> int:
     steps = [
         ("1.  Repository scaffolding", True),
         ("2.  Configuration system", True),
-        ("3.  Dataset generator", False),
+        ("3.  Dataset generator", True),
         ("4.  Geometry engine", False),
         ("5.  Ground-truth engine", False),
         ("6.  Predicate registry", False),

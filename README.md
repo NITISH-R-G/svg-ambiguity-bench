@@ -129,12 +129,36 @@ python -m pytest
 Design rationale lives in [`docs/adr/`](docs/adr/) — one short record per non-obvious
 decision, with the alternatives considered and what was traded away.
 
-## Limitations
+## Threats to validity
 
-[`LIMITATIONS.md`](LIMITATIONS.md) is a first-class document, not an appendix. It is written
-against actual results and is expanded, never softened. Some weaknesses — cluster count,
-single-corpus generality — cannot be fixed within a 20–30 SVG budget; the response to those
-is narrower claims, stated up front.
+Split the way a paper would split it. The full treatment, including what is actively
+checked versus merely acknowledged, is in [`LIMITATIONS.md`](LIMITATIONS.md).
+
+**Internal validity** — is the measured difference caused by the manipulated variable?
+The dominant threat is that `enhanced` changes two things at once: it adds geometric facts
+*and* an enumerated element list. The `permuted` arm holds format fixed and destroys only
+the information. Arm comparability is machine-checked (shared corpus hash, identical
+decoding), and the audit was verified to fail on planted drift.
+
+**Construct validity** — does the metric measure the thing named? "Edit accuracy" conflates
+identification, execution, and collateral damage, so a formatting failure would read as a
+reasoning failure. Reporting is decomposed instead, and abstention is a distinct outcome
+rather than a failure — otherwise the metric rewards confident guessing while the project's
+own motivation is that models hedge.
+
+**External validity** — the weakest axis, and deliberately so. The corpus is synthetic,
+opaque geometry tokens do not occur in real SVGs, one small model is tested, and separability
+margins make the corpus easier than arbitrary layouts. The `legible` arm narrows the
+markup-realism gap; it does not close it. No generalization is claimed.
+
+**Statistical conclusion validity** — instructions sharing an SVG are not independent, so
+the effective sample size is ~30 clusters, not ~180 cases. Resampling and testing are at the
+SVG level. Intervals will be wide, and this cannot be fixed within the assignment's corpus
+budget — so the response is a narrower claim, with the minimum detectable effect reported
+*before* results, so a null outcome is distinguishable from an underpowered one.
+
+Every module maps to one claim in [`CLAIMS.md`](CLAIMS.md), which also records what would
+falsify each claim and what this repository explicitly does not claim.
 
 ## License
 

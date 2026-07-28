@@ -5,6 +5,55 @@ required by [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md).
 
 ## [Unreleased]
 
+### Sprint 2, Step 3 — Dataset generator — 2026-07-28
+
+Supports **C1**: the corpus is genuinely under-determined. Every invariant here is one
+a reviewer would otherwise have to take on trust.
+
+**Added**
+- `svgbench.generation` — seeded scene synthesis, area-controlled irregular polygons,
+  non-overlapping placement, and geometry redaction.
+- **Positional seeding.** A sample's seed derives from its index, not a running counter,
+  so regenerating sample 17 alone reproduces it exactly and a change in early rejection
+  cannot cascade and reshuffle the corpus.
+- Generator emits *intent* only and deliberately does not import the geometry engine —
+  if it placed shapes by consulting the measurement that will later verify them, the
+  two-witness check at Step 5 would agree by construction and be vacuous.
+- `CLAIMS.md` — every module maps to one claim, with what would falsify each and what
+  the repository explicitly does not claim.
+- README **Threats to validity**, split into internal / construct / external /
+  statistical-conclusion.
+
+**Corpus properties (30 SVGs, default seed)**
+- 0 placement rejections; K balanced over 4–7; 168 ambiguity elements.
+- Minimum adjacent area ratio 1.351 against a configured floor of 1.25.
+
+**Two measurement bugs found and fixed — in the tests, not the generator**
+
+A leak check reported document order predicting area at z = +2.76. Rather than accept
+it, a 25-seed sweep showed mean z = +1.605 at 8.95 SE from zero — apparently systematic.
+Two distinct defects, both in the statistic:
+
+1. **Ordinal ranks instead of midranks.** The pooled data is almost entirely ties, so a
+   stable sort resolved every tie by append order — identical in both vectors — which
+   manufactures correlation from nothing.
+2. **Analytic z is miscalibrated for this structure.** Under a shuffle uniform *by
+   construction*, `rho*sqrt(n-1)` has mean +0.88, not 0: positions and attribute ranks
+   both run 0..K-1 within an SVG, so pooling across SVGs with different K induces
+   association from group size alone.
+
+Replaced with a permutation null — exact, tie-safe, assumption-free, and the same
+instrument the main analysis already commits to (ADR-0007). Standardised against the
+empirical null the generator sits at +0.362 (2.18 SE): unbiased. Had the analytic
+statistic been trusted, this would have been reported as a generator leak that does not
+exist.
+
+**Verified, not assumed**
+- Leak detector tested against a planted document-order-equals-area-order corpus and
+  required to reject it.
+- Audit suite runs the invariants at the *shipped* 30-SVG size, not just the fast
+  6-SVG fixture.
+
 ### Sprint 2, Step 2 — Configuration system — 2026-07-28
 
 The config system exists to make one property machine-checkable: **the arms differ in
