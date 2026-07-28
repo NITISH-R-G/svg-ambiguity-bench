@@ -46,8 +46,8 @@ class Blob:
     """A placed polygon, with the generator's belief about its own geometry."""
 
     vertices: tuple[tuple[float, float], ...]
-    center_x: float
-    center_y: float
+    placement_x: float
+    placement_y: float
     area: float
     bounding_radius: float
 
@@ -97,8 +97,8 @@ def make_blob(rng: random.Random, target_area: float, center: tuple[float, float
 
     return Blob(
         vertices=placed,
-        center_x=cx,
-        center_y=cy,
+        placement_x=cx,
+        placement_y=cy,
         area=polygon_area(placed),
         bounding_radius=max(math.dist((cx, cy), v) for v in placed),
     )

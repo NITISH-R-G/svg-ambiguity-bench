@@ -5,6 +5,49 @@ required by [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md).
 
 ## [Unreleased]
 
+### Sprint 2, Step 4 - Geometry engine - 2026-07-28
+
+Supports **C7**: ground truth is correct, not merely asserted. Treated as the first
+module that can invalidate the whole benchmark, so the tests were written as
+falsification attempts rather than as confirmations.
+
+**Added**
+- `svgbench.geometry` - analytic path algebra (`svgelements`) and raster pixel coverage
+  (`resvg`), cross-validated per element, with `GeometryDisagreementError` rejecting a
+  sample rather than widening a tolerance.
+- `EVIDENCE.md` - measured values per claim, regenerated rather than recalled.
+
+**Eight falsifiers, each one a test**
+Known-answer failure; rank disagreement between witnesses; translation changing measured
+area; rank changing with raster resolution; isolated coverages not summing to the
+document; area centroid confused with vertex mean; error correlating with shape size;
+witnesses disagreeing on the real corpus.
+
+**Measured** (110 elements, 12 SVGs)
+- Rank agreement **12/12 SVGs** - the operative gate, since the ordinal family needs an
+  ordering rather than an area.
+- Relative area disagreement median **0.0001**, max **0.0014**.
+- Centroid disagreement median **0.005**, max **0.030** user units.
+- Size-dependent bias drift **0.0001**.
+
+**Tolerances tightened after calibration**
+Area 0.05 -> **0.02**, centroid 1.5 -> **0.5**. The original bounds were 35x the observed
+maximum and would have accepted almost any degradation. Set from the instrument's own
+noise distribution, before any model runs.
+
+**Bug found by falsification**
+`ElementIntent.center_x` was the *placement anchor*, not the area centroid - they differ
+by ~3 units because vertex radii are jittered. Renamed to `placement_x`/`placement_y`.
+Reaching for `center_x` as a centroid at Step 5 would have made every spatial predicate
+systematically wrong while remaining internally consistent.
+
+**Correction to an earlier claim**
+Prior notes described three *independent* witnesses. That overstated it: generator intent
+and analytic geometry share the shoelace formula and differ only in where the vertices
+came from, so that pair is a serialization check. The independent witness is the
+rasterizer. Corrected in `CLAIMS.md` and the module docs.
+
+
 ### Sprint 2, Step 3 — Dataset generator — 2026-07-28
 
 Supports **C1**: the corpus is genuinely under-determined. Every invariant here is one

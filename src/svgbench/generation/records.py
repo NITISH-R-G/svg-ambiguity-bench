@@ -33,8 +33,18 @@ class ElementIntent(BaseModel):
     document_index: int = Field(ge=0)
 
     # Intent, not measurement. Compared against the geometry engine at step 5.
-    center_x: float
-    center_y: float
+    #
+    # NAMING IS LOAD-BEARING. These are the PLACEMENT ANCHOR the blob was constructed
+    # around - not its area centroid. Vertex radii are jittered, so an irregular blob's
+    # area centroid drifts from its construction centre by a few user units.
+    #
+    # Spatial predicates (`leftmost`, `top_left`) are defined against the area
+    # centroid and must use the measured value from `svgbench.geometry`, never these.
+    # An earlier version called these `center_x`/`center_y`, which reads as "centroid"
+    # and would have made every spatial predicate systematically wrong while remaining
+    # internally consistent.
+    placement_x: float
+    placement_y: float
     area: float = Field(gt=0.0)
     bounding_radius: float = Field(gt=0.0)
 

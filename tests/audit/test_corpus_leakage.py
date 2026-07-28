@@ -100,7 +100,7 @@ def _rank_groups(corpus, sort_key: str, attribute: str) -> list[list[float]]:  #
 
 @pytest.mark.audit
 @pytest.mark.parametrize("sort_key", ["document_index", "element_id", "geometry_token"])
-@pytest.mark.parametrize("attribute", ["area", "center_x", "center_y"])
+@pytest.mark.parametrize("attribute", ["area", "placement_x", "placement_y"])
 def test_no_visible_ordering_predicts_geometry(shipped_corpus, sort_key, attribute) -> None:  # type: ignore[no-untyped-def]
     """Every ordering a model can see must be uninformative about every property an
     instruction can refer to."""

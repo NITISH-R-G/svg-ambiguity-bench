@@ -1,4 +1,4 @@
-"""Command-line entry point.
+﻿"""Command-line entry point.
 
 This is the canonical way to run anything in this project. `Makefile` and `tasks.ps1`
 are thin wrappers over it so that Windows and POSIX reviewers run identical code paths.
@@ -134,7 +134,7 @@ def _cmd_status(_args: argparse.Namespace) -> int:
         ("1.  Repository scaffolding", True),
         ("2.  Configuration system", True),
         ("3.  Dataset generator", True),
-        ("4.  Geometry engine", False),
+        ("4.  Geometry engine", True),
         ("5.  Ground-truth engine", False),
         ("6.  Predicate registry", False),
         ("7.  Instruction generator", False),

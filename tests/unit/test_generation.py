@@ -330,7 +330,7 @@ def _rank_groups(corpus, sort_key: str, attribute: str) -> list[list[float]]:  #
     return groups
 
 
-@pytest.mark.parametrize("attribute", ["area", "center_x", "center_y"])
+@pytest.mark.parametrize("attribute", ["area", "placement_x", "placement_y"])
 def test_document_order_does_not_predict_geometry(corpus, attribute: str) -> None:  # type: ignore[no-untyped-def]
     """A model that always edits the first candidate must score at chance, not above it.
 
@@ -345,7 +345,7 @@ def test_document_order_does_not_predict_geometry(corpus, attribute: str) -> Non
 
 
 @pytest.mark.parametrize("sort_key", ["element_id", "geometry_token"])
-@pytest.mark.parametrize("attribute", ["area", "center_x", "center_y"])
+@pytest.mark.parametrize("attribute", ["area", "placement_x", "placement_y"])
 def test_identifiers_do_not_sort_into_geometric_order(
     corpus, sort_key: str, attribute: str
 ) -> None:  # type: ignore[no-untyped-def]
@@ -397,7 +397,9 @@ def test_shapes_do_not_overlap(corpus) -> None:  # type: ignore[no-untyped-def]
         elements = sample.ambiguity_elements + sample.distractor_elements
         for i, a in enumerate(elements):
             for b in elements[i + 1 :]:
-                distance = ((a.center_x - b.center_x) ** 2 + (a.center_y - b.center_y) ** 2) ** 0.5
+                distance = (
+                    (a.placement_x - b.placement_x) ** 2 + (a.placement_y - b.placement_y) ** 2
+                ) ** 0.5
                 assert distance > a.bounding_radius + b.bounding_radius, (
                     f"{sample.svg_id}: {a.element_id} overlaps {b.element_id}"
                 )
@@ -408,10 +410,10 @@ def test_shapes_stay_inside_the_canvas(config, corpus) -> None:  # type: ignore[
     size = config.generation.canvas_size
     for sample in corpus:
         for element in sample.ambiguity_elements + sample.distractor_elements:
-            assert element.center_x - element.bounding_radius >= 0
-            assert element.center_y - element.bounding_radius >= 0
-            assert element.center_x + element.bounding_radius <= size
-            assert element.center_y + element.bounding_radius <= size
+            assert element.placement_x - element.bounding_radius >= 0
+            assert element.placement_y - element.bounding_radius >= 0
+            assert element.placement_x + element.bounding_radius <= size
+            assert element.placement_y + element.bounding_radius <= size
 
 
 # ---------------------------------------------------------------------------

@@ -151,8 +151,8 @@ def _build_sample(
                 role=roles[source_index],  # type: ignore[arg-type]
                 fill=fills[source_index],
                 document_index=document_index,
-                center_x=blob.center_x,
-                center_y=blob.center_y,
+                placement_x=blob.placement_x,
+                placement_y=blob.placement_y,
                 area=blob.area,
                 bounding_radius=blob.bounding_radius,
             )
