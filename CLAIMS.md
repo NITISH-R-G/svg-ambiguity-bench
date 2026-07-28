@@ -61,7 +61,9 @@ state of the project, not an oversight.
   definition you pick is rejected, not shipped.
 
 Measured values for each are in [`EVIDENCE.md`](EVIDENCE.md). Assumptions that turned out
-to be wrong are in [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md).
+to be wrong are in [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md). The rule governing
+what may and may not change once results exist is in [`RESULTS.md`](RESULTS.md) - read
+it before looking at any model output, not after.
 
 ---
 

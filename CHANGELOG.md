@@ -5,6 +5,37 @@ required by [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md).
 
 ## [Unreleased]
 
+### RESULTS.md - the pre-registration commitment device - 2026-07-28
+
+Not a pipeline step. A rule, written now, before any model has been run, addressing a
+different failure mode than the rest of the pre-registration machinery.
+
+`DESIGN_FREEZE.md`'s pre-registration boundary is about the *design* staying fixed.
+`RESULTS.md` is about a specific future temptation: finding a plausible-sounding reason
+to adjust a threshold or a scoring rule after seeing a disappointing number, months from
+now, having forgotten the exact reasoning that set it originally.
+
+The bright line: nothing discovered after the `pre-registration` tag may change the
+dataset, scoring, predicates, leakage checks, or evaluation rules - except a bug
+demonstrably affecting every arm identically. Everything else becomes Discussion, not a
+patch. The operational test for a legitimate post-tag fix: **would it have been made
+identically had the arms come out the other way around?**
+
+Also states, as an explicit decision procedure rather than facts scattered across
+`CLAIMS.md`'s per-claim falsification criteria, the three comparisons the whole
+repository exists to make interpretable, in the order they get read:
+
+1. `baseline ~= 1/K` - the precondition (C1). If baseline sits well above the floor,
+   stop and find the leak before interpreting anything else.
+2. `enhanced > baseline` - necessary, not sufficient. An uninformative enumerated list
+   could pass this too, which is the confound ADR-0009 exists to rule out.
+3. `enhanced > permuted` - the actual claim (C3). If this fails to hold, that is not a
+   failed experiment: it is the finding the `permuted` control was built to make
+   detectable, and it gets reported as the headline rather than buried.
+
+Cross-linked from `README.md`, `CLAIMS.md` and `DESIGN_FREEZE.md`, so it is reachable
+from wherever a reader would need it.
+
 ### Sprint 2, Step 5 - Ground-truth engine and predicate registry - 2026-07-28
 
 Supports **C7** and adds **C8**: ground truth must match what a reasonable person would

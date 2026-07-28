@@ -46,6 +46,7 @@ register of failed assumptions, and a validity argument alongside the code.
 | [`EVIDENCE.md`](EVIDENCE.md) | Measured values per claim, regenerated rather than recalled |
 | [`VALIDITY.md`](VALIDITY.md) | Internal, construct, external and statistical-conclusion validity in one place |
 | [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) | Every time the project proved itself wrong, and what it would have cost |
+| [`RESULTS.md`](RESULTS.md) | What may and may not change once model results exist, decided before any exist |
 | [`docs/adr/`](docs/adr/) | Each non-obvious decision, its alternatives, and what was traded away |
 
 Two figures that summarise the instrument's condition before any model has run:

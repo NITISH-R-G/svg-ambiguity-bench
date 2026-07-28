@@ -66,6 +66,8 @@ Concretely:
 
 After that tag, any change to scoring or metrics is an **amendment**, disclosed with both the old and new numbers. This exists so that no scoring rule can be tuned — consciously or otherwise — to a result already seen.
 
+The bright-line version of this rule, plus the pre-registered decision procedure for reading the three comparisons that matter (`baseline ≈ 1/K`, then `enhanced > baseline`, then `enhanced > permuted`), is in [`RESULTS.md`](RESULTS.md).
+
 ---
 
 ## Implementation order (frozen)
