@@ -156,6 +156,60 @@ never fire is decoration.
 
 ---
 
+## Instruction set (Step 7)
+
+180 instructions over 30 SVGs, 6 per sample.
+
+| Property | Result | Status |
+|---|---|---|
+| Every instruction uses a predicate the sample can host | 180/180 | PASS |
+| Target matches ground truth exactly | resolver is code, never a model | PASS |
+| Target is always an ambiguity-set member | 180/180 | PASS |
+| Family balance across the corpus | **90 SPATIAL / 90 ORDINAL - exactly 50/50** | PASS |
+| Operation balance | 44 / 44 / 44 / 48, spread 4 | PASS |
+| Predicate balance within family | ordinal 22-23 each, spatial 10-12 each | PASS |
+| Distinct phrasings used | **120** across 12 predicates | PASS |
+| Every predicate used with >1 phrasing | 12/12 | PASS |
+| No duplicate (predicate, operation) within a sample | 180/180 | PASS |
+| Instruction text contains no id, token or document fill | 180/180 | PASS |
+| Requested edit colour absent from the document | all recolor cases | PASS |
+| Lint rejects a planted leak | raises on an injected element id | PASS |
+| Deterministic | repeated builds byte-identical | PASS |
+
+**Mean per-case 1/K reference: 0.1852.** This is the number the baseline arm must land
+near for C1 to hold. K distribution over cases: 4 (36 cases), 5 (36), 6 (72), 7 (36).
+
+### Unevenness preserved, not erased
+
+Distinct spatial predicates available per sample, after the construct-validity gate:
+
+| distinct predicates | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|
+| samples | 2 | 6 | 12 | 8 | 2 |
+
+Every sample still contributes 3 spatial and 3 ordinal instructions. A sample with only
+two surviving spatial predicates fills its quota by pairing them with different
+operations, rather than by weakening the gate that refused the others. Balance is
+corpus-level; validity stays per-sample.
+
+### Provenance
+
+Every instruction records why it exists and what was refused alongside it:
+
+```
+ins_5690b36019cb  predicate=largest  margin=1.592
+  accepted_because: all_definitions_agree, margin_clears_threshold,
+                    unique_over_full_element_set, witnesses_agree_on_ranking
+  rejected_candidates:
+    bottommost    definition_disagreement
+    leftmost      definition_disagreement
+    rightmost     margin_too_small
+    top_left      definition_disagreement
+    topmost       distractor_outranks_target
+```
+
+---
+
 ## Instrument calibration
 
 Findings about the *measuring tools*, recorded because a wrong instrument is

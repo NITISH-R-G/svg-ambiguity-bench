@@ -114,6 +114,28 @@ different check that can pass while the requirement fails.
 | **Found by** | Sweeping the parameter rather than tuning it to the first value that looked acceptable |
 | **Step** | 5 |
 
+## FA-009 - balancing predicates is not balancing families
+
+| | |
+|---|---|
+| **Assumed** | Preferring the globally least-used predicate when allocating instructions would produce a balanced corpus |
+| **Evidence** | It produced **61% spatial** (44 vs 28). There are twice as many spatial predicates as ordinal ones, so each individual spatial predicate accrues usage more slowly and keeps winning the least-used comparison. The rule balanced *predicates* correctly and *families* not at all |
+| **Resolution** | Explicit per-family quotas, with least-used selection operating only *within* a family. Result: exactly 90/90 |
+| **Impact if missed** | The family comparison - one of the two headline splits - would have been computed on a corpus with 60% more spatial cases than ordinal, quietly weighting the aggregate |
+| **Found by** | Asserting a balance property rather than assuming a plausible-sounding heuristic delivered it |
+| **Step** | 7 |
+
+## FA-010 - the leakage lint was too aggressive to notice it was wrong
+
+| | |
+|---|---|
+| **Assumed** | Substring matching was adequate for forbidden document-position phrases |
+| **Evidence** | `"line "` matched inside `"Add a 3px outline to ..."`, rejecting **every `add_stroke` instruction** in the corpus |
+| **Resolution** | Word-boundary regex |
+| **Impact if missed** | A quarter of the operation set would have vanished from the corpus. The lint fails loudly, so this was caught immediately - but the failure direction matters: an over-aggressive lint *shrinks the corpus silently* if it ever degrades to a warning, which is the more dangerous configuration |
+| **Note** | The unit test written to independently verify the lint contained the **identical bug**, because it was written by the same person on the same day with the same wrong mental model. It failed on the same instruction. Independent verification is only independent if the reasoning is independent, not merely the code |
+| **Step** | 7 |
+
 ---
 
 ## What this list is for

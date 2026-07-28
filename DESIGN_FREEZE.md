@@ -70,6 +70,35 @@ The bright-line version of this rule, plus the pre-registered decision procedure
 
 ---
 
+## Two phases, not one project
+
+The `pre-registration` tag is not a milestone inside a single activity. It separates two
+activities that follow different rules.
+
+```
+  PHASE I - INSTRUMENT DESIGN          Steps 1-9
+  You are allowed to improve the ruler.
+  A threshold that looks wrong is a finding (see FA-005, FA-007).
+                    |
+                    v
+        tag: instrument-freeze-v1
+        dataset hash + config hash + commit, recorded in the tag message
+        "no model outputs have been observed"
+                    |
+                    v
+  PHASE II - MEASUREMENT               Steps 10+
+  You are only allowed to use the ruler.
+  A threshold that looks wrong is Discussion (see RESULTS.md).
+```
+
+The same sentence - *"this threshold seems miscalibrated"* - is a legitimate finding in
+Phase I and a rationalisation in Phase II. Nothing about the sentence changes; only which
+side of the tag it is said on. That is the entire reason the boundary is marked with an
+annotated tag carrying the hashes, rather than left as a date in a changelog.
+
+**Step 9, not Step 7 or 8, is the last design step.** The scoring rules are the last part
+of the instrument, and they must be fixed before any output exists to fit them to.
+
 ## Implementation order (frozen)
 
 1. Repository scaffolding

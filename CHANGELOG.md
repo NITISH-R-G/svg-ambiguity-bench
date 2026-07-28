@@ -5,6 +5,49 @@ required by [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md).
 
 ## [Unreleased]
 
+### Sprint 2, Step 7 - Instruction generator - 2026-07-28
+
+Last step before dataset freezing. Supports C1 (instruction text leaks nothing
+matchable against the markup) and C8 (only predicates with a defensible answer become
+cases).
+
+**180 instructions over 30 SVGs, 6 per sample**
+- Family balance: **exactly 90 SPATIAL / 90 ORDINAL**
+- Operations: 44 / 44 / 44 / 48
+- 120 distinct phrasings; every predicate used with more than one
+- Mean per-case `1/K` reference: **0.1852** - the number baseline must land near
+
+**Unevenness preserved rather than erased.** Distinct spatial predicates available per
+sample ranges 2 to 6 after the construct-validity gate. Every sample still contributes
+3 spatial and 3 ordinal instructions: one with only two surviving predicates fills its
+quota by pairing them with different operations, rather than by weakening the gate that
+refused the others. Balance is corpus-level, validity stays per-sample.
+
+**Provenance on every instruction.** Each records `accepted_because`, its margin, and
+every predicate refused for that sample with the reason. Not required by the
+experiment - required by whoever later looks at one odd-seeming instruction and needs
+to know why it survived when another did not, without re-deriving the ground-truth pass.
+
+**Two failed assumptions** (FA-009, FA-010)
+
+Least-globally-used predicate selection produced **61% spatial** (44 vs 28). There are
+twice as many spatial predicates as ordinal ones, so each accrues usage more slowly and
+keeps winning the comparison: the rule balanced *predicates* correctly and *families*
+not at all. Replaced with explicit per-family quotas, least-used selection operating
+only within a family.
+
+The leakage lint matched `"line "` inside `"outline"`, rejecting every `add_stroke`
+instruction. Fixed with word-boundary regex. The unit test written to independently
+verify the lint contained the identical bug and failed on the identical instruction -
+independent verification is only independent when the *reasoning* is independent, not
+merely the code.
+
+**Lifecycle boundary recorded.** `DESIGN_FREEZE.md` now marks Phase I (instrument
+design, Steps 1-9) and Phase II (measurement, Steps 10+), separated by the
+`instrument-freeze-v1` tag. The same sentence - "this threshold seems miscalibrated" -
+is a finding in Phase I and a rationalisation in Phase II; only the side of the tag
+changes.
+
 ### RESULTS.md - the pre-registration commitment device - 2026-07-28
 
 Not a pipeline step. A rule, written now, before any model has been run, addressing a
