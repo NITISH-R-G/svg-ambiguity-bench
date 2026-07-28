@@ -5,6 +5,59 @@ required by [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md).
 
 ## [Unreleased]
 
+### Sprint 2, Step 5 - Ground-truth engine and predicate registry - 2026-07-28
+
+Supports **C7** and adds **C8**: ground truth must match what a reasonable person would
+say, not merely be self-consistent.
+
+Step 4 asked what would falsify the measurement. Step 5 asked a different question -
+*what would make two reasonable humans disagree?* - and it has a different answer.
+Measurement error is not what makes a benchmark case contested. **Competing reasonable
+interpretations are.**
+
+**The mechanism: operationalization invariance**
+Every spatial predicate carries a primary definition plus alternatives a reasonable
+person might equally have chosen. A sample may host the predicate only when all of them
+pick the same element. `leftmost` is checked as centroid, left edge, and bbox midpoint;
+`top_left` as euclidean, manhattan, and nearest-bbox-corner distance.
+
+Measured before the gate existed, disagreement was not hypothetical: `leftmost` flips
+between centroid and left edge in 1/15 SVGs and between centroid and bbox midpoint in
+2/15; `top_left` flips between euclidean and manhattan in 2/15. Roughly one sample in
+eight is humanly contested while being mathematically unambiguous.
+
+**Refusal breakdown** (360 slots = 30 SVGs x 12 predicates)
+valid 65.6% | distractor outranks target 13.1% | margin too small 11.4% |
+**definition disagreement 9.4%** | winner outside quadrant 0.6%
+
+**Deliberately not built**
+An elongation gate. Equal-area shapes of differing aspect ratio are not perceived as
+equal - but this corpus has median bbox aspect ratio 1.11, max 1.53, and bbox-area
+ranking agrees with true-area ranking 15/15. The threat does not materialise, so no gate
+was written. A gate that can never fire is decoration.
+
+**Two failed assumptions** (FA-007, FA-008)
+`min_spatial_margin = 0.15` sat on the median of the observed margin distribution,
+refusing 52% of spatial predicates and leaving 13 of 30 SVGs unable to supply their
+spatial instructions. Reset to 0.08 on perceptual grounds - about one shape radius on a
+512 canvas. Sweeping showed the threshold was not the whole story: definition
+disagreement and distractor dominance are validity requirements, not tunable knobs, so
+per-SVG availability is inherently uneven and Step 7 must allocate adaptively.
+
+The test that should have caught this asserted at least one predicate per family per
+sample, and passed - the minimum really was 1. Availability is a corpus-level property,
+so a per-item assertion is not a weaker version of the aggregate check, it is a
+different check that passes while the requirement fails.
+
+**Added**
+- `svgbench.groundtruth` - predicate registry, construct-validity gate, per-sample answer
+  key that refuses to answer where it has no defensible answer.
+- `FAILED_ASSUMPTIONS.md` - every time the project proved itself wrong, with impact.
+- Claim lifecycle in `CLAIMS.md`: Proposed, Specified, Measured, Stress-tested, Published.
+- README now opens with the question a reviewer actually asks, and a concrete example of
+  the markup, rather than with methodology.
+
+
 ### Sprint 2, Step 4 - Geometry engine - 2026-07-28
 
 Supports **C7**: ground truth is correct, not merely asserted. Treated as the first

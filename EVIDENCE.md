@@ -113,6 +113,49 @@ observed maximum and would have accepted almost any degradation.
 
 ---
 
+## C8 - ground truth matches human judgement
+
+A sample may only host a predicate when **every reasonable reading of the instruction
+picks the same element**. Measured over 360 predicate slots (30 SVGs x 12 predicates).
+
+| Outcome | Count | Share |
+|---|---|---|
+| valid | 236 | 65.6% |
+| refused - a distractor outranks the intended target | 47 | 13.1% |
+| refused - margin to runner-up too small | 41 | 11.4% |
+| refused - **reasonable definitions disagree** | 34 | 9.4% |
+| refused - winner outside the required quadrant | 2 | 0.6% |
+
+The 9.4% row is the one C8 exists for. Those samples are measured perfectly; they simply
+have no answer a person would confidently give. Measured before the gate was built:
+
+| Predicate | Competing readings | Disagreement |
+|---|---|---|
+| `leftmost` | centroid vs left edge | 1/15 SVGs |
+| `leftmost` | centroid vs bbox midpoint | 2/15 SVGs |
+| `top_left` | euclidean vs manhattan distance to corner | 2/15 SVGs |
+
+| Test | Result | Status |
+|---|---|---|
+| Valid predicates agree under every alternative definition | re-derived independently of the engine | PASS |
+| The gate actually refuses cases | 124/360 refused | PASS |
+| Ordinal ranks pick the genuinely k-th largest | all valid predicates | PASS |
+| Valid spatial targets beat every distractor | full element set, not just the ambiguity set | PASS |
+| Answer key refuses to answer where it has no answer | `target_of` raises on invalid predicates | PASS |
+| Every sample hosts both families | 30/30 | PASS |
+| Corpus supplies the instruction budget | 116 spatial slots vs 90 needed | PASS |
+| Ground truth is deterministic | repeated builds identical | PASS |
+
+### Deliberately not gated
+
+**Shape elongation.** Equal-area shapes of differing aspect ratio are not perceived as
+equal, which would threaten the ordinal family. Measured on this corpus: median bbox
+aspect ratio **1.11**, max **1.53**, and bbox-area ranking agrees with true-area ranking
+in **15/15 SVGs**. The threat does not materialise, so no gate was built. A gate that can
+never fire is decoration.
+
+---
+
 ## Instrument calibration
 
 Findings about the *measuring tools*, recorded because a wrong instrument is

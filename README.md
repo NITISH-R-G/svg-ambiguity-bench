@@ -1,15 +1,33 @@
 # svg-ambiguity-bench
 
-**Can a language model edit the shape you meant, when the markup cannot tell it which shape that is?**
+### Can a small language model edit the shape you meant?
 
-An SVG is a drawing program. Its *rendered output* has position, size, and adjacency.
-Its *source text* often does not encode any of them in readable form. An instruction like
-"make the top-left shape blue" refers to the rendered layer; the edit has to happen in the
-source layer. When several elements share a tag and a fill, and their path data is opaque,
-the markup contains nothing that tells them apart.
+You ask for *"make the top-left shape blue"*. The model sees this:
 
-This repository builds a controlled benchmark around that gap, measures a small local model
-on it, and tests a method for supplying what the markup is missing.
+```xml
+<path id="e13415408" d="{{GEOM_1b7549de}}" fill="#8c5a3c"/>
+<path id="e15485c60" d="{{GEOM_33cabe17}}" fill="#c0c0c0"/>
+<path id="e0d63fea4" d="{{GEOM_c2532d12}}" fill="#8c5a3c"/>
+<path id="e30176ca8" d="{{GEOM_a9f3024e}}" fill="#8c5a3c"/>
+```
+
+Three of those are the same shade. Nothing in the markup says which one is top-left. The
+instruction refers to the *rendered picture*; the edit has to happen in the *source text*;
+and the source text does not encode what the instruction is talking about.
+
+So the model guesses, or it hedges and edits several. That is the phenomenon this
+repository measures.
+
+**The question it actually answers.** Supplying the missing facts obviously helps. But an
+enriched prompt changes two things at once - it adds geometric information, *and* it adds
+an enumerated list of elements the model can point at. Enumeration alone could move the
+score with no geometry in it at all.
+
+> **Does context augmentation help because of the information it supplies, or merely
+> because of the format it arrives in?**
+
+That is the contribution. Everything else in this repository exists to make that one
+comparison trustworthy.
 
 ---
 

@@ -31,7 +31,20 @@ generation:
   # sample is regenerated. This makes the corpus easier than arbitrary layouts; the
   # size of that bias is published via the rejection log rather than hidden.
   min_area_ratio: 1.25       # adjacent area ranks differ by >= 25%
-  min_spatial_margin: 0.15   # normalised gap to the runner-up
+
+  # Normalised gap between the winner and runner-up on a spatial predicate.
+  #
+  # Set on PERCEPTUAL grounds, not to hit a quota: 0.08 of a 512 canvas is ~41 units,
+  # which is roughly one shape's own radius in this corpus. When the winner's centroid
+  # sits a full shape-width further left than the runner-up's, "the leftmost one" stops
+  # being a judgement call.
+  #
+  # An earlier value of 0.15 landed almost exactly on the median of the observed margin
+  # distribution (0.146) and refused 52% of spatial predicates, leaving 13 of 30 SVGs
+  # unable to supply the spatial instructions the design needs - a large cost with no
+  # matching validity gain, since genuinely contested cases are already caught by the
+  # definition-disagreement check. At 0.08 the margin rule refuses 11.4%.
+  min_spatial_margin: 0.08
   max_overlap_ratio: 0.02    # near-disjoint, so occlusion cannot corrupt area
   max_regen_attempts: 500
 

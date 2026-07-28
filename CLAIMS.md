@@ -8,19 +8,60 @@ The central claim is C3. Everything else exists to make C3 interpretable.
 
 ---
 
+## The claim lifecycle
+
+A claim is not mature until it has passed through all five states. Skipping one means
+the claim is weaker than it looks.
+
+```
+Proposed  ->  Specified  ->  Measured  ->  Stress-tested  ->  Published
+(asserted)    (operational  (numbers    (adversarially     (in README
+              definition)    on disk)    attacked)          / write-up)
+```
+
+**Stress-tested** is the state most often skipped, and it is the one that matters. A
+measured claim says "the number came out this way". A stress-tested claim says "we tried
+to make it come out the other way and could not". For C1 that meant planting a leak and
+requiring the detector to reject it; for C2, planting decoding drift; for C7, feeding
+witnesses that cannot agree.
+
 ## The claims
 
-| # | Claim | Evidence | Status |
-|---|---|---|---|
-| **C1** | The corpus is genuinely under-determined - the markup cannot distinguish the candidate elements | Generator invariants: identical tag + fill, no positional attributes, fixed-length opaque tokens, order-uncorrelated document sequence. Enforced by audit tests on the shipped corpus, and the leak detector is itself verified against a planted leak. | DONE Step 3 |
-| **C2** | The arms are comparable - they differ in exactly one variable | Shared `corpus_config_hash` across arms; distinct `config_hash` per arm; arm-fairness audit verified to fail on planted drift | DONE Step 2 |
-| **C3** | **Any improvement from added context is information, not format** | The `permuted` arm: identical context format, values shuffled between elements. Pre-registered primary comparison is `enhanced` vs `permuted`. | Step 12-13 |
-| **C4** | Identification is separable from execution | Evaluation decomposes into identification / execution / collateral rather than one "correct" bit | Step 9 |
-| **C5** | Abstention is measured, not punished | `ABSTAINED` is its own outcome class; accuracy reported with and without it | Step 9 |
-| **C6** | Every reported number is independently verifiable | Frozen dataset + committed raw responses + manifests; Tiers 1-2 reproduce with no model and no renderer | Step 8, 14 |
-| **C7** | Ground truth is correct, not merely asserted | Two measurement implementations must agree - Rust raster vs Python analytic. Rank agreement 12/12 SVGs; area disagreement max 0.0014 against a 0.02 bound. | DONE Step 4 |
+| # | Claim | Proposed | Specified | Measured | Stress-tested | Published |
+|---|---|---|---|---|---|---|
+| **C1** | Corpus is genuinely under-determined | yes | yes | Step 3 | yes - planted leak rejected at p=0.0005 | pending |
+| **C2** | Arms are comparable | yes | yes | Step 2 | yes - planted drift caught 3 ways | pending |
+| **C3** | **Improvement is information, not format** | yes | yes | - | - | - |
+| **C4** | Identification separable from execution | yes | yes | - | - | - |
+| **C5** | Abstention measured, not punished | yes | yes | - | - | - |
+| **C6** | Every number independently verifiable | yes | yes | Step 3 | partial - regeneration verified, full Tier 1-2 needs Step 14 | pending |
+| **C7** | Ground truth correct, not asserted | yes | yes | Step 4 | yes - disagreeing witnesses rejected | pending |
+| **C8** | Ground truth matches human judgement | yes | yes | Step 5 | yes - 9.4% of slots refused for definition disagreement | pending |
 
-Measured values for each are in [`EVIDENCE.md`](EVIDENCE.md).
+Nothing is Published until there are results. That column staying empty is the honest
+state of the project, not an oversight.
+
+### What each claim asserts
+
+- **C1** - the markup cannot distinguish the candidate elements. Generator invariants:
+  identical tag and fill, no positional attributes, fixed-length opaque tokens,
+  order-uncorrelated document sequence.
+- **C2** - the arms differ in exactly one variable. Shared corpus hash, distinct config
+  hash, identical decoding.
+- **C3** - the central claim. The `permuted` arm holds context format fixed and destroys
+  only the information.
+- **C4** - evaluation decomposes into identification / execution / collateral rather than
+  one "correct" bit.
+- **C5** - `ABSTAINED` is its own outcome class; accuracy reported with and without it.
+- **C6** - frozen dataset plus committed raw responses; Tiers 1-2 reproduce with no model
+  and no renderer.
+- **C7** - two measurement implementations agree. Rank agreement 12/12 SVGs.
+- **C8** - *new at Step 5.* Ground truth is not merely self-consistent but matches what a
+  reasonable person would say. A sample whose answer depends on which reasonable
+  definition you pick is rejected, not shipped.
+
+Measured values for each are in [`EVIDENCE.md`](EVIDENCE.md). Assumptions that turned out
+to be wrong are in [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md).
 
 ---
 
