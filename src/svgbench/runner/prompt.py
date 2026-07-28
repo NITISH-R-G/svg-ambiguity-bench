@@ -15,7 +15,12 @@ RESULTS.md, not a fix.
 from __future__ import annotations
 
 TEMPLATE_ID = "edit_svg_v1"
-TEMPLATE_VERSION = "1.0"
+# 1.1 - amended at Step 10, before any baseline run. The placeholder example rendered as
+# `{GEOM_...}` because `str.format` collapses `{{` to `{`, so every prompt described the
+# tokens as looking different from how they actually appear in the document. Found by
+# the smoke test's plumbing check, which exists for exactly this. Affects every arm
+# identically. See CHANGELOG for the disclosed amendment.
+TEMPLATE_VERSION = "1.1"
 
 # Notes on wording choices, each of which is a deliberate attempt to avoid measuring
 # something other than reference resolution:
@@ -31,7 +36,7 @@ _TEMPLATE = """\
 You are editing an SVG document.
 
 The `d` attribute of each shape has been redacted and replaced with an opaque \
-placeholder such as `{{GEOM_1234abcd}}`. This is intentional. Copy every placeholder \
+placeholder such as `{{{{GEOM_1234abcd}}}}`. This is intentional. Copy every placeholder \
 through to your output exactly as it appears; do not attempt to reconstruct or repair it.
 
 SVG:

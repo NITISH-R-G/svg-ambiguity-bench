@@ -26,7 +26,6 @@ EXPERIMENTS_DIR = REPO_ROOT / "configs" / "experiments"
 # listed here from the moment it has a CLI surface; `None` means not yet built.
 _PLANNED_COMMANDS: dict[str, str] = {
     "generate": "Generate the SVG corpus, ground truth and instructions (steps 3-7)",
-    "run": "Execute one experiment arm against a model (steps 10-13)",
     "evaluate": "Score stored responses into evaluation rows (step 9)",
     "report": "Compute metrics and render the report (step 14)",
     "audit": "Run leakage, blindness and determinism checks",
@@ -79,6 +78,10 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Also regenerate from the seed and compare (needs the renderer)",
     )
     verify.set_defaults(handler=_cmd_verify)
+
+    run = subparsers.add_parser("run", help="Execute one experiment arm against the model")
+    run.add_argument("experiment", help="Arm name under configs/experiments, e.g. main-baseline")
+    run.set_defaults(handler=_cmd_run)
 
     for name, help_text in _PLANNED_COMMANDS.items():
         planned = subparsers.add_parser(name, help=f"[not yet implemented] {help_text}")
@@ -196,6 +199,87 @@ def _cmd_verify(args: argparse.Namespace) -> int:
             print("PASS  determinism   regenerated from seed, byte-identical")
 
     return exit_code
+
+
+def _cmd_run(args: argparse.Namespace) -> int:
+    """Execute one arm over the frozen corpus.
+
+    Loads by dataset hash and refuses on mismatch, so an arm can never be run against a
+    corpus other than the frozen one.
+    """
+    import json
+    import time
+
+    from svgbench.dataset import find_frozen_datasets, verify_integrity
+    from svgbench.groundtruth import SampleGroundTruth
+    from svgbench.instructions import Instruction
+    from svgbench.runner import run_arm
+
+    path = EXPERIMENTS_DIR / f"{args.experiment}.yaml"
+    if not path.exists():
+        available = sorted(p.stem for p in EXPERIMENTS_DIR.glob("*.yaml"))
+        print(f"unknown experiment {args.experiment!r}; available: {available}", file=sys.stderr)
+        return 2
+
+    try:
+        config = load_config(DEFAULT_BASE_CONFIG, path).config
+    except ConfigError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+
+    datasets = find_frozen_datasets(REPO_ROOT / "data" / "frozen")
+    if not datasets:
+        print("no frozen dataset; run `svgbench freeze` first", file=sys.stderr)
+        return 1
+    frozen = datasets[0]
+    manifest = verify_integrity(frozen)
+
+    if manifest.corpus_config_hash != corpus_config_hash(config):
+        print(
+            "corpus config hash does not match the frozen dataset; refusing to run.\n"
+            "  This arm would be scored against a corpus it did not see.",
+            file=sys.stderr,
+        )
+        return 1
+
+    instructions = [
+        Instruction.model_validate(record)
+        for record in json.loads((frozen / "instructions.json").read_text(encoding="utf-8"))
+    ]
+    svgs = {p.stem: p.read_text(encoding="utf-8") for p in (frozen / "svgs").glob("*.svg")}
+    geometry = {
+        p.stem: SampleGroundTruth.model_validate_json(p.read_text(encoding="utf-8")).geometry
+        for p in (frozen / "groundtruth").glob("*.json")
+    }
+
+    print(f"arm        {config.experiment_id}  (provider: {config.context.provider})")
+    print(f"model      {config.model.name}  temp={config.model.temperature}")
+    print(f"dataset    {manifest.dataset_hash[:16]}...")
+    print(f"cases      {len(instructions)} x {config.evaluation.replicates} replicate(s)\n")
+
+    started = time.monotonic()
+
+    def progress(done: int, total: int) -> None:
+        if done % 10 == 0 or done == total:
+            elapsed = time.monotonic() - started
+            rate = elapsed / done if done else 0.0
+            print(
+                f"  {done:>4}/{total}  {elapsed / 60:5.1f}m elapsed, "
+                f"~{rate * (total - done) / 60:5.1f}m remaining",
+                flush=True,
+            )
+
+    output = run_arm(
+        config=config,
+        instructions=instructions,
+        svgs=svgs,
+        geometry=geometry,
+        dataset_hash=manifest.dataset_hash,
+        output_root=REPO_ROOT / "experiments",
+        on_progress=progress,
+    )
+    print(f"\nresponses written to {output.relative_to(REPO_ROOT)}")
+    return 0
 
 
 def _cmd_status(_args: argparse.Namespace) -> int:

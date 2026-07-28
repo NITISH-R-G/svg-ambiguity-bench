@@ -80,7 +80,11 @@ instructions:
 
 prompt:
   template_id: edit_svg_v1
-  template_version: "1.0"
+  # 1.1 amends a defect found by the Step 10 plumbing check: the placeholder example
+  # rendered as `{GEOM_...}` because str.format collapses `{{` to `{`, so every prompt
+  # described the tokens as looking different from how they appear in the document.
+  # Affects every arm identically; disclosed in CHANGELOG.
+  template_version: "1.1"
 
 # The manipulated variable. Overridden by each arm and by nothing else.
 context:
@@ -90,12 +94,15 @@ context:
   permutation_seed: 991
 
 model:
-  name: qwen2.5-coder:7b
+  # Selected by measurement at Step 10, before any baseline run (ADR-0011).
+  # 0/12 unparseable against 4/12 for qwen2.5-coder:1.5b on the same cases. A third of
+  # responses failing to parse would mean the experiment substantially measured format
+  # compliance rather than reference resolution (risk R3).
+  name: qwen2.5-coder:3b
   backend: ollama
   base_url: http://localhost:11434
-  # Greedy. Replicate policy is resolved by the smoke test before the baseline run
-  # (ADR-0010): at temperature 0 replicates are identical calls unless the backend is
-  # non-deterministic, which is itself the measurement that decides the policy.
+  # Greedy. The backend was measured deterministic at temperature 0 - three identical
+  # prompts returned one distinct response - so replicates resolve to 1 (ADR-0010).
   temperature: 0.0
   top_p: 1.0
   seed: 0

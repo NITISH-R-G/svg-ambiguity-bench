@@ -117,12 +117,15 @@ def main() -> int:
             target_element_id=instruction["target_element_id"],
         )
         outcomes[result.outcome] += 1
-        print(f"  [{i:2d}/{len(sample)}] {result.outcome:<15} {latencies[-1]:>6}ms  {instruction['predicate']}")
+        predicate = instruction["predicate"]
+        print(f"  [{i:2d}/{len(sample)}] {result.outcome:<15} {latencies[-1]:>6}ms  {predicate}")
 
     print("\n--- A1: is malformed output a minority failure mode? ---")
     malformed = outcomes["MALFORMED"]
     print(f"  outcomes         {dict(outcomes)}")
-    print(f"  unparseable      {unparseable}/{len(sample)} ({100 * unparseable / len(sample):.0f}%)")
+    print(
+        f"  unparseable      {unparseable}/{len(sample)} ({100 * unparseable / len(sample):.0f}%)"
+    )
     print(f"  truncated        {truncated}/{len(sample)}")
     verdict = "PASS" if malformed <= len(sample) * 0.3 else "FAIL"
     print(f"  verdict          {verdict}  (malformed {malformed}/{len(sample)})")

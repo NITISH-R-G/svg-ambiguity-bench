@@ -5,6 +5,66 @@ required by [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md).
 
 ## [Unreleased]
 
+### PHASE II BEGINS - Step 10: model runner and smoke test - 2026-07-29
+
+First work after `instrument-freeze-v1`. Two decisions resolved by measurement, and one
+disclosed amendment.
+
+**ADR-0010 resolved: replicates = 1.** The pre-committed rule was that the smoke test
+would measure whether the backend is deterministic at temperature 0, and the answer
+would decide the policy. Three byte-identical prompts returned **one** distinct response
+on both candidate models. Deterministic, so N replicates would be N identical calls
+implying a robustness that does not exist. The rule fired as written; no judgement was
+exercised after seeing the result.
+
+**ADR-0011: model selected as `qwen2.5-coder:3b`.** Both candidates were pulled
+specifically so this would not have to be a guess, and the gap was far larger than
+expected:
+
+| | 1.5b | 3b |
+|---|---|---|
+| unparseable | **4/12 (33%)** | **0/12 (0%)** |
+| median latency | 6.6s | 15.2s |
+| projected 540 calls | 1.0h | 2.3h |
+
+A third of responses failing to parse is not a minority failure mode in any useful
+sense - it would mean much of every arm's score was decided by whether the model could
+emit well-formed XML. R4 explicitly sanctions swapping models pre-baseline provided the
+reason is recorded.
+
+Note: the smoke script printed `PASS` for the 1.5b against a 30% threshold that was an
+arbitrary constant written without justification. That constant is **not** the basis of
+the decision; the measured 0% versus 33% is.
+
+**AMENDMENT: prompt template 1.0 -> 1.1.** The plumbing check found that the placeholder
+example rendered as `{GEOM_1234abcd}` while the actual document tokens are
+`{{GEOM_1b7549de}}` - `str.format` collapses `{{` to `{`. Every prompt described the
+tokens as looking different from how they appear.
+
+Disclosed under the DESIGN_FREEZE amendment procedure. It qualifies: the fix affects
+every arm identically, no baseline had been run, and applying the RESULTS.md test -
+*would this have been made identically had the arms come out the other way around?* -
+gives an unambiguous yes. Re-running the smoke test after the fix produced an identical
+outcome pattern at n=12, which does not make the fix optional: a prompt that misdescribes
+the document is a defect whether or not the model noticed.
+
+**The two-hash split proved its worth.** Changing model and prompt left
+`corpus_config_hash` at `f2a6e5b2...` - unchanged - while `config_hash` moved
+`c8b06c9d` -> `ffdd4652`. The corpus is intact and all arms still share it. That
+separation was designed at Step 2 for exactly this moment.
+
+**Added**
+- `svgbench.context` - the four providers. `permuted` retries until the permutation
+  displaces at least one element, since an identity permutation would silently turn the
+  arm into `enhanced` and the control would vanish with no test failing.
+- `svgbench.runner` - one prompt template, one execution path, append-only response store
+  keyed by experiment/case/replicate so runs resume exactly and nothing is overwritten.
+- Nine context-blindness audits. The strongest: excising the injected block verbatim from
+  any arm's prompt must leave text byte-identical to the baseline prompt.
+- `svgbench run <arm>`, which verifies the frozen corpus and refuses if the arm's
+  corpus hash does not match it.
+
+
 ### Sprint 2, Step 9 - Evaluation engine - PHASE I COMPLETE - 2026-07-28
 
 Supports C4 (identification separable from execution) and C5 (abstention measured, not
