@@ -5,6 +5,43 @@ required by [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md).
 
 ## [Unreleased]
 
+### Sprint 2, Step 9 - Evaluation engine - PHASE I COMPLETE - 2026-07-28
+
+Supports C4 (identification separable from execution) and C5 (abstention measured, not
+punished). The last step of instrument design.
+
+26 hand-authored fixtures, each carrying its expected verdict **and its reasoning**,
+written before the scorer existed. All six outcome classes, all four operations, plus
+adversarial cases: renamed ids, reordered elements, colour-notation variants, right
+element with wrong operation, right edit plus collateral, and three phrasings of
+abstention.
+
+**The review gate, answered rather than assumed.** "Do the fixtures pass" is not
+evidence the fixtures are adequate. The scorer was deliberately broken nine ways and
+each break required to be caught: **9/9 caught**. No colour normalisation, no rotation
+modulo, comparing all attributes, abstention checked last, silence counted as
+abstention, execution folded into identification, deletion treated as absence, numeric
+tolerance ignored, and align-by-position-only. Kept as a permanent audit test, so a
+future fixture deletion that opens a hole fails the build.
+
+**Five semantic decisions, forced by writing the adversarial fixtures.** Each had been
+implicitly assumed, and each is now fixed before any model output exists: whitespace-only
+output is MALFORMED not ABSTAINED; reordered attributes are not a change; `rotate(450)`
+equals `rotate(90)`; non-rendering attribute changes are not collateral; two identically
+edited members are CORRECT_LOOSE or WRONG_TARGET depending on whether the target is
+among them.
+
+**Arm-blindness by interface.** `evaluate_response` accepts no `arm`, `provider`,
+`context`, `experiment_id` or `config_hash` parameter, asserted by test. An arm-dependent
+scoring rule cannot be written without changing the signature.
+
+**A bug in the mutation harness, not the fixtures.** The first run reported two
+mutations surviving. They had not applied: `from X import Y` copies the reference, so
+patching the defining module leaves the importer's binding untouched. The harness
+understated the fixture set rather than overstating it, which is the safer direction -
+but a verification tool that reports the wrong answer is worth the same scepticism as
+the thing it verifies.
+
 ### Sprint 2, Step 8 - Dataset freezing and the instrument certificate - 2026-07-28
 
 Supports C6: every reported number is independently verifiable.

@@ -55,6 +55,15 @@ def _write(path: Path, content: str) -> None:
     path.write_text(content, encoding="utf-8", newline="\n")
 
 
+def _discard(directory: Path) -> None:
+    """Remove a directory tree if present. Used only for staging, never for a frozen set."""
+    if not directory.exists():
+        return
+    for path in sorted(directory.rglob("*"), reverse=True):
+        path.unlink() if path.is_file() else path.rmdir()
+    directory.rmdir()
+
+
 def _hash_tree(root: Path) -> tuple[str, dict[str, str]]:
     """Root hash over the case-defining artefacts, plus per-file hashes for everything.
 
@@ -107,10 +116,7 @@ def freeze_dataset(config: Config, output_root: Path, repo_root: Path) -> Datase
         )
 
     staging = output_root / "_staging"
-    if staging.exists():
-        for path in sorted(staging.rglob("*"), reverse=True):
-            path.unlink() if path.is_file() else path.rmdir()
-        staging.rmdir()
+    _discard(staging)
 
     # Model-visible SVGs: exactly what the model receives.
     for sample in samples:
@@ -156,9 +162,21 @@ def freeze_dataset(config: Config, output_root: Path, repo_root: Path) -> Datase
 
     final = output_root / dataset_hash
     if final.exists():
-        for path in sorted(final.rglob("*"), reverse=True):
-            path.unlink() if path.is_file() else path.rmdir()
-        final.rmdir()
+        # A frozen corpus is issued once. Re-freezing to the same hash is harmless -
+        # the content is identical by definition - but silently rewriting it would let
+        # a directory be replaced without anyone noticing, which is exactly what
+        # content-addressing exists to prevent. Verify and keep the original instead.
+        _discard(staging)
+        existing = DatasetManifest.model_validate_json(
+            (final / MANIFEST_NAME).read_text(encoding="utf-8")
+        )
+        if existing.dataset_hash != dataset_hash:
+            raise FreezeError(
+                f"{final} exists but its manifest claims {existing.dataset_hash}; "
+                "refusing to overwrite a corpus that does not match its own name"
+            )
+        return existing
+
     staging.rename(final)
 
     _write(final / MANIFEST_NAME, json.dumps(manifest.model_dump(mode="json"), indent=2))

@@ -155,6 +155,31 @@ suite was positioned to see.
 
 ---
 
+## Taxonomy
+
+The eleven entries fall into four classes, and the classes matter because they have
+different prevention strategies. Grouping them makes visible which kinds of mistake this
+project is good at catching and which it is not.
+
+| Class | Entries | What catches them |
+|---|---|---|
+| **Measurement** - the instrument reports the wrong number | FA-002 (analytic z), FA-003 (ordinal ranks), FA-005 (loose tolerances) | Comparing the instrument against a case whose answer is known independently - a uniform-by-construction null, a hand-computed shape |
+| **Construct validity** - the number is right but measures the wrong thing | FA-001 (placement anchor vs centroid), FA-007 (margin threshold) | Asking what a reasonable person would say, not what the formula says |
+| **Experimental design** - the measurement is sound but the design is skewed | FA-008 (uneven availability), FA-009 (predicate vs family balance) | Asserting the property you actually report, at the level you report it |
+| **Systems integration** - every component is correct and the composition is not | FA-006 (encoding round-trip), FA-011 (git line endings), hash scope | Nothing in the test suite. These live *between* systems, where no single component owns the invariant |
+
+The last row is the uncomfortable one. FA-011 is the clearest case: the freeze code was
+correct, the tests passed, the certificate said PASS, and the corpus verified locally.
+Every check inside the repository's boundary was green. The defect lived in what happens
+between `git add` here and `git checkout` elsewhere, which no test was positioned to see.
+
+It was caught by reading warnings rather than scrolling past them - which is not a
+method, and does not generalise. **Integration defects remain the class this project has
+the weakest defence against**, and that is worth stating plainly rather than implying the
+audit suite covers everything.
+
+---
+
 ## What this list is for
 
 When a future change touches spatial predicates, FA-001 says which field is *not* the

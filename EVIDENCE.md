@@ -260,6 +260,53 @@ unchanged *and* still fails integrity verification.
 
 ---
 
+## C4 and C5 - the evaluation engine (Step 9)
+
+26 hand-authored fixtures, each carrying its expected verdict **and its reasoning**,
+written before the scorer existed. All six outcome classes and all four operations
+covered.
+
+### Can the scorer be wrong while every fixture still passes?
+
+The review gate, answered by breaking the scorer nine ways and requiring the fixtures to
+notice each. **9/9 caught.**
+
+| Deliberate break | Caught by |
+|---|---|
+| No colour normalisation (`#00f` != `#0000ff`) | `recolor_target_short_hex`, `recolor_target_named_colour` |
+| No rotation modulo (`rotate(450)` != `rotate(90)`) | `rotate_target_congruent` |
+| Compare all attributes (non-rendering counted as collateral) | `non_rendering_attribute_added`, `renamed_ids_tokens_preserved` |
+| Abstention checked after the document | `abstention_with_unchanged_document` |
+| Silence counted as abstention | `whitespace_only` |
+| Execution folded into identification | `right_element_wrong_operation`, `rotate_target_wrong_angle` |
+| Deletion treated as a missing element | `delete_target` |
+| Numeric tolerance ignored (`3` != `3.0`) | `numeric_formatting_difference` |
+| Align by position only | `reordered_elements`, `renamed_ids_tokens_preserved`, +3 |
+
+Kept as a permanent audit test, so a future fixture deletion that opens a hole fails the
+build rather than passing quietly.
+
+### Semantic decisions fixed before any model output
+
+Writing adversarial fixtures forced five questions that had been implicitly assumed.
+
+| Question | Decision |
+|---|---|
+| Is whitespace-only output an abstention? | **No - MALFORMED.** Silence makes no claim about insufficient information |
+| Are reordered attributes a change? | **No.** Attribute order is meaningless in XML |
+| Is `rotate(450)` equal to `rotate(90)`? | **Yes.** They render identically, and this instrument exists to privilege the rendered layer |
+| Is a non-rendering attribute change collateral? | **No.** Collateral is defined over rendering-relevant attributes only |
+| Two ambiguity members edited identically? | **Depends on whether one is the target.** `CORRECT_LOOSE` if so, `WRONG_TARGET` if not |
+
+### Arm-blindness
+
+Enforced by the interface: `evaluate_response` takes no `arm`, `provider`, `context`,
+`experiment_id` or `config_hash` parameter, asserted by test. An arm-dependent scoring
+rule cannot be written without changing the signature, which is visible in review rather
+than buried in a branch.
+
+---
+
 ## Instrument calibration
 
 Findings about the *measuring tools*, recorded because a wrong instrument is

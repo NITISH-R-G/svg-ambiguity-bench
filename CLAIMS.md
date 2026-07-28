@@ -32,8 +32,8 @@ witnesses that cannot agree.
 | **C1** | Corpus is genuinely under-determined | yes | yes | Step 3 | yes - planted leak rejected at p=0.0005 | pending |
 | **C2** | Arms are comparable | yes | yes | Step 2 | yes - planted drift caught 3 ways | pending |
 | **C3** | **Improvement is information, not format** | yes | yes | - | - | - |
-| **C4** | Identification separable from execution | yes | yes | - | - | - |
-| **C5** | Abstention measured, not punished | yes | yes | - | - | - |
+| **C4** | Identification separable from execution | yes | yes | Step 9 | yes - 9/9 scorer mutations caught | pending |
+| **C5** | Abstention measured, not punished | yes | yes | Step 9 | yes - three phrasings, plus a false-positive guard | pending |
 | **C6** | Every number independently verifiable | yes | yes | Step 3 | partial - regeneration verified, full Tier 1-2 needs Step 14 | pending |
 | **C7** | Ground truth correct, not asserted | yes | yes | Step 4 | yes - disagreeing witnesses rejected | pending |
 | **C8** | Ground truth matches human judgement | yes | yes | Step 5 | yes - 9.4% of slots refused for definition disagreement | pending |

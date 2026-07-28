@@ -210,7 +210,7 @@ def _cmd_status(_args: argparse.Namespace) -> int:
         ("6.  Predicate registry", True),
         ("7.  Instruction generator", True),
         ("8.  Dataset freezing", True),
-        ("9.  Evaluation engine", False),
+        ("9.  Evaluation engine", True),
         ("10. Model runner", False),
         ("11. Baseline experiment", False),
         ("12. Enhancement implementation", False),
