@@ -1,0 +1,48 @@
+========================================================================
+                         INSTRUMENT CERTIFICATE                         
+========================================================================
+
+  Instrument version   instrument-freeze-v1
+  Dataset hash         a2938bb031c0220abb45df12b7bc3eaa19a33484ac15592e59c62247010d2b35
+  Config hash          c8b06c9d02d1fae82fe9e3ec9271bd3328f776403b601d76a7abd71f2ffe3ea8
+  Corpus config hash   f2a6e5b2a40142659a786c6b1f2df26d50ef1218231ba5ccc97659a50d0846dd
+  Seed                 20260728
+
+  SVGs                 30
+  Instructions         180
+  Ambiguity elements   168
+
+------------------------------------------------------------------------
+  CHECKS
+------------------------------------------------------------------------
+
+  [PASS]  Generator invariants
+          30 samples: identical tag/fill, no positional attributes, fixed-length tokens (17 chars)
+
+  [PASS]  Geometry witnesses
+          raster and analytic agree on ranking in 30/30 samples
+
+  [PASS]  Ground truth
+          236/360 predicate slots admitted; 124 refused as contested
+
+  [PASS]  Instruction allocation
+          180 instructions, 90 spatial / 90 ordinal, operations {'add_stroke': 44, 'delete': 48, 'recolor_fill': 44, 'rotate': 44}
+
+  [PASS]  Leakage audit
+          180 instructions carry no id, geometry token or document fill
+
+  [PASS]  Model outputs observed
+          NO - experiments/ contains no stored responses
+
+------------------------------------------------------------------------
+
+  Python               3.12.3
+  Platform             Windows
+  Renderer             0.3.3
+
+  This corpus is immutable. Any change mints a new dataset hash and
+  invalidates prior results rather than silently overwriting them.
+
+  Verify with:  svgbench verify
+
+========================================================================

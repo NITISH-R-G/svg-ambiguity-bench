@@ -1,0 +1,143 @@
+{
+  "k": {
+    "4": 6,
+    "5": 6,
+    "6": 12,
+    "7": 6
+  },
+  "distractors": {
+    "2": 8,
+    "3": 12,
+    "4": 10
+  },
+  "generation_attempts": {
+    "1": 30
+  },
+  "aspect_ratio": {
+    "n": 168.0,
+    "min": 1.0003869906638494,
+    "p10": 1.0178090702008693,
+    "median": 1.1129414135308053,
+    "p90": 1.271433791622893,
+    "max": 1.5305124588622467,
+    "mean": 1.1349210249872563
+  },
+  "adjacent_area_ratio": {
+    "n": 138.0,
+    "min": 1.350733561279952,
+    "p10": 1.4088764263220317,
+    "median": 1.5937947890107569,
+    "p90": 1.754975361643099,
+    "max": 1.8117844024942342,
+    "mean": 1.5896300602266669
+  },
+  "centroid_x": {
+    "n": 168.0,
+    "min": 31.405612286846562,
+    "p10": 84.25388396989432,
+    "median": 251.17441444918558,
+    "p90": 437.2513978267293,
+    "max": 484.9138419739749,
+    "mean": 260.2164750236857
+  },
+  "centroid_y": {
+    "n": 168.0,
+    "min": 42.90659475635357,
+    "p10": 77.18053125353033,
+    "median": 253.0947984560357,
+    "p90": 424.2227370026406,
+    "max": 483.14265067590446,
+    "mean": 250.43034703617295
+  },
+  "spatial_margin": {
+    "n": 240.0,
+    "min": 0.003172187249992575,
+    "p10": 0.034137934716532176,
+    "median": 0.1464668593312679,
+    "p90": 0.30869981826705484,
+    "max": 0.6445631899311668,
+    "mean": 0.16608293946302208
+  },
+  "ordinal_margin": {
+    "n": 120.0,
+    "min": 1.354884654571287,
+    "p10": 1.4026761199854845,
+    "median": 1.5829262783871214,
+    "p90": 1.7491094551867683,
+    "max": 1.8117844024942342,
+    "mean": 1.581758152130838
+  },
+  "predicate_refusal_reasons": {
+    "distractor_outranks_target": 47,
+    "margin_too_small": 41,
+    "definition_disagreement": 34,
+    "winner_outside_quadrant": 2
+  },
+  "predicate_accepted_counts": {
+    "bottom_left": 17,
+    "bottom_right": 17,
+    "bottommost": 12,
+    "largest": 30,
+    "leftmost": 13,
+    "rightmost": 11,
+    "second_largest": 30,
+    "smallest": 30,
+    "third_largest": 30,
+    "top_left": 15,
+    "top_right": 21,
+    "topmost": 10
+  },
+  "valid_predicates_per_svg": {
+    "5": 2,
+    "6": 3,
+    "7": 8,
+    "8": 6,
+    "9": 8,
+    "10": 1,
+    "11": 2
+  },
+  "instructions_per_svg": {
+    "6": 30
+  },
+  "instruction_family": {
+    "ORDINAL_SIZE": 90,
+    "SPATIAL": 90
+  },
+  "instruction_operation": {
+    "add_stroke": 44,
+    "delete": 48,
+    "recolor_fill": 44,
+    "rotate": 44
+  },
+  "instruction_predicate": {
+    "bottom_left": 11,
+    "bottom_right": 12,
+    "bottommost": 11,
+    "largest": 22,
+    "leftmost": 12,
+    "rightmost": 12,
+    "second_largest": 22,
+    "smallest": 23,
+    "third_largest": 23,
+    "top_left": 10,
+    "top_right": 12,
+    "topmost": 10
+  },
+  "distinct_templates_used": 120,
+  "case_k": {
+    "4": 36,
+    "5": 36,
+    "6": 72,
+    "7": 36
+  },
+  "mean_random_reference": 0.18523809523809523,
+  "target_document_position": {
+    "0": 35,
+    "1": 38,
+    "2": 39,
+    "3": 23,
+    "4": 30,
+    "5": 13,
+    "6": 2
+  }
+}

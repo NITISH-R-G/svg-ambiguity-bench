@@ -26,8 +26,6 @@ EXPERIMENTS_DIR = REPO_ROOT / "configs" / "experiments"
 # listed here from the moment it has a CLI surface; `None` means not yet built.
 _PLANNED_COMMANDS: dict[str, str] = {
     "generate": "Generate the SVG corpus, ground truth and instructions (steps 3-7)",
-    "freeze": "Freeze the corpus and write the dataset manifest (step 8)",
-    "verify": "Re-verify a frozen dataset against its manifest (step 8)",
     "run": "Execute one experiment arm against a model (steps 10-13)",
     "evaluate": "Score stored responses into evaluation rows (step 9)",
     "report": "Compute metrics and render the report (step 14)",
@@ -66,6 +64,21 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Dotted-key override, e.g. --set generation.n_svgs=5",
     )
     config.set_defaults(handler=_cmd_config)
+
+    freeze = subparsers.add_parser(
+        "freeze", help="Freeze the corpus, write its manifest and print the certificate"
+    )
+    freeze.set_defaults(handler=_cmd_freeze)
+
+    verify = subparsers.add_parser(
+        "verify", help="Re-verify the frozen dataset against its manifest"
+    )
+    verify.add_argument(
+        "--determinism",
+        action="store_true",
+        help="Also regenerate from the seed and compare (needs the renderer)",
+    )
+    verify.set_defaults(handler=_cmd_verify)
 
     for name, help_text in _PLANNED_COMMANDS.items():
         planned = subparsers.add_parser(name, help=f"[not yet implemented] {help_text}")
@@ -127,6 +140,64 @@ def _cmd_config(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_freeze(_args: argparse.Namespace) -> int:
+    """Freeze the corpus. Refuses if any instrument check fails."""
+    from svgbench.dataset import CERTIFICATE_NAME, FreezeError, freeze_dataset
+
+    try:
+        config = load_config(DEFAULT_BASE_CONFIG).config
+    except ConfigError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+
+    frozen_root = REPO_ROOT / "data" / "frozen"
+    try:
+        manifest = freeze_dataset(config, frozen_root, REPO_ROOT)
+    except FreezeError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+
+    print((frozen_root / manifest.dataset_hash / CERTIFICATE_NAME).read_text(encoding="utf-8"))
+    return 0
+
+
+def _cmd_verify(args: argparse.Namespace) -> int:
+    """Check a frozen corpus against its manifest, and optionally re-derive it."""
+    from svgbench.dataset import (
+        VerificationError,
+        find_frozen_datasets,
+        verify_determinism,
+        verify_integrity,
+    )
+
+    datasets = find_frozen_datasets(REPO_ROOT / "data" / "frozen")
+    if not datasets:
+        print("no frozen dataset found; run `svgbench freeze` first", file=sys.stderr)
+        return 1
+
+    exit_code = 0
+    for directory in datasets:
+        try:
+            manifest = verify_integrity(directory)
+        except VerificationError as exc:
+            print(f"FAIL  {directory.name}\n{exc}", file=sys.stderr)
+            exit_code = 1
+            continue
+        print(f"PASS  integrity     {manifest.dataset_hash}")
+
+        if args.determinism:
+            try:
+                config = load_config(DEFAULT_BASE_CONFIG).config
+                verify_determinism(config, directory)
+            except (ConfigError, VerificationError) as exc:
+                print(f"FAIL  determinism   {exc}", file=sys.stderr)
+                exit_code = 1
+                continue
+            print("PASS  determinism   regenerated from seed, byte-identical")
+
+    return exit_code
+
+
 def _cmd_status(_args: argparse.Namespace) -> int:
     print(f"svgbench {__version__}")
     print("\nPipeline steps (frozen order):")
@@ -138,7 +209,7 @@ def _cmd_status(_args: argparse.Namespace) -> int:
         ("5.  Ground-truth engine", True),
         ("6.  Predicate registry", True),
         ("7.  Instruction generator", True),
-        ("8.  Dataset freezing", False),
+        ("8.  Dataset freezing", True),
         ("9.  Evaluation engine", False),
         ("10. Model runner", False),
         ("11. Baseline experiment", False),

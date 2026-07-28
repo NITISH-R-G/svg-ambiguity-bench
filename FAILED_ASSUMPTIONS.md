@@ -136,6 +136,23 @@ different check that can pass while the requirement fails.
 | **Note** | The unit test written to independently verify the lint contained the **identical bug**, because it was written by the same person on the same day with the same wrong mental model. It failed on the same instruction. Independent verification is only independent if the reasoning is independent, not merely the code |
 | **Step** | 7 |
 
+## FA-011 - git would have broken the content-addressing on checkout
+
+| | |
+|---|---|
+| **Assumed** | Writing artefacts with explicit `newline="\n"` was sufficient to make the frozen corpus hash identically everywhere |
+| **Evidence** | Staging the frozen dataset produced 94 warnings of the form *"LF will be replaced by CRLF the next time Git touches it"*. The freeze code controls the bytes it writes; it does not control what git checks out on another machine |
+| **Resolution** | `.gitattributes` with `* text=auto eol=lf` and `data/frozen/** -text`, so the frozen corpus is stored and checked out byte-for-byte. Verified against git's own object store: the staged blob hashes to `0425ea5c…`, exactly the manifest entry, with zero CR bytes |
+| **Impact if missed** | **A fresh clone on Windows would fail its own integrity check.** The dataset hash, the determinism guarantee, and Tier-3 reproduction would all have held only on the machine that produced them - and the failure would have surfaced to a reviewer as "this corpus is corrupt", not as "line endings differ" |
+| **Found by** | Reading the warnings git printed while staging, rather than scrolling past them as noise |
+| **Step** | 8 |
+
+The near-miss is instructive beyond line endings: the freeze code was correct, the tests
+passed, the certificate said PASS, and the corpus verified locally. Every check inside
+the repository's own boundary was green. The defect lived in the boundary itself - what
+happens between `git add` here and `git checkout` somewhere else - which no test in the
+suite was positioned to see.
+
 ---
 
 ## What this list is for

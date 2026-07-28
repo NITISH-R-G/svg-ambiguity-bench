@@ -1,0 +1,323 @@
+{
+  "svg_id": "svg_6833df0a",
+  "geometry": {
+    "ea54997cb": {
+      "element_id": "ea54997cb",
+      "analytic": {
+        "area": 1811.4579239999985,
+        "centroid_x": 334.0262701962531,
+        "centroid_y": 168.85191657851396,
+        "bbox": [
+          309.233,
+          143.493,
+          358.046,
+          192.456
+        ]
+      },
+      "raster": {
+        "area": 1811.8235294117649,
+        "centroid_x": 334.022543640358,
+        "centroid_y": 168.85098860426612,
+        "bbox": [
+          309.0,
+          143.0,
+          358.0,
+          193.0
+        ]
+      }
+    },
+    "e281ce60e": {
+      "element_id": "e281ce60e",
+      "analytic": {
+        "area": 2850.8910074999976,
+        "centroid_x": 184.92033369410598,
+        "centroid_y": 53.74394985979256,
+        "bbox": [
+          155.416,
+          24.053,
+          221.852,
+          83.898
+        ]
+      },
+      "raster": {
+        "area": 2850.964705882353,
+        "centroid_x": 184.9154245690485,
+        "centroid_y": 53.74473862304606,
+        "bbox": [
+          155.0,
+          24.0,
+          222.0,
+          84.0
+        ]
+      }
+    },
+    "efb6f09ad": {
+      "element_id": "efb6f09ad",
+      "analytic": {
+        "area": 6033.004799999988,
+        "centroid_x": 317.948860471601,
+        "centroid_y": 413.548455303406,
+        "bbox": [
+          273.315,
+          365.791,
+          360.897,
+          465.955
+        ]
+      },
+      "raster": {
+        "area": 6033.235294117647,
+        "centroid_x": 317.9461248964072,
+        "centroid_y": 413.5478480313298,
+        "bbox": [
+          273.0,
+          365.0,
+          361.0,
+          466.0
+        ]
+      }
+    },
+    "e7acb1cf8": {
+      "element_id": "e7acb1cf8",
+      "analytic": {
+        "area": 10012.451224,
+        "centroid_x": 437.225888565425,
+        "centroid_y": 188.7515564118193,
+        "bbox": [
+          370.895,
+          136.845,
+          501.878,
+          240.642
+        ]
+      },
+      "raster": {
+        "area": 10012.627450980392,
+        "centroid_x": 437.2228605447239,
+        "centroid_y": 188.75065603434095,
+        "bbox": [
+          371.0,
+          136.0,
+          502.0,
+          241.0
+        ]
+      }
+    },
+    "e9b7f76f6": {
+      "element_id": "e9b7f76f6",
+      "analytic": {
+        "area": 3902.7131329999975,
+        "centroid_x": 461.51408686007875,
+        "centroid_y": 368.2407899652047,
+        "bbox": [
+          419.058,
+          331.445,
+          499.799,
+          404.466
+        ]
+      },
+      "raster": {
+        "area": 3903.0313725490196,
+        "centroid_x": 461.50882772867345,
+        "centroid_y": 368.2401788253072,
+        "bbox": [
+          419.0,
+          331.0,
+          500.0,
+          405.0
+        ]
+      }
+    },
+    "e0b6ebfdd": {
+      "element_id": "e0b6ebfdd",
+      "analytic": {
+        "area": 3000.806596500006,
+        "centroid_x": 227.47359237662116,
+        "centroid_y": 365.69349101203113,
+        "bbox": [
+          189.469,
+          333.304,
+          260.245,
+          397.825
+        ]
+      },
+      "raster": {
+        "area": 3000.5686274509803,
+        "centroid_x": 227.46637630775868,
+        "centroid_y": 365.6916055126806,
+        "bbox": [
+          189.0,
+          333.0,
+          261.0,
+          398.0
+        ]
+      }
+    },
+    "eb1b9b6d2": {
+      "element_id": "eb1b9b6d2",
+      "analytic": {
+        "area": 3079.0247725,
+        "centroid_x": 56.283570942370375,
+        "centroid_y": 165.23269944716068,
+        "bbox": [
+          23.282,
+          133.891,
+          92.223,
+          197.556
+        ]
+      },
+      "raster": {
+        "area": 3079.0588235294117,
+        "centroid_x": 56.27974298232208,
+        "centroid_y": 165.2303759743237,
+        "bbox": [
+          23.0,
+          134.0,
+          93.0,
+          198.0
+        ]
+      }
+    },
+    "ecee66771": {
+      "element_id": "ecee66771",
+      "analytic": {
+        "area": 1691.7947295000004,
+        "centroid_x": 127.01280642618126,
+        "centroid_y": 167.1593173080448,
+        "bbox": [
+          100.106,
+          143.975,
+          152.154,
+          187.76
+        ]
+      },
+      "raster": {
+        "area": 1691.6862745098038,
+        "centroid_x": 127.0072905558904,
+        "centroid_y": 167.15877648476987,
+        "bbox": [
+          100.0,
+          144.0,
+          153.0,
+          188.0
+        ]
+      }
+    }
+  },
+  "ambiguity_ids": [
+    "ea54997cb",
+    "e281ce60e",
+    "efb6f09ad",
+    "e7acb1cf8",
+    "e9b7f76f6"
+  ],
+  "predicates": {
+    "top_left": {
+      "predicate": "top_left",
+      "family": "SPATIAL",
+      "winner": "e281ce60e",
+      "runner_up": "ea54997cb",
+      "margin": 0.3548974620125551,
+      "is_valid": false,
+      "invalid_reason": "distractor_outranks_target"
+    },
+    "top_right": {
+      "predicate": "top_right",
+      "family": "SPATIAL",
+      "winner": "e7acb1cf8",
+      "runner_up": "ea54997cb",
+      "margin": 0.08262970898018634,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "bottom_left": {
+      "predicate": "bottom_left",
+      "family": "SPATIAL",
+      "winner": "efb6f09ad",
+      "runner_up": "ea54997cb",
+      "margin": 0.28522643590314534,
+      "is_valid": false,
+      "invalid_reason": "distractor_outranks_target"
+    },
+    "bottom_right": {
+      "predicate": "bottom_right",
+      "family": "SPATIAL",
+      "winner": "e9b7f76f6",
+      "runner_up": "efb6f09ad",
+      "margin": 0.12740460683880273,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "leftmost": {
+      "predicate": "leftmost",
+      "family": "SPATIAL",
+      "winner": "e281ce60e",
+      "runner_up": "efb6f09ad",
+      "margin": 0.25982558657687244,
+      "is_valid": false,
+      "invalid_reason": "distractor_outranks_target"
+    },
+    "rightmost": {
+      "predicate": "rightmost",
+      "family": "SPATIAL",
+      "winner": "e9b7f76f6",
+      "runner_up": "e7acb1cf8",
+      "margin": 0.04743352965615144,
+      "is_valid": false,
+      "invalid_reason": "definition_disagreement"
+    },
+    "topmost": {
+      "predicate": "topmost",
+      "family": "SPATIAL",
+      "winner": "e281ce60e",
+      "runner_up": "ea54997cb",
+      "margin": 0.22481689449457043,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "bottommost": {
+      "predicate": "bottommost",
+      "family": "SPATIAL",
+      "winner": "efb6f09ad",
+      "runner_up": "e9b7f76f6",
+      "margin": 0.08849154141801285,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "largest": {
+      "predicate": "largest",
+      "family": "ORDINAL_SIZE",
+      "winner": "e7acb1cf8",
+      "runner_up": "efb6f09ad",
+      "margin": 1.6595784786883114,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "second_largest": {
+      "predicate": "second_largest",
+      "family": "ORDINAL_SIZE",
+      "winner": "efb6f09ad",
+      "runner_up": "e9b7f76f6",
+      "margin": 1.54578191109374,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "third_largest": {
+      "predicate": "third_largest",
+      "family": "ORDINAL_SIZE",
+      "winner": "e9b7f76f6",
+      "runner_up": "e281ce60e",
+      "margin": 1.3690212875999317,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "smallest": {
+      "predicate": "smallest",
+      "family": "ORDINAL_SIZE",
+      "winner": "ea54997cb",
+      "runner_up": "e281ce60e",
+      "margin": 1.5735333268400375,
+      "is_valid": true,
+      "invalid_reason": null
+    }
+  },
+  "witnesses_agree_on_ranking": true
+}

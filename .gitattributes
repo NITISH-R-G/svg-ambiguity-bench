@@ -1,0 +1,17 @@
+# Line endings are a correctness concern in this repository, not a style preference.
+#
+# The frozen corpus is content-addressed: `dataset_hash` is a SHA-256 over the exact
+# bytes of every artefact. The freeze code writes LF explicitly so a corpus frozen on
+# Windows hashes identically to one frozen on POSIX. Git undoing that on checkout would
+# mean a fresh clone fails its own integrity check, and the determinism guarantee would
+# silently hold only on the machine that produced it.
+
+# Normalise every text file to LF in the repository and in working copies.
+* text=auto eol=lf
+
+# The frozen corpus is never converted, in either direction. Stored and checked out
+# byte-for-byte as committed.
+data/frozen/** -text
+
+# Binary artefacts.
+*.png binary

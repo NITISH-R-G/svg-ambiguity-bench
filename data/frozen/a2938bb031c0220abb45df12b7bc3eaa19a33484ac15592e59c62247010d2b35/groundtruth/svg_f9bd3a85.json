@@ -1,0 +1,297 @@
+{
+  "svg_id": "svg_f9bd3a85",
+  "geometry": {
+    "e0c70e177": {
+      "element_id": "e0c70e177",
+      "analytic": {
+        "area": 1478.0357920000024,
+        "centroid_x": 317.43178895175396,
+        "centroid_y": 140.72402262806452,
+        "bbox": [
+          296.015,
+          115.661,
+          339.178,
+          166.915
+        ]
+      },
+      "raster": {
+        "area": 1478.2313725490194,
+        "centroid_x": 317.42941750740823,
+        "centroid_y": 140.72330341770373,
+        "bbox": [
+          296.0,
+          115.0,
+          340.0,
+          167.0
+        ]
+      }
+    },
+    "ed31b076f": {
+      "element_id": "ed31b076f",
+      "analytic": {
+        "area": 2618.495478999994,
+        "centroid_x": 145.19657885070632,
+        "centroid_y": 421.181759514167,
+        "bbox": [
+          109.667,
+          392.807,
+          179.934,
+          452.296
+        ]
+      },
+      "raster": {
+        "area": 2618.6,
+        "centroid_x": 145.1899525715732,
+        "centroid_y": 421.17964022086346,
+        "bbox": [
+          109.0,
+          392.0,
+          180.0,
+          453.0
+        ]
+      }
+    },
+    "ec64239b2": {
+      "element_id": "ec64239b2",
+      "analytic": {
+        "area": 1755.7493950000003,
+        "centroid_x": 74.29311642747237,
+        "centroid_y": 42.9077657241544,
+        "bbox": [
+          51.484,
+          20.194,
+          103.631,
+          65.581
+        ]
+      },
+      "raster": {
+        "area": 1756.0,
+        "centroid_x": 74.28713654026531,
+        "centroid_y": 42.90659475635357,
+        "bbox": [
+          51.0,
+          20.0,
+          104.0,
+          66.0
+        ]
+      }
+    },
+    "e42f62373": {
+      "element_id": "e42f62373",
+      "analytic": {
+        "area": 1120.0117355000002,
+        "centroid_x": 56.679353972156726,
+        "centroid_y": 465.52087120627755,
+        "bbox": [
+          36.332,
+          447.147,
+          75.36,
+          486.628
+        ]
+      },
+      "raster": {
+        "area": 1119.8039215686272,
+        "centroid_x": 56.67458588688497,
+        "centroid_y": 465.51650148835586,
+        "bbox": [
+          36.0,
+          447.0,
+          76.0,
+          487.0
+        ]
+      }
+    },
+    "eaaf7d1a5": {
+      "element_id": "eaaf7d1a5",
+      "analytic": {
+        "area": 1204.8543475000006,
+        "centroid_x": 205.1913589115656,
+        "centroid_y": 271.1765217554655,
+        "bbox": [
+          182.316,
+          250.289,
+          226.504,
+          294.7
+        ]
+      },
+      "raster": {
+        "area": 1205.5058823529412,
+        "centroid_x": 205.18855317432434,
+        "centroid_y": 271.17147467176744,
+        "bbox": [
+          182.0,
+          250.0,
+          227.0,
+          295.0
+        ]
+      }
+    },
+    "eb9835b5e": {
+      "element_id": "eb9835b5e",
+      "analytic": {
+        "area": 4056.029996999995,
+        "centroid_x": 389.93907841441325,
+        "centroid_y": 75.49436108836132,
+        "bbox": [
+          361.511,
+          31.914,
+          427.758,
+          122.391
+        ]
+      },
+      "raster": {
+        "area": 4055.7607843137253,
+        "centroid_x": 389.94204660715,
+        "centroid_y": 75.48155323002187,
+        "bbox": [
+          361.0,
+          32.0,
+          428.0,
+          123.0
+        ]
+      }
+    },
+    "e52075e63": {
+      "element_id": "e52075e63",
+      "analytic": {
+        "area": 5612.7210025,
+        "centroid_x": 184.7959178243576,
+        "centroid_y": 91.16505577154587,
+        "bbox": [
+          136.0,
+          39.359,
+          223.121,
+          144.223
+        ]
+      },
+      "raster": {
+        "area": 5613.694117647058,
+        "centroid_x": 184.79466388914506,
+        "centroid_y": 91.16328697610605,
+        "bbox": [
+          136.0,
+          39.0,
+          223.0,
+          145.0
+        ]
+      }
+    }
+  },
+  "ambiguity_ids": [
+    "ed31b076f",
+    "ec64239b2",
+    "eb9835b5e",
+    "e52075e63"
+  ],
+  "predicates": {
+    "top_left": {
+      "predicate": "top_left",
+      "family": "SPATIAL",
+      "winner": "ec64239b2",
+      "runner_up": "e52075e63",
+      "margin": 0.23490223369352792,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "top_right": {
+      "predicate": "top_right",
+      "family": "SPATIAL",
+      "winner": "eb9835b5e",
+      "runner_up": "e52075e63",
+      "margin": 0.38311698190403964,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "bottom_left": {
+      "predicate": "bottom_left",
+      "family": "SPATIAL",
+      "winner": "ed31b076f",
+      "runner_up": "e52075e63",
+      "margin": 0.5632162174528792,
+      "is_valid": false,
+      "invalid_reason": "distractor_outranks_target"
+    },
+    "bottom_right": {
+      "predicate": "bottom_right",
+      "family": "SPATIAL",
+      "winner": "ed31b076f",
+      "runner_up": "eb9835b5e",
+      "margin": 0.14721856513785103,
+      "is_valid": false,
+      "invalid_reason": "winner_outside_quadrant"
+    },
+    "leftmost": {
+      "predicate": "leftmost",
+      "family": "SPATIAL",
+      "winner": "ec64239b2",
+      "runner_up": "ed31b076f",
+      "margin": 0.13848206256114823,
+      "is_valid": false,
+      "invalid_reason": "distractor_outranks_target"
+    },
+    "rightmost": {
+      "predicate": "rightmost",
+      "family": "SPATIAL",
+      "winner": "eb9835b5e",
+      "runner_up": "e52075e63",
+      "margin": 0.40067848187110344,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "topmost": {
+      "predicate": "topmost",
+      "family": "SPATIAL",
+      "winner": "ec64239b2",
+      "runner_up": "eb9835b5e",
+      "margin": 0.0636229657688834,
+      "is_valid": false,
+      "invalid_reason": "margin_too_small"
+    },
+    "bottommost": {
+      "predicate": "bottommost",
+      "family": "SPATIAL",
+      "winner": "ed31b076f",
+      "runner_up": "e52075e63",
+      "margin": 0.6445631899311668,
+      "is_valid": false,
+      "invalid_reason": "distractor_outranks_target"
+    },
+    "largest": {
+      "predicate": "largest",
+      "family": "ORDINAL_SIZE",
+      "winner": "e52075e63",
+      "runner_up": "eb9835b5e",
+      "margin": 1.384128506631574,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "second_largest": {
+      "predicate": "second_largest",
+      "family": "ORDINAL_SIZE",
+      "winner": "eb9835b5e",
+      "runner_up": "ed31b076f",
+      "margin": 1.5488279173274748,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "third_largest": {
+      "predicate": "third_largest",
+      "family": "ORDINAL_SIZE",
+      "winner": "ed31b076f",
+      "runner_up": "ec64239b2",
+      "margin": 1.4912300683371298,
+      "is_valid": true,
+      "invalid_reason": null
+    },
+    "smallest": {
+      "predicate": "smallest",
+      "family": "ORDINAL_SIZE",
+      "winner": "ec64239b2",
+      "runner_up": "ed31b076f",
+      "margin": 1.4912300683371298,
+      "is_valid": true,
+      "invalid_reason": null
+    }
+  },
+  "witnesses_agree_on_ranking": true
+}

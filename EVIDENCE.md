@@ -6,8 +6,14 @@ was regenerated for this document rather than recalled.
 Claims are defined in [`CLAIMS.md`](CLAIMS.md). A claim with no evidence row is a claim
 this repository has not yet earned.
 
-**Corpus under measurement:** 30 SVGs, seed `20260728`, corpus hash `be04eae9ebca`.
-**Last regenerated:** 2026-07-28. `110 passed`, ruff and strict mypy clean.
+**Corpus under measurement:** 30 SVGs, seed `20260728`.
+**Dataset hash:** `a2938bb031c0220abb45df12b7bc3eaa19a33484ac15592e59c62247010d2b35`
+**Corpus config hash:** `f2a6e5b2a40142659a786c6b1f2df26d50ef1218231ba5ccc97659a50d0846dd`
+**Last regenerated:** 2026-07-28. `164 passed`, ruff and strict mypy clean.
+
+> The corpus config hash changed from `be04eae9ebca` after `min_spatial_margin` was
+> recalibrated at Step 5 (FA-007). Earlier revisions of this document cite the old
+> value; the corpus it names no longer exists.
 
 ---
 
@@ -207,6 +213,50 @@ ins_5690b36019cb  predicate=largest  margin=1.592
     top_left      definition_disagreement
     topmost       distractor_outranks_target
 ```
+
+---
+
+## Frozen dataset (Step 8)
+
+`data/frozen/a2938bb0.../` - 95 files, 512 KB, committed. Self-describing: the exact
+bytes the model will receive, the answer key, the archived distributions, and a
+certificate.
+
+| Check, run against the bytes on disk | Result |
+|---|---|
+| Generator invariants | 30 samples: identical tag/fill, no positional attributes, 17-char tokens |
+| Geometry witnesses | raster and analytic agree on ranking 30/30 |
+| Ground truth | 236/360 predicate slots admitted, 124 refused as contested |
+| Instruction allocation | 180 instructions, 90 spatial / 90 ordinal |
+| Leakage audit | 180 instructions carry no id, token or document fill |
+| **Model outputs observed** | **NO** - `experiments/` contains no stored responses |
+
+### Integrity verified by tampering, not by re-implementation
+
+Per [`docs/verification-policy.md`](docs/verification-policy.md), the oracle is not a
+second copy of the hashing code.
+
+| Tamper | Detected |
+|---|---|
+| One character edited in one SVG | yes - reports which file changed |
+| A ground-truth file deleted | yes |
+| An extra file added | yes |
+| Directory renamed | yes - no longer matches its own hash |
+| Manifest edited to match tampered files | yes |
+| Regeneration from a different seed | yes |
+| Untouched corpus | verifies, and regenerates byte-identically |
+
+### Hash scope
+
+`dataset_hash` covers the **case-defining artefacts only** - SVGs, ground truth,
+instructions. The manifest, certificate and `distributions.json` are excluded from it
+but still covered by per-file hashes.
+
+The reason is not tidiness. If a derived summary were part of the identity, adding one
+distribution later would change the dataset hash while every case stayed byte-identical,
+spuriously invalidating stored results and breaking the rule that all arms share one
+dataset hash. Verified both ways: editing `distributions.json` leaves the dataset hash
+unchanged *and* still fails integrity verification.
 
 ---
 

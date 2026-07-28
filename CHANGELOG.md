@@ -5,6 +5,65 @@ required by [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md).
 
 ## [Unreleased]
 
+### Sprint 2, Step 8 - Dataset freezing and the instrument certificate - 2026-07-28
+
+Supports C6: every reported number is independently verifiable.
+
+**Frozen corpus**: `data/frozen/a2938bb0.../`, 95 files, 512 KB, committed. Contains the
+model-visible SVGs, the resolved geometry, the answer key, the instruction set with
+provenance, the archived distributions, a manifest, and a certificate.
+
+**Instrument certificate.** A hash proves two corpora are identical; it cannot state
+what kind of corpus it is or whether anything has been observed. `svgbench freeze`
+prints a human-readable certificate carrying the hashes, the counts, six checks run
+against the bytes on disk, and the line that matters most:
+
+```
+[PASS]  Model outputs observed
+        NO - experiments/ contains no stored responses
+```
+
+That check reads the filesystem rather than asserting a fact, because the point of the
+pre-registration boundary is that the claim can be verified by someone who does not
+trust the author.
+
+**Archived distributions.** Twenty-odd distributions sealed inside the frozen directory
+and content-hashed with it: K, margins, aspect ratios, adjacent area ratios, refusal
+reasons, predicate and operation counts, valid predicates per sample, and the
+document-order position of every target. Not needed to run the experiment - they
+*define the instrument*, and give any future v2 corpus a baseline to be compared against.
+
+**Freezing refuses on a failed check.** A corpus that does not satisfy its own
+guarantees must not become the thing every later number depends on.
+
+**Verification by tampering** (`docs/verification-policy.md`). The oracle is not a
+second copy of the hashing code. Editing one character in one SVG, deleting a
+ground-truth file, adding a file, renaming the directory, and editing the manifest to
+match tampered files are each required to be detected - and are.
+
+**Hash scope corrected before the freeze was final.** `dataset_hash` initially covered
+`distributions.json`, so adding a distribution later would have changed the dataset
+identity while every case stayed byte-identical - spuriously invalidating results and
+breaking the rule that all arms share one dataset hash. It now covers the case-defining
+artefacts only; derived files remain under per-file hashes. Verified both ways: editing
+`distributions.json` leaves the identity stable *and* still fails integrity.
+
+**A distribution bug caught by a lint.** Ruff flagged a redundant comprehension in the
+target-document-position calculation, which on inspection was sorting ambiguity members
+by element id while its own comment said "document order". That distribution exists
+specifically to test whether a fixed-position policy could beat the 1/K floor, so a
+wrong ordering would have made the C1 diagnostic useless while looking entirely
+plausible.
+
+**Verification policy** promoted from FA-010 to `docs/verification-policy.md`: a
+verification fixture must be able to fail for a different reason than the implementation
+would. Different code is not necessarily different reasoning. Binds hardest at Step 9,
+where the review question is *"can the scorer be wrong while every fixture still
+passes?"*
+
+**Lifecycle boundary** recorded in `DESIGN_FREEZE.md`: Phase I is instrument design
+(Steps 1-9), Phase II is measurement (Steps 10+), separated by `instrument-freeze-v1`.
+
 ### Sprint 2, Step 7 - Instruction generator - 2026-07-28
 
 Last step before dataset freezing. Supports C1 (instruction text leaks nothing
