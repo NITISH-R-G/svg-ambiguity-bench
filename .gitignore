@@ -1,0 +1,40 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# ---------------------------------------------------------------
+# Experiment artifacts
+# ---------------------------------------------------------------
+# data/generated/ is the disposable working area. Everything in it is
+# reproducible from a seed, so it is never committed.
+data/generated/
+
+# data/frozen/ IS committed - it is the scientific record. Do not ignore it.
+# experiments/ and results/ ARE committed - raw responses and metrics are
+# what make the numbers independently verifiable without model access.
+
+# Local model weights should never be committed.
+models/
+*.gguf
+*.safetensors
+*.bin
