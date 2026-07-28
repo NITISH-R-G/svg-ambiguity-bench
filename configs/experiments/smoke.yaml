@@ -1,0 +1,32 @@
+# Smoke configuration. Fast end-to-end exercise for CI and for the model go/no-go.
+#
+# Deliberately NOT a `main-*` file: it changes the corpus, so the arm-fairness audit
+# must not treat it as an arm. Three SVGs is too few for any statistical claim and
+# this config is never used to produce a reported number.
+#
+# Its real job at implementation step 10 is to resolve ADR-0010 by measuring whether
+# the backend is actually deterministic at temperature 0 (local backends often are
+# not, because of threading and batching). That measurement decides the replicate
+# policy before the baseline runs, so the choice is made by evidence rather than by
+# convenience.
+
+experiment_id: smoke
+
+generation:
+  n_svgs: 3
+  ambiguity_min: 4
+  ambiguity_max: 4
+  max_regen_attempts: 200
+
+instructions:
+  instructions_per_svg: 2
+
+model:
+  backend: stub
+
+evaluation:
+  replicates: 1
+
+metrics:
+  bootstrap_iterations: 200
+  permutation_iterations: 200

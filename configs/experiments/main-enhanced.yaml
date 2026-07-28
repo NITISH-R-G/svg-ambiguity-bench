@@ -1,0 +1,17 @@
+# Arm: enhanced. The treatment, and the arm where the discriminative measurement lives.
+#
+# Supplies visual facts derived from the rendered geometry - the information the
+# markup does not encode. The provider signature excludes the instruction, so
+# blindness is enforced by the type system rather than by discipline (ADR-0005), and
+# the context is computed once per SVG and reused across all of its instructions,
+# which is simultaneously an efficiency win and a structural proof of blindness.
+#
+# The provider emits primitive facts only, never predicate labels. Emitting a label
+# matching the instruction's vocabulary would make the task a lookup rather than a
+# resolution; that condition exists separately as `ceiling` and is excluded from the
+# headline by construction.
+
+experiment_id: main-enhanced
+
+context:
+  provider: enhanced

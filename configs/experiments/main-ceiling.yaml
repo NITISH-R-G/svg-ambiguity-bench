@@ -1,0 +1,15 @@
+# Arm: ceiling. Diagnostic upper bound. EXCLUDED FROM THE HEADLINE BY CONSTRUCTION.
+#
+# Supplies the facts AND the predicate labels, handing the model the answer. It will
+# score near-perfectly and proves nothing about reference resolution.
+#
+# It earns its place by separating two kinds of residual error in the enhanced arm:
+# if `ceiling` is also imperfect, the remaining failures are reasoning or execution
+# failures rather than information failures. That distinction is the most
+# scientifically interesting thing the project can report, and it costs one run over
+# an already-frozen corpus.
+
+experiment_id: main-ceiling
+
+context:
+  provider: ceiling

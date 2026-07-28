@@ -1,0 +1,14 @@
+# Arm: baseline. The manipulation check.
+#
+# No context is supplied, so the model sees only redacted markup and an instruction
+# referring to a visual property that markup does not encode.
+#
+# This arm is NOT the benchmark. If the corpus is genuinely under-determined, every
+# model scores at the 1/K floor here, so the arm has no power to discriminate between
+# models. Its job is to demonstrate that the information was removed rather than
+# merely obscured.
+
+experiment_id: main-baseline
+
+context:
+  provider: "null"

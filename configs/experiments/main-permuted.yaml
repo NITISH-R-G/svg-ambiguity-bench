@@ -1,0 +1,20 @@
+# Arm: permuted. The control the central claim rests on.
+#
+# Identical context format to `enhanced` - same field names, same layout, same
+# enumeration, same approximate token count - with the geometric values shuffled
+# between elements. Only the mapping from element to fact is destroyed.
+#
+# Why this arm is blocking rather than optional (ADR-0009): the enhanced prompt
+# changes two things at once. It adds geometric facts, AND it adds an enumerated list
+# that gives every element a referential handle it did not previously have.
+# Enumeration alone could move the score with no geometric content whatsoever. The
+# wider evaluation literature already treats format-versus-content as a confound
+# requiring a matched control; no SVG-editing benchmark surveyed applies one.
+#
+# The pre-registered primary comparison is therefore `enhanced` vs `permuted`,
+# not `enhanced` vs `baseline`.
+
+experiment_id: main-permuted
+
+context:
+  provider: permuted

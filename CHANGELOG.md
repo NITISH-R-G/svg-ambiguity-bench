@@ -5,6 +5,44 @@ required by [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md).
 
 ## [Unreleased]
 
+### Sprint 2, Step 2 — Configuration system — 2026-07-28
+
+The config system exists to make one property machine-checkable: **the arms differ in
+exactly one variable.** Without that, the central comparison is uninterpretable
+whatever its value.
+
+**Added**
+- `svgbench.config` — strict schema (unknown keys rejected, models frozen), three-layer
+  resolution (base → experiment → explicit override), and canonical hashing.
+- **Two hashes, deliberately separate.** `config_hash` is the identity of an
+  *experiment* and must differ between arms so their responses cannot collide.
+  `corpus_config_hash` is the identity of a *corpus* and must be equal across arms, or
+  each arm would generate its own dataset and the paired comparison in ADR-0007 would
+  be invalid. Verified: four distinct config hashes over one shared corpus hash.
+- Controlled vocabularies (predicate and operation names) owned by `config`, so the
+  predicate registry imports them rather than the reverse. Keeps `config` a
+  dependency-free leaf while still catching a typo'd predicate at load time.
+- Cross-field validation that a corpus can support its own instructions —
+  `third_largest` with `ambiguity_min < 3` is rejected at load rather than surfacing
+  later as an inexplicable rejection loop.
+- `configs/base.yaml` (complete on its own) plus one file per arm. The arm files are
+  deliberately three lines each, so the fairness invariant is visible at a glance.
+- `svgbench config <experiment>` prints the resolved config with both hashes.
+- Arm-fairness audit suite (`tests/audit/`): arms differ only in `context`, decoding
+  settings are identical, providers are distinct, corpus is shared, the `permuted`
+  control exists.
+
+**Verified, not assumed**
+- Planted an arm with a drifted `temperature` and confirmed the audit fails (three
+  independent checks caught it), then confirmed it passes on removal. An audit that
+  cannot fail is decoration.
+
+**Justification** — the practice of hashing every result-affecting parameter follows
+Biderman et al. 2024 ([arXiv 2405.14782](https://arxiv.org/html/2405.14782)), which
+documents that undocumented evaluation settings, not flawed reasoning, are the leading
+cause of irreproducible LLM results — with observed swings above 20% and reordered
+model rankings.
+
 ### Sprint 2, Step 1 — Repository scaffolding — 2026-07-28
 
 **Added**

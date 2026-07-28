@@ -1,0 +1,111 @@
+# Base configuration.
+#
+# This file must fully specify an experiment on its own. Experiment files overlay it,
+# conventionally changing only the manipulated variable. If base.yaml were incomplete,
+# the missing values would come from somewhere unrecorded and the config hash would
+# not describe the run that produced the numbers.
+
+schema_version: "1.0"
+experiment_id: base
+seed: 20260728
+
+generation:
+  # 30 = top of the assignment's 20-30 range. The SVG count is the number of
+  # statistical clusters, and interval width is governed by cluster count rather than
+  # case count, so this is the cheapest available precision (ADR-0007).
+  n_svgs: 30
+
+  # K in [4, 7] sets the random-selection floor at 1/K in [0.14, 0.25]. Varying K
+  # lets the baseline arm test the 1/K null rather than assume it.
+  ambiguity_min: 4
+  ambiguity_max: 7
+
+  # Distractors prevent a "everything here is the same kind of thing" shortcut.
+  distractor_min: 2
+  distractor_max: 4
+
+  canvas_size: 512
+  raster_scale: 1
+
+  # Separability guarantees. A target must beat the runner-up by these margins or the
+  # sample is regenerated. This makes the corpus easier than arbitrary layouts; the
+  # size of that bias is published via the rejection log rather than hidden.
+  min_area_ratio: 1.25       # adjacent area ranks differ by >= 25%
+  min_spatial_margin: 0.15   # normalised gap to the runner-up
+  max_overlap_ratio: 0.02    # near-disjoint, so occlusion cannot corrupt area
+  max_regen_attempts: 500
+
+  # True redacts path data to opaque fixed-length tokens. False produces the
+  # `legible` control corpus with real geometry (ADR-0002, ADR-0009).
+  redact_geometry: true
+
+instructions:
+  spatial_predicates:
+    - top_left
+    - top_right
+    - bottom_left
+    - bottom_right
+    - leftmost
+    - rightmost
+    - topmost
+    - bottommost
+  ordinal_predicates:
+    - largest
+    - second_largest
+    - third_largest
+    - smallest
+  # Restricted to operations checkable by structural diff. This is a convenience of
+  # measurement, not a representative sample of SVG edits, and is stated as such in
+  # LIMITATIONS.md.
+  operations:
+    - recolor_fill
+    - add_stroke
+    - delete
+    - rotate
+  # 6 per SVG x 30 SVGs = 180 cases, balanced across the two families.
+  instructions_per_svg: 6
+
+prompt:
+  template_id: edit_svg_v1
+  template_version: "1.0"
+
+# The manipulated variable. Overridden by each arm and by nothing else.
+context:
+  provider: "null"
+  # Independent of `seed`, so the permutation cannot correlate with the layout it is
+  # meant to be independent of.
+  permutation_seed: 991
+
+model:
+  name: qwen2.5-coder:7b
+  backend: ollama
+  base_url: http://localhost:11434
+  # Greedy. Replicate policy is resolved by the smoke test before the baseline run
+  # (ADR-0010): at temperature 0 replicates are identical calls unless the backend is
+  # non-deterministic, which is itself the measurement that decides the policy.
+  temperature: 0.0
+  top_p: 1.0
+  seed: 0
+  max_output_tokens: 4096
+  context_limit: 32768
+  timeout_s: 300
+
+evaluation:
+  replicates: 1
+  numeric_tolerance: 1.0e-6
+  # Versioned so any post-registration change to abstention detection is a visible
+  # amendment rather than a silent edit (ADR-0008).
+  abstention_rule_version: "1.0"
+
+metrics:
+  # Instructions sharing an SVG share a layout and are not independent. Declared here
+  # rather than buried in an analysis script, because it is a statistical claim a
+  # reviewer should be able to see (ADR-0007).
+  cluster_unit: svg
+  bootstrap_iterations: 10000
+  bootstrap_seed: 12345
+  # Paired cluster-level permutation is better behaved than bootstrap at ~30 clusters
+  # and at proportions near the 1/K floor, which is where the baseline arm sits.
+  permutation_iterations: 10000
+  permutation_seed: 54321
+  ci_level: 0.95
