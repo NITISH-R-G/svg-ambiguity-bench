@@ -161,21 +161,32 @@
     "O-002_enhanced_vs_baseline": {
       "n_clusters": 30.0,
       "n_paired_cases": 180.0,
+      "note": "necessary, not sufficient",
       "observed_difference": 0.0,
       "p_value": 1.0
     },
     "O-003_enhanced_vs_permuted": {
       "n_clusters": 30.0,
       "n_paired_cases": 180.0,
+      "note": "THE CENTRAL CLAIM (C3)",
       "observed_difference": 0.0,
       "p_value": 1.0
     },
-    "permuted_permuted_vs_baseline": {
+    "O-extra_permuted_vs_baseline": {
       "n_clusters": 30.0,
       "n_paired_cases": 180.0,
+      "note": "format effect alone",
       "observed_difference": 0.0,
       "p_value": 1.0
     }
   },
-  "minimum_detectable_effect": 0.028935025542343767
+  "minimum_detectable_effect": 0.028935025542343767,
+  "settings": {
+    "bootstrap_iterations": 10000,
+    "bootstrap_seed": 12345,
+    "ci_level": 0.95,
+    "cluster_unit": "svg",
+    "permutation_iterations": 10000,
+    "permutation_seed": 54321
+  }
 }

@@ -1,0 +1,57 @@
+==============================================================================
+PRIMARY METRIC: IDENTIFICATION ACCURACY
+  cluster bootstrap over SVGs; the SVG is the unit of resampling
+==============================================================================
+  arm             n  clusters   identification accuracy
+  baseline      180        30   0.0444 [0.0167, 0.0778]
+  permuted      180        30   0.0444 [0.0167, 0.0778]
+  enhanced      180        30   0.0444 [0.0167, 0.0778]
+
+  per-case random-selection reference: 0.1852
+
+==============================================================================
+PRE-REGISTERED COMPARISONS (paired cluster-level permutation)
+==============================================================================
+
+  O-002_enhanced_vs_baseline   [necessary, not sufficient]
+    difference +0.0000   p = 1.000   (30 clusters, 180 paired cases)
+
+  O-003_enhanced_vs_permuted   [THE CENTRAL CLAIM (C3)]
+    difference +0.0000   p = 1.000   (30 clusters, 180 paired cases)
+
+  O-extra_permuted_vs_baseline   [format effect alone]
+    difference +0.0000   p = 1.000   (30 clusters, 180 paired cases)
+
+  MINIMUM DETECTABLE EFFECT: 0.0289
+  Read this, not the p-values. With a difference of exactly zero no
+  permutation can be more extreme, so p is degenerate and uninformative.
+
+==============================================================================
+SECONDARY METRICS
+==============================================================================
+  arm            strict  collateral  mean elts  MALFORMED  ABSTAINED  NO_EDIT
+  baseline       0.0222      0.5333       0.63          0          0       80
+  permuted       0.0389      0.4778       0.55          0          0       87
+  enhanced       0.0389      0.4833       0.57          0          0       86
+
+==============================================================================
+BY FAMILY, THEN BY PREDICATE (identification accuracy)
+==============================================================================
+  arm            SPATIAL   ORDINAL
+  baseline        0.0222    0.0667
+  permuted        0.0111    0.0778
+  enhanced        0.0111    0.0778
+
+  predicate          baseline   permuted   enhanced
+  bottom_left           0.091      0.091      0.091
+  bottom_right          0.000      0.000      0.000
+  bottommost            0.000      0.000      0.000
+  largest               0.045      0.045      0.045
+  leftmost              0.083      0.000      0.000
+  rightmost             0.000      0.000      0.000
+  second_largest        0.045      0.045      0.045
+  smallest              0.087      0.087      0.087
+  third_largest         0.087      0.130      0.130
+  top_left              0.000      0.000      0.000
+  top_right             0.000      0.000      0.000
+  topmost               0.000      0.000      0.000

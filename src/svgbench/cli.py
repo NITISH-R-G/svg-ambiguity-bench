@@ -11,6 +11,7 @@ a traceback, so a reviewer running ahead of the build gets told what is missing.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from collections.abc import Sequence
 from pathlib import Path
@@ -26,8 +27,6 @@ EXPERIMENTS_DIR = REPO_ROOT / "configs" / "experiments"
 # listed here from the moment it has a CLI surface; `None` means not yet built.
 _PLANNED_COMMANDS: dict[str, str] = {
     "generate": "Generate the SVG corpus, ground truth and instructions (steps 3-7)",
-    "report": "Compute metrics and render the report (step 14)",
-    "audit": "Run leakage, blindness and determinism checks",
 }
 
 
@@ -87,6 +86,11 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     evaluate.add_argument("experiment", nargs="?", help="Arm name; omit to score every stored arm")
     evaluate.set_defaults(handler=_cmd_evaluate)
+
+    report = subparsers.add_parser(
+        "report", help="Regenerate results/metrics.json from committed evaluation rows"
+    )
+    report.set_defaults(handler=_cmd_report)
 
     for name, help_text in _PLANNED_COMMANDS.items():
         planned = subparsers.add_parser(name, help=f"[not yet implemented] {help_text}")
@@ -376,6 +380,27 @@ def _cmd_evaluate(args: argparse.Namespace) -> int:
     return exit_code
 
 
+def _cmd_report(_args: argparse.Namespace) -> int:
+    """Tier-1 reproduction: every published number, from committed rows, no model."""
+    from svgbench.reporting import render_summary, write_report
+
+    try:
+        config = load_config(DEFAULT_BASE_CONFIG).config
+    except ConfigError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+
+    try:
+        path = write_report(config, REPO_ROOT / "experiments", REPO_ROOT / "results")
+    except FileNotFoundError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+
+    print(render_summary(json.loads(path.read_text(encoding="utf-8"))))
+    print(f"wrote {path.relative_to(REPO_ROOT)} and results/summary.txt")
+    return 0
+
+
 def _cmd_status(_args: argparse.Namespace) -> int:
     print(f"svgbench {__version__}")
     print("\nPipeline steps (frozen order):")
@@ -389,11 +414,11 @@ def _cmd_status(_args: argparse.Namespace) -> int:
         ("7.  Instruction generator", True),
         ("8.  Dataset freezing", True),
         ("9.  Evaluation engine", True),
-        ("10. Model runner", False),
-        ("11. Baseline experiment", False),
-        ("12. Enhancement implementation", False),
-        ("13. Enhanced experiment", False),
-        ("14. Reporting", False),
+        ("10. Model runner", True),
+        ("11. Baseline experiment", True),
+        ("12. Enhancement implementation", True),
+        ("13. Enhanced experiment", True),
+        ("14. Reporting", True),
     ]
     for label, done in steps:
         print(f"  [{'x' if done else ' '}] {label}")

@@ -9,7 +9,7 @@ this repository has not yet earned.
 **Corpus under measurement:** 30 SVGs, seed `20260728`.
 **Dataset hash:** `a2938bb031c0220abb45df12b7bc3eaa19a33484ac15592e59c62247010d2b35`
 **Corpus config hash:** `f2a6e5b2a40142659a786c6b1f2df26d50ef1218231ba5ccc97659a50d0846dd`
-**Last regenerated:** 2026-07-28. `164 passed`, ruff and strict mypy clean.
+**Last regenerated:** 2026-07-29. `280 passed`, ruff and strict mypy clean.
 
 > The corpus config hash changed from `be04eae9ebca` after `min_spatial_margin` was
 > recalibrated at Step 5 (FA-007). Earlier revisions of this document cite the old
@@ -60,7 +60,7 @@ discovered as a threshold breach.
 
 | Test | Result | Status |
 |---|---|---|
-| All arms share one corpus | 1 distinct corpus hash: `be04eae9ebca` | PASS |
+| All arms share one corpus | 1 distinct corpus hash: `f2a6e5b2a401` | PASS |
 | Arms are distinct experiments | 4/4 distinct config hashes | PASS |
 | Arms differ only in `context` | no other section differs | PASS |
 | Decoding settings identical across arms | 1 distinct decoding tuple | PASS |
@@ -325,14 +325,40 @@ permutation testing there too.
 
 ---
 
-## Not yet evidenced
+## Phase II results
 
-Listed so absence is visible rather than implied.
+`qwen2.5-coder:3b`, greedy, 1 replicate, 180 cases per arm, 30 clusters.
+Regenerate with `svgbench report` - no model, no renderer, ~2 seconds.
 
-| Claim | Blocked on |
+| arm | identification | strict | NO_EDIT | malformed | abstained |
+|---|---|---|---|---|---|
+| `baseline` | 0.0444 [0.0167, 0.0778] | 0.0222 | 0.444 | 0 | 0 |
+| `permuted` | 0.0444 [0.0167, 0.0778] | 0.0389 | 0.483 | 0 | 0 |
+| `enhanced` | 0.0444 [0.0167, 0.0778] | 0.0389 | 0.478 | 0 | 0 |
+
+Random-selection reference 0.1852. Every pairwise difference **+0.0000**.
+**Minimum detectable effect 0.0289** - read this rather than the p-values, which are
+degenerate at an observed difference of exactly zero.
+
+| claim | outcome |
 |---|---|
-| **C4** identification separable from execution | Step 9 |
-| **C5** abstention measured, not punished | Step 9 |
-| **C3** improvement is information, not format | Step 12-13. **The central claim. No data yet.** |
-| baseline approximately 1/K | Step 11 |
-| enhanced vs permuted | Step 13 |
+| **C1** corpus under-determined | **supported** - at/below chance, corpus positions uniform (p=0.17) |
+| **C3** improvement is information not format | **not supported - prerequisite not met**; no effect to decompose |
+| **C4** identification separable from execution | **vacuous** - execution given identification = 1.000 everywhere |
+| **C5** abstention measured not punished | **vacuous** - 0 abstentions in every arm |
+| **C6** numbers independently verifiable | **held** - `svgbench report` regenerates `metrics.json` byte-identically |
+
+### Tier-1 reproduction, verified
+
+| Test | Result |
+|---|---|
+| Committed `metrics.json` matches what committed code produces | PASS |
+| Report is deterministic across runs | PASS - byte-identical |
+| Reporting path imports no model, renderer or plotting library | PASS |
+| Summary reports MDE and warns the p-values are degenerate | PASS |
+
+This section exists because it once did not. `results/metrics.json` was produced by a
+throwaway script outside the repository, so the headline numbers were unreproducible by
+anything committed - while the README promised Tier-1 reproduction. Found in audit,
+fixed by implementing `svgbench report`, and locked by
+`tests/audit/test_tier1_reproduction.py` so it cannot silently recur.
