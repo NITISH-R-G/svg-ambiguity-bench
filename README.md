@@ -1,7 +1,7 @@
 # svg-ambiguity-bench
 
-**A format-matched control for context-augmentation experiments — and the first
-measurement made with it.**
+**An evaluation methodology for context-augmentation experiments, demonstrated through a
+pre-registered SVG reference-resolution study.**
 
 When added context improves a model, was it the *information* or the *format*? Most
 evaluations cannot tell. This one can, because it runs a third arm with the same format
@@ -143,9 +143,31 @@ want.
 ## Provenance
 
 The corpus, scoring rules, predicates and analysis plan were frozen at the
-[`instrument-freeze-v1`](https://github.com/NITISH-R-G/svg-ambiguity-bench/releases/tag/instrument-freeze-v1) tag, **before any model
-output was observed**. The tag records the dataset hash, the config hash, the commit, and
-the line `NO MODEL OUTPUTS HAVE BEEN OBSERVED.`
+[`instrument-freeze-v1`](https://github.com/NITISH-R-G/svg-ambiguity-bench/releases/tag/instrument-freeze-v1)
+tag, before any model output was observed.
+
+That claim arrives in three layers, and they are **not** equally strong:
+
+| Evidence | Trust required |
+|---|---|
+| The frozen tree contains no committed model outputs | **None.** Check it yourself, below |
+| The tag message asserts `NO MODEL OUTPUTS HAVE BEEN OBSERVED.` | The author's word |
+| Commit timestamps | None worth relying on — `git commit --date` forges them freely |
+
+```bash
+git ls-tree -r --name-only instrument-freeze-v1 | grep -c jsonl   # 0
+```
+
+`experiments/` and `results/` exist at the tag as empty placeholders. No response file, no
+evaluation row, no metric is part of the frozen artifact.
+
+**What that establishes, and what it does not.** It is independently verifiable that no
+model responses formed part of the frozen instrument. It cannot establish that none were
+*observed locally* beforehand — a local run leaves no trace in git — and no mechanism
+available after the fact can upgrade that. It remains an author assertion, recorded in the
+tag message. Stated here rather than left for a sceptical reader to work out.
+
+The tag also records the dataset hash, the config hash and the commit:
 
 ```
 dataset  a2938bb031c0220abb45df12b7bc3eaa19a33484ac15592e59c62247010d2b35

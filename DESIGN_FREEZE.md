@@ -99,6 +99,36 @@ annotated tag carrying the hashes, rather than left as a date in a changelog.
 **Step 9, not Step 7 or 8, is the last design step.** The scoring rules are the last part
 of the instrument, and they must be fixed before any output exists to fit them to.
 
+### How much of this you have to take on faith
+
+A commitment nobody can check is a commitment in name only. The boundary above is
+evidenced at three different strengths, and they should not be conflated:
+
+| Evidence | Trust required |
+|---|---|
+| The tagged tree contains no committed model outputs | **None.** Verifiable by anyone |
+| The tag message asserts `NO MODEL OUTPUTS HAVE BEEN OBSERVED.` | The author's word |
+| Commit and tagger timestamps | None worth relying on - `git commit --date` forges them freely |
+
+```bash
+git ls-tree -r --name-only instrument-freeze-v1 | grep -c jsonl   # 0
+git ls-tree --name-only instrument-freeze-v1:experiments          # .gitkeep
+git ls-tree --name-only instrument-freeze-v1:results              # .gitkeep
+```
+
+Both directories exist at the tag as empty placeholders. No response file, no evaluation
+row and no metric is part of the frozen artifact.
+
+The first row is the only one that requires nothing of the reader. It establishes that no
+model output *formed part of the frozen instrument*. It does **not** establish that none
+was *observed locally* first - a local run leaves no trace in git - and nothing done after
+the fact can upgrade that row, including a later archival deposit, which timestamps the
+artifact at deposit time rather than at freeze time. That window is closed.
+
+So the honest summary: the *contents* of the freeze are auditable; the *timing* of the
+first observation is testimonial. Recorded here so a reader does not have to discover the
+distinction on their own and wonder what else was blurred.
+
 ## Implementation order (frozen)
 
 1. Repository scaffolding
