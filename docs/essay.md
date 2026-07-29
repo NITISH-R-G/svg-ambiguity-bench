@@ -66,11 +66,11 @@ routinely leave uncontrolled. A small claim, and the one the evidence supports.
 
 ---
 
-## Eleven times the instrument was wrong
+## Twelve times the instrument was wrong
 
 Here is the thing I did not expect.
 
-Over the project, eleven assumptions turned out to be false. **Every single one was in
+Over the project, twelve assumptions turned out to be false. **Every single one was in
 the measuring apparatus, not in the thing being measured.** Not one was a wrong guess
 about how the model would behave.
 
@@ -137,6 +137,28 @@ cheapest moment to make it is when everything looks fine.
 The second-order version of this is the one I'd underline: **a verification tool deserves
 the same scepticism as the thing it verifies.** My leak detector, my margin test and my
 mutation harness were all wrong at some point. Each was written to check something else.
+
+There is a twelfth entry, and it arrived after this essay was first written, which is the
+only reason I am confident the habit above is a real finding rather than a story told in
+hindsight.
+
+The CI workflow had never run. Not once. It triggered on pushes to `main`; the branch is
+`master`. Every push for the repository's entire public life matched nothing, and the
+README carried a hand-written `tests-280 passing` badge the whole time. The tests did
+pass — I ran them locally, repeatedly — so the label was *true*. It was simply not a
+*check*. In a repository whose argument is that those two things are different, the
+distinction had been quietly violated at the very top of the front page.
+
+Switching it on, the first run failed within a minute, on a version-drift check that had
+existed and passed locally for weeks, catching a mistake made minutes earlier by someone
+who had run the whole suite an hour before and assumed that still held. Which is the
+entire lesson compressed into one incident: the check was fine, the author was fine, and
+the thing that was broken was the part nobody thought to look at because its failure mode
+is indistinguishable from working.
+
+The generalisable form is narrow but I think it holds: **periodically enumerate the state
+of the systems you believe are watching you.** Not their output — their existence. A
+watchdog that has died makes exactly as much noise as one with nothing to report.
 
 ---
 

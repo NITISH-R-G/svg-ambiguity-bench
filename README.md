@@ -7,7 +7,7 @@ When added context improves a model, was it the *information* or the *format*? M
 evaluations cannot tell. This one can, because it runs a third arm with the same format
 and the information destroyed.
 
-[![tests](https://img.shields.io/badge/tests-280%20passing-2c6fa8)](tests/)
+[![CI](https://github.com/NITISH-R-G/svg-ambiguity-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/NITISH-R-G/svg-ambiguity-bench/actions/workflows/ci.yml)
 [![mypy](https://img.shields.io/badge/mypy-strict-2c6fa8)](pyproject.toml)
 [![license](https://img.shields.io/badge/license-MIT-2c6fa8)](LICENSE)
 [![pre-registered](https://img.shields.io/badge/pre--registered-instrument--freeze--v1-c0392b)](DESIGN_FREEZE.md)
@@ -135,7 +135,7 @@ want.
 | [`VALIDITY.md`](VALIDITY.md) | internal / construct / external / statistical validity |
 | [`LIMITATIONS.md`](LIMITATIONS.md) | 17 things this does not show |
 | [`CLAIMS.md`](CLAIMS.md) | every module maps to one claim, and what falsifies it |
-| [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) | eleven times this project proved itself wrong |
+| [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) | twelve times this project proved itself wrong |
 | [`RESULTS.md`](RESULTS.md) | what may not change once results exist |
 | [`docs/adr/`](docs/adr/) | eleven decision records |
 

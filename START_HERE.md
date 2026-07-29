@@ -17,7 +17,7 @@ claiming that *the information* helped, this is the part that applies to you.
 
 → **[`docs/essay.md`](docs/essay.md)** — *How we almost measured the wrong thing*
 
-The narrative version: the confound, the eleven times the instrument turned out to be
+The narrative version: the confound, the many times the instrument turned out to be
 wrong rather than the hypothesis, and why the null was still informative.
 
 ---
@@ -58,7 +58,7 @@ Start with `VALIDITY.md`. It states what is established, what is planned, and wh
 
 → [`CLAIMS.md`](CLAIMS.md) — every module maps to one claim; what would falsify each
 → [`RESULTS.md`](RESULTS.md) — what may and may not change once results exist
-→ [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) — eleven times the project proved itself wrong
+→ [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) — twelve times the project proved itself wrong
 → [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md) — the Phase I / Phase II boundary
 → [`docs/verification-policy.md`](docs/verification-policy.md) — why a fixture must fail differently than the implementation
 

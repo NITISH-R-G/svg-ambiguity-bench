@@ -155,9 +155,35 @@ suite was positioned to see.
 
 ---
 
+## FA-012 - the CI workflow never ran, and the badge said otherwise
+
+| | |
+|---|---|
+| **Assumed** | CI was running on every push. The absence of failure notifications was read as the absence of failures - and, when no runs appeared at all, attributed to a new-account hold on GitHub Actions |
+| **Evidence** | `gh run list` showed exactly one workflow in the repository's lifetime, a dependency-graph job. `.github/workflows/ci.yml` triggered on `push: branches: [main]`; the default branch is `master`. Every push since the repository was created matched nothing |
+| **Resolution** | One word. The first real run then failed immediately - `test_version_is_single_sourced` caught a `pyproject` bump to 1.0.1 that had not been mirrored into `svgbench.__version__`, pushed after validating only that the TOML parsed. Fixed; both platforms green |
+| **Impact if missed** | The README asserted `tests-280 passing` for the repository's entire public life with no automated run behind it. The claim was true - the tests do pass locally - but it was **testimony wearing the costume of a check**, in a repository whose central argument is that those are different things |
+| **Found by** | A discoverability audit that enumerated infrastructure state, not by anything failing |
+| **Step** | post-publication |
+
+Two distinct defects, and the second is the more instructive. The trigger typo is
+mundane. What it *enabled* is not: a version-drift check that had existed and passed
+locally for weeks was silently absent from every push, so the first thing CI did on being
+switched on was catch a real mistake made minutes earlier by someone who had run the full
+suite an hour before and assumed that still held.
+
+The badge is the part worth sitting with. This repository spends considerable effort
+separating verifiable evidence from author assertion - in `DESIGN_FREEZE.md`, in the
+provenance tiers, in the mutation audit. It then displayed, at the top of its README, a
+hand-written label reporting a test count that no machine had confirmed. The failure was
+not in reasoning about evidence; it was in noticing that a decorative element *was* an
+evidentiary claim. It has been replaced with the live workflow badge, which can go red.
+
+---
+
 ## Taxonomy
 
-The eleven entries fall into four classes, and the classes matter because they have
+The twelve entries fall into four classes, and the classes matter because they have
 different prevention strategies. Grouping them makes visible which kinds of mistake this
 project is good at catching and which it is not.
 
@@ -166,7 +192,7 @@ project is good at catching and which it is not.
 | **Measurement** - the instrument reports the wrong number | FA-002 (analytic z), FA-003 (ordinal ranks), FA-005 (loose tolerances) | Comparing the instrument against a case whose answer is known independently - a uniform-by-construction null, a hand-computed shape |
 | **Construct validity** - the number is right but measures the wrong thing | FA-001 (placement anchor vs centroid), FA-007 (margin threshold) | Asking what a reasonable person would say, not what the formula says |
 | **Experimental design** - the measurement is sound but the design is skewed | FA-008 (uneven availability), FA-009 (predicate vs family balance) | Asserting the property you actually report, at the level you report it |
-| **Systems integration** - every component is correct and the composition is not | FA-006 (encoding round-trip), FA-011 (git line endings), hash scope | Nothing in the test suite. These live *between* systems, where no single component owns the invariant |
+| **Systems integration** - every component is correct and the composition is not | FA-006 (encoding round-trip), FA-011 (git line endings), FA-012 (CI never triggered), hash scope | Nothing in the test suite. These live *between* systems, where no single component owns the invariant |
 
 The last row is the uncomfortable one. FA-011 is the clearest case: the freeze code was
 correct, the tests passed, the certificate said PASS, and the corpus verified locally.
@@ -177,6 +203,16 @@ It was caught by reading warnings rather than scrolling past them - which is not
 method, and does not generalise. **Integration defects remain the class this project has
 the weakest defence against**, and that is worth stating plainly rather than implying the
 audit suite covers everything.
+
+FA-012 sharpens the point rather than repeating it. FA-006 and FA-011 were defects in
+what the repository *does*; FA-012 was a defect in what the repository *knows about
+itself*. The test suite cannot catch it by construction - a suite that never runs cannot
+report that it never ran, and every local invocation returns green, which is precisely
+the observation that makes the absence feel accounted for. Each of the three was found by
+looking at something outside the code: git's warnings, then GitHub's run history. The
+generalisable form is narrow but real - **periodically enumerate the state of the systems
+you believe are watching you, because their failure mode is silence and silence is what
+success also looks like.**
 
 ---
 
