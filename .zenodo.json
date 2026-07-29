@@ -1,0 +1,17 @@
+{
+  "title": "svg-ambiguity-bench: a format-matched control for context-augmentation experiments",
+  "description": "<p>An experimental instrument for separating <em>information</em> effects from <em>format</em> effects when context is added to a language-model prompt.</p><p>Adding context changes two things at once: the information it carries and the format it arrives in. Comparing augmented against unaugmented cannot distinguish them. This repository implements a third arm that is format-identical and information-destroyed (values permuted between entities), making the decomposition available.</p><p>The worked example is SVG element identification: 30 generated SVGs whose markup provably cannot distinguish their candidate elements, with instructions naming exactly one element by spatial position or ordinal size. The corpus, scoring rules, predicates and analysis plan were frozen and content-addressed before any model output was observed.</p><p><strong>Result: a constrained null.</strong> All three arms scored identification accuracy 0.0444 [0.0167, 0.0778] against a random-selection reference of 0.1852, every pairwise difference 0.0000, minimum detectable effect 0.0289. The context demonstrably reached the model and changed 56/180 responses, but did not change which element was identified.</p><p>540 raw model responses and all scored rows are committed. Tier-1 and Tier-2 reproduction require no model and no renderer.</p>",
+  "upload_type": "software",
+  "license": "MIT",
+  "access_right": "open",
+  "creators": [{"name": "G, Nitish R"}],
+  "keywords": [
+    "experimental methodology", "context augmentation", "format-matched control",
+    "pre-registration", "reproducible research", "benchmark design",
+    "language model evaluation", "visual grounding", "SVG", "null result"
+  ],
+  "related_identifiers": [
+    {"identifier": "https://github.com/NITISH-R-G/svg-ambiguity-bench",
+     "relation": "isSupplementTo", "scheme": "url"}
+  ]
+}
