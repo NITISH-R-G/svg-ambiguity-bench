@@ -4,7 +4,7 @@
   "upload_type": "software",
   "license": "MIT",
   "access_right": "open",
-  "creators": [{"name": "R G, Nitish"}],
+  "creators": [{"name": "R G, Nitish", "orcid": "0009-0009-6145-7526"}],
   "keywords": [
     "experimental methodology", "context augmentation", "format-matched control",
     "pre-registration", "reproducible research", "benchmark design",
