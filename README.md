@@ -201,7 +201,7 @@ exact snapshot behind the measured result, use the version DOI:
 
 ```bibtex
 @software{svg_ambiguity_bench,
-  author  = {G, Nitish R},
+  author  = {R G, Nitish},
   title   = {svg-ambiguity-bench: an evaluation methodology for
              context-augmentation experiments},
   year    = {2026},
