@@ -68,13 +68,49 @@ because those readings disagree, despite being perfectly well measured.
 
 ---
 
-## Status
+## Result: a constrained null
 
-> **Sprint 2, Step 1 of 14 — repository scaffolding.**
-> **No experiments have been run. No results exist yet.**
-> This section will carry the headline table once there are numbers. Until then it says so.
+Not *"context never helps"* — the more precise and harder-to-dismiss statement:
 
-The design is frozen: see [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md).
+> **Under this instrument, for this model, on this corpus, context changed generation
+> behaviour without changing reference identification.**
+
+`qwen2.5-coder:3b`, 180 cases per arm, 30 clusters, cluster bootstrap over SVGs.
+
+| arm | identification accuracy | `NO_EDIT` | malformed | abstained |
+|---|---|---|---|---|
+| `baseline` | **0.0444** [0.0167, 0.0778] | 0.444 | 0 | 0 |
+| `permuted` | **0.0444** [0.0167, 0.0778] | 0.483 | 0 | 0 |
+| `enhanced` | **0.0444** [0.0167, 0.0778] | 0.478 | 0 | 0 |
+
+Random-selection reference **0.1852**. Every pairwise difference **+0.0000**.
+**Minimum detectable effect 0.0289** — an improvement above ~3 points would have been
+seen. (The p-values are 1.000 and carry no information: with a difference of exactly
+zero, no permutation can be more extreme.)
+
+![Where the causal chain breaks](assets/figures/fig04_causal_chain.png)
+
+**Why this is a result rather than a failed run.** Three hypotheses, all measured:
+
+| | | |
+|---|---|---|
+| **H1** the model ignored the context | *rejected* | 56/180 responses differ |
+| **H2** the context never reached the model | *rejected* | 180/180 prompts differ |
+| **H3** context altered generation without improving reference resolution | **supported** | the only hypothesis consistent with both |
+
+`permuted` and `enhanced` identified **exactly the same 8 cases** — shuffling the
+geometry between elements changed nothing about which element was acted on.
+
+**On the central claim.** C3 asks whether an improvement is information or format. The
+treatment effect was zero, so there is no quantity to decompose: C3 is **not supported
+because its prerequisite did not occur** — a scientific dependency, not a methodological
+failure.
+
+Full write-up: [`docs/04-results.md`](docs/04-results.md). Observation log:
+[`OBSERVATIONS.md`](OBSERVATIONS.md). Numbers: `results/metrics.json`.
+
+The design was frozen before any of this was observed — see
+[`DESIGN_FREEZE.md`](DESIGN_FREEZE.md) and the `instrument-freeze-v1` tag.
 
 ---
 

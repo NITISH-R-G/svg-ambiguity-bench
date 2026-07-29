@@ -93,12 +93,73 @@ These could invalidate the result, so they are tested rather than argued:
 
 ---
 
-## To be completed after results
+## Completed after results
 
-- [ ] Observed rejection rate and margin distribution
-- [ ] Whether the baseline error distribution was uniform
-- [ ] Malformed and truncation rates per arm
-- [ ] `enhanced` − `permuted` gap and its interpretation
-- [ ] Residual error taxonomy from the `ceiling` arm
-- [ ] Human-agreement rate on the predicate registry
-- [ ] Any scoring amendment made after the `pre-registration` tag
+- **Rejection rate and margin distribution.** 124/360 predicate slots refused: 13.1%
+  distractor outranks target, 11.4% margin too small, 9.4% definition disagreement, 0.6%
+  quadrant. Corpus is easier than arbitrary layouts by that amount.
+- **Baseline error distribution.** Corpus target positions uniform-within-K
+  (χ² = 9.14, 6 df, p = 0.17). Model selection shows a weak edge preference
+  (0.028–0.167 per slot vs uniform 0.064, 65 picks) which cannot help against a
+  uniformly positioned corpus.
+- **Malformed and truncation rates.** 0/180 and 0/180 in every arm. A1 satisfied.
+- **`enhanced` − `permuted` gap.** +0.0000. See §14 below.
+- **`ceiling` residual.** Not run — the three-arm scope was chosen before the baseline.
+- **Human-agreement rate.** Not run. Operationalization invariance remains a proxy.
+- **Scoring amendments after the tag.** None. One *prompt* amendment (template 1.0 → 1.1,
+  a placeholder-example typo), disclosed in `CHANGELOG.md`, affecting all arms
+  identically, made before the baseline run.
+
+---
+
+## Limitations the results introduced
+
+These could not have been written in advance, because they depend on what happened.
+
+### 13. C4 and C5 turned out vacuous, so two design decisions are untested
+
+Execution given identification was **1.000** in every arm, and abstention was **0/180**.
+The identification/execution split (ADR-0006) and the abstention class (ADR-0008) were
+both correct to build — each could have mattered and would have been unrecoverable
+afterwards — but neither separated anything on this data.
+
+This means the repository **cannot claim** those decisions improved the measurement here.
+It can only claim they were available and did not fire. A reader who thinks the
+abstention boundary is drawn wrong has no counter-evidence from this run: the model never
+said it could not tell, it simply returned the document unchanged (44–48% of cases),
+which the frozen rules score `NO_EDIT`.
+
+### 14. The central claim is undetermined, not answered
+
+C3 asks whether an improvement comes from information or format. The treatment effect was
+zero, so the decomposition has no quantity to operate on. **This experiment therefore
+provides no evidence either way about C3**, and the `permuted` arm — the repository's
+main methodological contribution — was never exercised in the role it was built for.
+
+That is worth stating plainly: the control was designed to distinguish two explanations
+of a positive effect, and no positive effect occurred. Its value here is confined to
+demonstrating that the format-matched comparison *can* be constructed and audited, not to
+resolving the question it was built to resolve.
+
+### 15. The most informative follow-up was deliberately not run
+
+An arm naming the target element by id outright would separate *"cannot use the supplied
+facts"* from *"cannot perform the edit"*. That is the obvious next experiment and would
+sharpen H3 considerably.
+
+It is **not** in the pre-registered design. Adding it after seeing a null would be
+designing toward an explanation for a result already observed, which is exactly what
+`RESULTS.md` exists to prevent. Recorded as future work rather than run.
+
+### 16. One model, and the null may be model-specific
+
+`qwen2.5-coder:3b` was selected because `qwen2.5-coder:1.5b` produced 33% unparseable
+output (ADR-0011). Both are small. Nothing here bears on whether a larger model would
+show an effect, and the observed behaviour — declining to edit in nearly half of all
+cases — may be characteristic of models at this scale rather than of the task.
+
+### 17. Reported effects are bounded, not excluded
+
+The minimum detectable effect is **0.0289**. An improvement of 1–2 percentage points
+would not have been detected. The claim is that no effect *larger than about three
+points* occurred, not that the effect is exactly zero.

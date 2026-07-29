@@ -16,6 +16,7 @@ Usage:
 from __future__ import annotations
 
 import io
+import json
 from collections import Counter
 from pathlib import Path
 
@@ -234,6 +235,150 @@ def figure_three_construct_validity(tally: Counter[str]) -> None:
     plt.close(fig)
 
 
+def figure_four_causal_chain() -> None:
+    """Where the causal chain holds and where it breaks.
+
+    This is the whole result in one figure. Each link is a measurement, not an
+    assumption: the prompts demonstrably differ, the responses demonstrably differ, and
+    identification demonstrably does not move. That combination rules out "the context
+    never arrived" and "the model ignored it" simultaneously.
+    """
+    fig, axis = plt.subplots(figsize=(9.0, 5.2))
+    axis.set_xlim(0, 10)
+    axis.set_ylim(0, 10)
+    axis.axis("off")
+    axis.grid(False)
+
+    def node(y: float, label: str, detail: str, colour: str) -> None:
+        axis.add_patch(
+            plt.Rectangle(
+                (2.6, y - 0.42), 4.8, 0.84, facecolor="white", edgecolor=colour, linewidth=1.6
+            )
+        )
+        axis.text(5.0, y + 0.08, label, ha="center", va="center", fontsize=10, color=INK)
+        axis.text(5.0, y - 0.22, detail, ha="center", va="center", fontsize=7.5, color=MUTED)
+
+    def arrow(y_from: float, y_to: float, verdict: str, colour: str) -> None:
+        axis.annotate(
+            "",
+            xy=(5.0, y_to + 0.42),
+            xytext=(5.0, y_from - 0.42),
+            arrowprops={"arrowstyle": "-|>", "color": colour, "linewidth": 1.8},
+        )
+        axis.text(
+            5.35,
+            (y_from + y_to) / 2,
+            verdict,
+            ha="left",
+            va="center",
+            fontsize=10,
+            color=colour,
+            fontweight="bold",
+        )
+
+    node(9.0, "Context block", "geometry supplied, or shuffled, or absent", MUTED)
+    arrow(9.0, 7.4, "changed", COOL)
+    node(7.4, "Prompt", "180/180 differ between every arm pair", COOL)
+    arrow(7.4, 5.8, "changed", COOL)
+    node(5.8, "Model output", "56/180 responses differ, baseline vs enhanced", COOL)
+    arrow(5.8, 4.2, "UNCHANGED", ACCENT)
+    node(4.2, "Element identified", "0.0444 in all three arms", ACCENT)
+
+    axis.text(
+        5.0,
+        2.7,
+        "The context reaches the model and changes what it says.\n"
+        "It does not change which element it identifies.",
+        ha="center",
+        va="center",
+        fontsize=10.5,
+        color=INK,
+        bbox={"boxstyle": "round,pad=0.5", "facecolor": "#f6f6f6", "edgecolor": MUTED},
+    )
+    axis.text(
+        5.0,
+        1.4,
+        "rules out 'the context never arrived' and 'the model ignored it' at once",
+        ha="center",
+        va="center",
+        fontsize=8,
+        color=MUTED,
+    )
+
+    fig.suptitle(
+        "Figure 4  -  where the causal chain breaks",
+        x=0.02,
+        ha="left",
+        fontsize=11,
+        fontweight="bold",
+    )
+    fig.tight_layout(rect=(0, 0, 1, 0.95))
+    fig.savefig(OUT / "fig04_causal_chain.png", bbox_inches="tight")
+    plt.close(fig)
+
+
+def figure_five_results() -> None:
+    """The headline, with the minimum detectable effect made more prominent than p."""
+    metrics = json.loads((REPO_ROOT / "results" / "metrics.json").read_text(encoding="utf-8"))
+    order = ["main-baseline", "main-permuted", "main-enhanced"]
+    labels = ["baseline", "permuted", "enhanced"]
+
+    points = [metrics["arms"][a]["identification"]["point"] for a in order]
+    lows = [metrics["arms"][a]["identification"]["low"] for a in order]
+    highs = [metrics["arms"][a]["identification"]["high"] for a in order]
+    reference = metrics["arms"][order[0]]["random_reference"]
+    mde = metrics["minimum_detectable_effect"]
+
+    fig, axis = plt.subplots(figsize=(8.4, 4.2))
+    x = range(len(order))
+    axis.errorbar(
+        list(x),
+        points,
+        yerr=[
+            [p - lo for p, lo in zip(points, lows, strict=True)],
+            [hi - p for p, hi in zip(points, highs, strict=True)],
+        ],
+        fmt="o",
+        color=COOL,
+        capsize=6,
+        markersize=9,
+        linewidth=1.6,
+    )
+    axis.axhline(
+        reference,
+        color=MUTED,
+        linestyle="--",
+        linewidth=1.2,
+        label=f"random-selection reference  1/K = {reference:.3f}",
+    )
+    # The band a real effect would have had to clear to be detected. More informative
+    # than the p-value, which is degenerate when the observed difference is exactly zero.
+    axis.axhspan(
+        points[0],
+        points[0] + mde,
+        color=ACCENT,
+        alpha=0.10,
+        label=f"minimum detectable effect  +{mde:.3f}",
+    )
+    axis.set_xticks(list(x))
+    axis.set_xticklabels(labels)
+    axis.set_ylabel("identification accuracy")
+    axis.set_ylim(0, max(reference, max(highs)) * 1.35)
+    axis.set_title("All three arms identical; every pairwise difference 0.0000", loc="left")
+    axis.legend(frameon=False, fontsize=8, loc="upper left")
+
+    fig.suptitle(
+        "Figure 5  -  a constrained null",
+        x=0.02,
+        ha="left",
+        fontsize=11,
+        fontweight="bold",
+    )
+    fig.tight_layout(rect=(0, 0, 1, 0.93))
+    fig.savefig(OUT / "fig05_results.png", bbox_inches="tight")
+    plt.close(fig)
+
+
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     config = load_config(BASE).config
@@ -243,6 +388,11 @@ def main() -> int:
     figure_one_ambiguity(corpus, truths)
     figure_two_witnesses(corpus)
     figure_three_construct_validity(tally)
+    if (REPO_ROOT / "results" / "metrics.json").exists():
+        figure_four_causal_chain()
+        figure_five_results()
+    else:
+        print("results/metrics.json absent - skipping result figures")
 
     for path in sorted(OUT.glob("*.png")):
         print(f"wrote {path.relative_to(REPO_ROOT)}  ({path.stat().st_size // 1024} KB)")

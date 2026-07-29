@@ -205,7 +205,7 @@ rather than the answer, and it was not run.
 
 None.
 
-## O-003  The central comparison is untestable, because there is no effect to attribute
+## O-003  C3 not supported: its prerequisite did not occur
 
 **Observed**
 
@@ -221,15 +221,19 @@ claim, and `enhanced` vs `permuted` is its pre-registered test.
 
 **Interpretation**
 
-**C3 is neither supported nor refuted. It is untestable on this data.** The comparison
-asks which of two components explains an improvement, and there is no improvement to
-decompose. A zero difference between `enhanced` and `permuted` is exactly what one
-expects when both equal `baseline`.
+**C3 was not supported, because its prerequisite did not occur.** The comparison asks
+which of two components explains an improvement; the treatment effect was zero, so there
+is no quantity to decompose. A zero difference between `enhanced` and `permuted` is
+exactly what one expects when both equal `baseline`.
+
+This is a scientific dependency, not a methodological failure. The experiment *did* test
+the treatment. The treatment effect was zero. C3 is conditional on a non-zero effect, and
+that condition was measured and not met.
 
 This is not the outcome `RESULTS.md` anticipated. It listed two: the gain is information
 (`enhanced > permuted`), or the gain is format (`enhanced ≈ permuted` with both above
-baseline). The third case - no gain at all - makes the question moot rather than
-answering it.
+baseline). The third case - no gain at all - resolves the prerequisite negatively rather
+than answering the decomposition question.
 
 That `permuted` and `enhanced` identified the identical case set is worth recording. It
 means shuffling the geometric values between elements changed nothing whatsoever about
