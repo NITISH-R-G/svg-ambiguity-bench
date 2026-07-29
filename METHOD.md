@@ -90,7 +90,7 @@ Domain-independent. Roughly forty lines.
 ```python
 def permuted_context(entities, facts, seed, entity_key) -> str:
     """Format-identical to the enhanced context; entity→fact mapping destroyed."""
-    rows = [(e, facts[e]) for e in entities]           # document order preserved
+    rows = [(e, facts[e]) for e in entities]  # document order preserved
     values = [f for _, f in rows]
 
     # Seed from the ITEM, not the corpus seed, so the shuffle cannot correlate
@@ -101,9 +101,9 @@ def permuted_context(entities, facts, seed, entity_key) -> str:
     for _ in range(32):
         rng.shuffle(shuffled)
         if any(a != b for a, b in zip(values, shuffled)):
-            break        # an identity permutation would silently recreate `enhanced`
+            break  # an identity permutation would silently recreate `enhanced`
 
-    return render(zip([e for e, _ in rows], shuffled))   # SAME renderer as enhanced
+    return render(zip([e for e, _ in rows], shuffled))  # SAME renderer as enhanced
 ```
 
 Two details that are easy to get wrong and load-bearing:
