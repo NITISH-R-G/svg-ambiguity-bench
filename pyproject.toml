@@ -4,13 +4,21 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "svgbench"
-version = "0.1.0"
-description = "A benchmark measuring whether language models can resolve visual references in SVG markup that does not encode them."
+version = "1.0.1"
+description = "An evaluation methodology for context-augmentation experiments: a format-matched control separating information effects from format effects, demonstrated on SVG reference resolution."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.12,<3.14"
 authors = [{ name = "Nitish R G" }]
-keywords = ["svg", "benchmark", "llm", "evaluation", "visual-grounding"]
+keywords = [
+    "evaluation-methodology",
+    "context-augmentation",
+    "format-matched-control",
+    "preregistration",
+    "llm-evaluation",
+    "reference-resolution",
+    "svg",
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
