@@ -15,6 +15,11 @@ experiments
 If you are running a RAG, tool-use, memory, or structured-prompting experiment and
 claiming that *the information* helped, this is the part that applies to you.
 
+→ **[`docs/essay.md`](docs/essay.md)** — *How we almost measured the wrong thing*
+
+The narrative version: the confound, the eleven times the instrument turned out to be
+wrong rather than the hypothesis, and why the null was still informative.
+
 ---
 
 ### I want to know what was found

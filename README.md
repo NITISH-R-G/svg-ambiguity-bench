@@ -129,6 +129,7 @@ want.
 | | |
 |---|---|
 | [`METHOD.md`](METHOD.md) | **the transferable part** — format-matched controls, domain-independent |
+| [`docs/essay.md`](docs/essay.md) | *How we almost measured the wrong thing* — the essay |
 | [`docs/04-results.md`](docs/04-results.md) | full write-up |
 | [`VALIDITY.md`](VALIDITY.md) | internal / construct / external / statistical validity |
 | [`LIMITATIONS.md`](LIMITATIONS.md) | 17 things this does not show |
