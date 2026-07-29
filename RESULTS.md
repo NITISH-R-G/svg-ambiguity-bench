@@ -10,6 +10,17 @@ section: that section is about the *design*. This one is about *me*, six months 
 now, looking at a disappointing number and finding a reason the scoring rule was
 slightly wrong. This is the file that stops that version of me.
 
+Stated more precisely, and this is the whole idea in one sentence:
+
+> **Pre-registration transfers epistemic authority from your future self back to your
+> past self.** Your past self knew less — and is in a better position to write the rules
+> precisely *because* of that. A rule written when it is cheap binds a version of you for
+> whom it will be expensive.
+
+That is a stronger claim than "pre-registration prevents p-hacking". It is not a defence
+against dishonesty; it is a defence against the ordinary, sincere reasoning that becomes
+available only after you have seen the answer.
+
 ---
 
 ## The rule
