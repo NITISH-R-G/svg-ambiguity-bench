@@ -15,6 +15,6 @@ from a stage that comes after it:
 `audit` sits outside the pipeline and may inspect any stage.
 """
 
-__version__ = "0.1.0"
+__version__ = "1.0.1"
 
 __all__ = ["__version__"]
