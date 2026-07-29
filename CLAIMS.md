@@ -29,17 +29,22 @@ witnesses that cannot agree.
 
 | # | Claim | Proposed | Specified | Measured | Stress-tested | Published |
 |---|---|---|---|---|---|---|
-| **C1** | Corpus is genuinely under-determined | yes | yes | Step 3 | yes - planted leak rejected at p=0.0005 | pending |
-| **C2** | Arms are comparable | yes | yes | Step 2 | yes - planted drift caught 3 ways | pending |
-| **C3** | **Improvement is information, not format** | yes | yes | - | - | - |
-| **C4** | Identification separable from execution | yes | yes | Step 9 | yes - 9/9 scorer mutations caught | pending |
-| **C5** | Abstention measured, not punished | yes | yes | Step 9 | yes - three phrasings, plus a false-positive guard | pending |
-| **C6** | Every number independently verifiable | yes | yes | Step 3 | partial - regeneration verified, full Tier 1-2 needs Step 14 | pending |
-| **C7** | Ground truth correct, not asserted | yes | yes | Step 4 | yes - disagreeing witnesses rejected | pending |
-| **C8** | Ground truth matches human judgement | yes | yes | Step 5 | yes - 9.4% of slots refused for definition disagreement | pending |
+| **C1** | Corpus is genuinely under-determined | yes | yes | Step 3 | yes - planted leak rejected at p=0.0005 | **SUPPORTED** (O-001) |
+| **C2** | Arms are comparable | yes | yes | Step 2 | yes - planted drift caught 3 ways | **held** - 180/180 prompts differ, enhanced/permuted token-identical |
+| **C3** | **Improvement is information, not format** | yes | yes | O-003 | n/a | **UNTESTABLE** - no effect to decompose |
+| **C4** | Identification separable from execution | yes | yes | Step 9 | yes - 9/9 scorer mutations caught | **VACUOUS** (O-004) - execution given identification = 1.000 |
+| **C5** | Abstention measured, not punished | yes | yes | Step 9 | yes - three phrasings, plus a false-positive guard | **VACUOUS** (O-004) - 0 abstentions in every arm |
+| **C6** | Every number independently verifiable | yes | yes | Step 3 | partial - regeneration verified | **held** - responses and evaluations committed |
+| **C7** | Ground truth correct, not asserted | yes | yes | Step 4 | yes - disagreeing witnesses rejected | **held** |
+| **C8** | Ground truth matches human judgement | yes | yes | Step 5 | yes - 9.4% of slots refused for definition disagreement | **held** |
 
-Nothing is Published until there are results. That column staying empty is the honest
-state of the project, not an oversight.
+Results are in [`OBSERVATIONS.md`](OBSERVATIONS.md) and `results/metrics.json`.
+
+**The headline is a null.** All three arms scored identification
+**0.0444 [0.0167, 0.0778]**; every pairwise difference is **0.0000** against a minimum
+detectable effect of **0.0289**. C3 is *untestable* rather than answered, because there
+is no improvement to decompose. C4 and C5 turned out vacuous for this model — exactly the
+conditions their own falsification criteria named, written before any data existed.
 
 ### What each claim asserts
 
