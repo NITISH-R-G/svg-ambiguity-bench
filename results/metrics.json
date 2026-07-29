@@ -1,0 +1,181 @@
+{
+  "arms": {
+    "main-baseline": {
+      "arm": "main-baseline",
+      "by_family": {
+        "ORDINAL_SIZE": 0.06666666666666667,
+        "SPATIAL": 0.022222222222222223
+      },
+      "by_predicate": {
+        "bottom_left": 0.09090909090909091,
+        "bottom_right": 0.0,
+        "bottommost": 0.0,
+        "largest": 0.045454545454545456,
+        "leftmost": 0.08333333333333333,
+        "rightmost": 0.0,
+        "second_largest": 0.045454545454545456,
+        "smallest": 0.08695652173913043,
+        "third_largest": 0.08695652173913043,
+        "top_left": 0.0,
+        "top_right": 0.0,
+        "topmost": 0.0
+      },
+      "collateral_rate": {
+        "high": 0.6222222222222222,
+        "low": 0.4388888888888889,
+        "point": 0.5333333333333333
+      },
+      "execution_given_identified": 1.0,
+      "identification": {
+        "high": 0.07777777777777778,
+        "low": 0.016666666666666666,
+        "point": 0.044444444444444446
+      },
+      "identification_given_wellformed": {
+        "high": 0.07777777777777778,
+        "low": 0.016666666666666666,
+        "point": 0.044444444444444446
+      },
+      "mean_elements_modified": 0.6333333333333333,
+      "n_cases": 180,
+      "n_clusters": 30,
+      "outcomes": {
+        "CORRECT_LOOSE": 4,
+        "CORRECT_STRICT": 4,
+        "NO_EDIT": 80,
+        "WRONG_TARGET": 92
+      },
+      "random_reference": 0.18523809523809523,
+      "strict": {
+        "high": 0.044444444444444446,
+        "low": 0.005555555555555556,
+        "point": 0.022222222222222223
+      }
+    },
+    "main-enhanced": {
+      "arm": "main-enhanced",
+      "by_family": {
+        "ORDINAL_SIZE": 0.07777777777777778,
+        "SPATIAL": 0.011111111111111112
+      },
+      "by_predicate": {
+        "bottom_left": 0.09090909090909091,
+        "bottom_right": 0.0,
+        "bottommost": 0.0,
+        "largest": 0.045454545454545456,
+        "leftmost": 0.0,
+        "rightmost": 0.0,
+        "second_largest": 0.045454545454545456,
+        "smallest": 0.08695652173913043,
+        "third_largest": 0.13043478260869565,
+        "top_left": 0.0,
+        "top_right": 0.0,
+        "topmost": 0.0
+      },
+      "collateral_rate": {
+        "high": 0.5833333333333334,
+        "low": 0.38333333333333336,
+        "point": 0.48333333333333334
+      },
+      "execution_given_identified": 1.0,
+      "identification": {
+        "high": 0.07777777777777778,
+        "low": 0.016666666666666666,
+        "point": 0.044444444444444446
+      },
+      "identification_given_wellformed": {
+        "high": 0.07777777777777778,
+        "low": 0.016666666666666666,
+        "point": 0.044444444444444446
+      },
+      "mean_elements_modified": 0.5666666666666667,
+      "n_cases": 180,
+      "n_clusters": 30,
+      "outcomes": {
+        "CORRECT_LOOSE": 1,
+        "CORRECT_STRICT": 7,
+        "NO_EDIT": 86,
+        "WRONG_TARGET": 86
+      },
+      "random_reference": 0.18523809523809523,
+      "strict": {
+        "high": 0.06666666666666667,
+        "low": 0.016666666666666666,
+        "point": 0.03888888888888889
+      }
+    },
+    "main-permuted": {
+      "arm": "main-permuted",
+      "by_family": {
+        "ORDINAL_SIZE": 0.07777777777777778,
+        "SPATIAL": 0.011111111111111112
+      },
+      "by_predicate": {
+        "bottom_left": 0.09090909090909091,
+        "bottom_right": 0.0,
+        "bottommost": 0.0,
+        "largest": 0.045454545454545456,
+        "leftmost": 0.0,
+        "rightmost": 0.0,
+        "second_largest": 0.045454545454545456,
+        "smallest": 0.08695652173913043,
+        "third_largest": 0.13043478260869565,
+        "top_left": 0.0,
+        "top_right": 0.0,
+        "topmost": 0.0
+      },
+      "collateral_rate": {
+        "high": 0.5777777777777777,
+        "low": 0.37777777777777777,
+        "point": 0.4777777777777778
+      },
+      "execution_given_identified": 1.0,
+      "identification": {
+        "high": 0.07777777777777778,
+        "low": 0.016666666666666666,
+        "point": 0.044444444444444446
+      },
+      "identification_given_wellformed": {
+        "high": 0.07777777777777778,
+        "low": 0.016666666666666666,
+        "point": 0.044444444444444446
+      },
+      "mean_elements_modified": 0.55,
+      "n_cases": 180,
+      "n_clusters": 30,
+      "outcomes": {
+        "CORRECT_LOOSE": 1,
+        "CORRECT_STRICT": 7,
+        "NO_EDIT": 87,
+        "WRONG_TARGET": 85
+      },
+      "random_reference": 0.18523809523809523,
+      "strict": {
+        "high": 0.06666666666666667,
+        "low": 0.016666666666666666,
+        "point": 0.03888888888888889
+      }
+    }
+  },
+  "comparisons": {
+    "O-002_enhanced_vs_baseline": {
+      "n_clusters": 30.0,
+      "n_paired_cases": 180.0,
+      "observed_difference": 0.0,
+      "p_value": 1.0
+    },
+    "O-003_enhanced_vs_permuted": {
+      "n_clusters": 30.0,
+      "n_paired_cases": 180.0,
+      "observed_difference": 0.0,
+      "p_value": 1.0
+    },
+    "permuted_permuted_vs_baseline": {
+      "n_clusters": 30.0,
+      "n_paired_cases": 180.0,
+      "observed_difference": 0.0,
+      "p_value": 1.0
+    }
+  },
+  "minimum_detectable_effect": 0.028935025542343767
+}

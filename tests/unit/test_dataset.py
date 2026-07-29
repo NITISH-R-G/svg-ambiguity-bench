@@ -31,6 +31,17 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 BASE = REPO_ROOT / "configs" / "base.yaml"
 
 
+@pytest.fixture
+def clean_root(tmp_path_factory):  # type: ignore[no-untyped-def]
+    """A repo root with no stored responses.
+
+    These tests exercise freeze MECHANICS. The real repository now contains Phase II
+    responses, so `check_no_model_outputs` correctly refuses to freeze there - that
+    invariant is covered by its own test rather than by every fixture tripping over it.
+    """
+    return tmp_path_factory.mktemp("clean_repo")
+
+
 @pytest.fixture(scope="module")
 def config():  # type: ignore[no-untyped-def]
     # Small corpus for speed; freezing behaviour is size-independent.
@@ -40,7 +51,8 @@ def config():  # type: ignore[no-untyped-def]
 @pytest.fixture(scope="module")
 def frozen(tmp_path_factory, config):  # type: ignore[no-untyped-def]
     root = tmp_path_factory.mktemp("frozen")
-    manifest = freeze_dataset(config, root, REPO_ROOT)
+    clean = tmp_path_factory.mktemp("clean")
+    manifest = freeze_dataset(config, root, clean)
     return root / manifest.dataset_hash, manifest
 
 
@@ -139,9 +151,9 @@ def test_untouched_corpus_verifies(frozen) -> None:  # type: ignore[no-untyped-d
     assert verify_integrity(directory).dataset_hash == manifest.dataset_hash
 
 
-def test_edited_svg_is_detected(tmp_path, config) -> None:  # type: ignore[no-untyped-def]
+def test_edited_svg_is_detected(tmp_path, config, clean_root) -> None:  # type: ignore[no-untyped-def]
     """One character changed in one file must break verification."""
-    manifest = freeze_dataset(config, tmp_path, REPO_ROOT)
+    manifest = freeze_dataset(config, tmp_path, clean_root)
     directory = tmp_path / manifest.dataset_hash
 
     victim = next(iter(sorted((directory / "svgs").glob("*.svg"))))
@@ -154,26 +166,26 @@ def test_edited_svg_is_detected(tmp_path, config) -> None:  # type: ignore[no-un
         verify_integrity(directory)
 
 
-def test_deleted_file_is_detected(tmp_path, config) -> None:  # type: ignore[no-untyped-def]
-    manifest = freeze_dataset(config, tmp_path, REPO_ROOT)
+def test_deleted_file_is_detected(tmp_path, config, clean_root) -> None:  # type: ignore[no-untyped-def]
+    manifest = freeze_dataset(config, tmp_path, clean_root)
     directory = tmp_path / manifest.dataset_hash
     next(iter(sorted((directory / "groundtruth").glob("*.json")))).unlink()
     with pytest.raises(VerificationError, match="missing"):
         verify_integrity(directory)
 
 
-def test_added_file_is_detected(tmp_path, config) -> None:  # type: ignore[no-untyped-def]
+def test_added_file_is_detected(tmp_path, config, clean_root) -> None:  # type: ignore[no-untyped-def]
     """An extra artefact is as much a change as a missing one."""
-    manifest = freeze_dataset(config, tmp_path, REPO_ROOT)
+    manifest = freeze_dataset(config, tmp_path, clean_root)
     directory = tmp_path / manifest.dataset_hash
     (directory / "svgs" / "smuggled.svg").write_text("<svg/>", encoding="utf-8", newline="\n")
     with pytest.raises(VerificationError, match="extra"):
         verify_integrity(directory)
 
 
-def test_renamed_directory_is_detected(tmp_path, config) -> None:  # type: ignore[no-untyped-def]
+def test_renamed_directory_is_detected(tmp_path, config, clean_root) -> None:  # type: ignore[no-untyped-def]
     """A corpus copied under another name is no longer content-addressed."""
-    manifest = freeze_dataset(config, tmp_path, REPO_ROOT)
+    manifest = freeze_dataset(config, tmp_path, clean_root)
     directory = tmp_path / manifest.dataset_hash
     renamed = tmp_path / "some_other_name"
     directory.rename(renamed)
@@ -181,9 +193,9 @@ def test_renamed_directory_is_detected(tmp_path, config) -> None:  # type: ignor
         verify_integrity(renamed)
 
 
-def test_tampered_manifest_hash_is_detected(tmp_path, config) -> None:  # type: ignore[no-untyped-def]
+def test_tampered_manifest_hash_is_detected(tmp_path, config, clean_root) -> None:  # type: ignore[no-untyped-def]
     """Editing the manifest to match tampered files must not rescue it."""
-    manifest = freeze_dataset(config, tmp_path, REPO_ROOT)
+    manifest = freeze_dataset(config, tmp_path, clean_root)
     directory = tmp_path / manifest.dataset_hash
     path = directory / MANIFEST_NAME
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -211,9 +223,9 @@ def test_regeneration_from_a_different_seed_is_detected(frozen) -> None:  # type
         verify_determinism(other, directory)
 
 
-def test_freezing_twice_produces_the_same_hash(tmp_path, config) -> None:  # type: ignore[no-untyped-def]
-    first = freeze_dataset(config, tmp_path / "a", REPO_ROOT)
-    second = freeze_dataset(config, tmp_path / "b", REPO_ROOT)
+def test_freezing_twice_produces_the_same_hash(tmp_path, config, clean_root) -> None:  # type: ignore[no-untyped-def]
+    first = freeze_dataset(config, tmp_path / "a", clean_root)
+    second = freeze_dataset(config, tmp_path / "b", clean_root)
     assert first.dataset_hash == second.dataset_hash
     assert first.file_hashes == second.file_hashes
 
@@ -223,7 +235,7 @@ def test_freezing_twice_produces_the_same_hash(tmp_path, config) -> None:  # typ
 # ---------------------------------------------------------------------------
 
 
-def test_freeze_refuses_when_a_check_fails(tmp_path, config, monkeypatch) -> None:  # type: ignore[no-untyped-def]
+def test_freeze_refuses_when_a_check_fails(tmp_path, config, clean_root, monkeypatch) -> None:  # type: ignore[no-untyped-def]
     """A corpus that fails its own guarantees must not become the thing every later
     number depends on."""
     from svgbench.dataset import checks as checks_module
@@ -235,7 +247,7 @@ def test_freeze_refuses_when_a_check_fails(tmp_path, config, monkeypatch) -> Non
 
     monkeypatch.setattr(freeze_module, "run_all", failing)
     with pytest.raises(FreezeError, match="planted failure"):
-        freeze_dataset(config, tmp_path, REPO_ROOT)
+        freeze_dataset(config, tmp_path, clean_root)
     assert not list(tmp_path.glob("*/manifest.json")), "wrote a manifest despite failing"
     assert checks_module is not None
 

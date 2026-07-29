@@ -26,7 +26,6 @@ EXPERIMENTS_DIR = REPO_ROOT / "configs" / "experiments"
 # listed here from the moment it has a CLI surface; `None` means not yet built.
 _PLANNED_COMMANDS: dict[str, str] = {
     "generate": "Generate the SVG corpus, ground truth and instructions (steps 3-7)",
-    "evaluate": "Score stored responses into evaluation rows (step 9)",
     "report": "Compute metrics and render the report (step 14)",
     "audit": "Run leakage, blindness and determinism checks",
 }
@@ -82,6 +81,12 @@ def _build_parser() -> argparse.ArgumentParser:
     run = subparsers.add_parser("run", help="Execute one experiment arm against the model")
     run.add_argument("experiment", help="Arm name under configs/experiments, e.g. main-baseline")
     run.set_defaults(handler=_cmd_run)
+
+    evaluate = subparsers.add_parser(
+        "evaluate", help="Score stored responses (needs no model and no renderer)"
+    )
+    evaluate.add_argument("experiment", nargs="?", help="Arm name; omit to score every stored arm")
+    evaluate.set_defaults(handler=_cmd_evaluate)
 
     for name, help_text in _PLANNED_COMMANDS.items():
         planned = subparsers.add_parser(name, help=f"[not yet implemented] {help_text}")
@@ -280,6 +285,95 @@ def _cmd_run(args: argparse.Namespace) -> int:
     )
     print(f"\nresponses written to {output.relative_to(REPO_ROOT)}")
     return 0
+
+
+def _cmd_evaluate(args: argparse.Namespace) -> int:
+    """Score stored responses into evaluation rows.
+
+    Tier-2 reproduction: this reads only the frozen corpus and the committed responses.
+    No model, no renderer, no network. A reviewer can re-derive every scored row - or
+    write their own scorer and check it against these.
+    """
+    import json
+    from collections import Counter
+
+    from svgbench.dataset import find_frozen_datasets
+    from svgbench.evaluation import evaluate_response
+    from svgbench.instructions import Instruction
+
+    datasets = find_frozen_datasets(REPO_ROOT / "data" / "frozen")
+    if not datasets:
+        print("no frozen dataset found", file=sys.stderr)
+        return 1
+    frozen = datasets[0]
+
+    instructions = {
+        i.case_id: i
+        for i in (
+            Instruction.model_validate(record)
+            for record in json.loads((frozen / "instructions.json").read_text(encoding="utf-8"))
+        )
+    }
+    svgs = {p.stem: p.read_text(encoding="utf-8") for p in (frozen / "svgs").glob("*.svg")}
+
+    experiments_root = REPO_ROOT / "experiments"
+    arms = sorted(
+        p for p in experiments_root.iterdir() if p.is_dir() and (p / "responses.jsonl").exists()
+    )
+    if args.experiment:
+        arms = [p for p in arms if p.name.startswith(args.experiment)]
+    if not arms:
+        print("no stored responses to score", file=sys.stderr)
+        return 1
+
+    exit_code = 0
+    for arm in arms:
+        rows = []
+        with (arm / "responses.jsonl").open("r", encoding="utf-8") as handle:
+            records = [json.loads(line) for line in handle if line.strip()]
+
+        for record in records:
+            instruction = instructions[record["case_id"]]
+            result = evaluate_response(
+                case_id=record["case_id"],
+                original_svg=svgs[record["svg_id"]],
+                response=record["response"],
+                operation=instruction.operation,
+                params=instruction.operation_params,
+                target_element_id=instruction.target_element_id,
+            )
+            rows.append(
+                {
+                    **result.model_dump(mode="json"),
+                    "replicate": record["replicate"],
+                    "svg_id": record["svg_id"],
+                    "predicate": instruction.predicate,
+                    "family": instruction.family,
+                    "operation": instruction.operation,
+                    "k": instruction.k,
+                    "truncated": record["truncated"],
+                    "error": record["error"],
+                }
+            )
+
+        out = arm / "evaluations.jsonl"
+        with out.open("w", encoding="utf-8", newline="\n") as handle:
+            for row in rows:
+                handle.write(json.dumps(row, sort_keys=True) + "\n")
+
+        outcomes = Counter(r["outcome"] for r in rows)
+        identified = sum(r["target_edited"] for r in rows)
+        reference = sum(1.0 / r["k"] for r in rows) / len(rows)
+
+        print(f"\n{arm.name}   n={len(rows)}")
+        print(f"  outcomes            {dict(outcomes.most_common())}")
+        print(f"  identification      {identified / len(rows):.4f}  ({identified}/{len(rows)})")
+        print(f"  1/K reference       {reference:.4f}")
+        print(f"  malformed           {outcomes['MALFORMED'] / len(rows):.4f}")
+        print(f"  abstained           {outcomes['ABSTAINED'] / len(rows):.4f}")
+        print(f"  -> {out.relative_to(REPO_ROOT)}")
+
+    return exit_code
 
 
 def _cmd_status(_args: argparse.Namespace) -> int:

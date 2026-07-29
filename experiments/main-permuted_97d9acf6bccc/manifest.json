@@ -1,0 +1,24 @@
+{
+  "arm": "main-permuted",
+  "config_hash": "97d9acf6bccc8817938a0a435e520b67b4a3eb51a1fc3d4fbd5937b36b9ac9cf",
+  "context_provider": "permuted",
+  "corpus_config_hash": "f2a6e5b2a40142659a786c6b1f2df26d50ef1218231ba5ccc97659a50d0846dd",
+  "dataset_hash": "a2938bb031c0220abb45df12b7bc3eaa19a33484ac15592e59c62247010d2b35",
+  "experiment_id": "main-permuted_97d9acf6bccc",
+  "model": {
+    "backend": "ollama",
+    "base_url": "http://localhost:11434",
+    "context_limit": 32768,
+    "max_output_tokens": 4096,
+    "name": "qwen2.5-coder:3b",
+    "seed": 0,
+    "temperature": 0.0,
+    "timeout_s": 300,
+    "top_p": 1.0
+  },
+  "prompt": {
+    "template_id": "edit_svg_v1",
+    "template_version": "1.1"
+  },
+  "replicates": 1
+}
