@@ -154,3 +154,22 @@ Raw responses (`experiments/*/responses.jsonl`) and scored rows
 (`experiments/*/evaluations.jsonl`) are committed. A sceptical reader can write their own
 scorer and check it against ours — which is the strongest verification this project can
 offer.
+
+---
+
+## 8. Conclusion
+
+> On this frozen corpus and model family, supplying geometric facts altered generated
+> responses without improving reference identification. This suggests that, under these
+> conditions, additional structured context alone is insufficient to improve reference
+> resolution.
+
+Every qualifier in that sentence is load-bearing. *This* corpus — synthetic, with opaque
+geometry tokens that do not occur in real SVGs. *This* model family — one small
+code-specialised model, chosen because a smaller one produced 33% unparseable output.
+*Altered generated responses* — measured, 56/180. *Without improving reference
+identification* — measured, +0.0000 against a minimum detectable effect of 0.0289.
+*Suggests* rather than *shows*, and *under these conditions* rather than in general.
+
+What the instrument establishes is narrower than the question it was built around, and
+saying so precisely is the point.
