@@ -12,6 +12,7 @@ and the information destroyed.
 [![license](https://img.shields.io/badge/license-MIT-2c6fa8)](LICENSE)
 [![pre-registered](https://img.shields.io/badge/pre--registered-instrument--freeze--v1-c0392b)](DESIGN_FREEZE.md)
 [![result](https://img.shields.io/badge/result-constrained%20null-c0392b)](docs/04-results.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21682240.svg)](https://doi.org/10.5281/zenodo.21682240)
 
 ![Where the causal chain breaks](assets/figures/fig04_causal_chain.png)
 
@@ -190,14 +191,23 @@ The method in [`METHOD.md`](METHOD.md) is domain-independent. **This measurement
 
 ## Citation
 
+Archived on Zenodo: [10.5281/zenodo.21682240](https://doi.org/10.5281/zenodo.21682240) — an
+**archived research artifact**, not a peer-reviewed publication. The DOI fixes the
+citation and guarantees the artifact at that version cannot change or disappear; it is not
+evidence about when the experiment was run (see [Provenance](#provenance) above). That DOI
+is the *concept* record, which always resolves to the latest archived version; to cite the
+exact snapshot behind the measured result, use the version DOI:
+[10.5281/zenodo.21682241](https://doi.org/10.5281/zenodo.21682241) (v1.0.1).
+
 ```bibtex
 @software{svg_ambiguity_bench,
   author  = {G, Nitish R},
-  title   = {svg-ambiguity-bench: a format-matched control for
+  title   = {svg-ambiguity-bench: an evaluation methodology for
              context-augmentation experiments},
   year    = {2026},
   url     = {https://github.com/NITISH-R-G/svg-ambiguity-bench},
-  version = {1.0.0}
+  doi     = {10.5281/zenodo.21682241},
+  version = {1.0.1}
 }
 ```
 
