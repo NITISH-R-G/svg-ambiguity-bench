@@ -58,9 +58,13 @@ cases scores:
 | `enhanced` — geometry supplied | description | 0.0444 | 0.478 |
 | **`named_id`** | **element id** | **0.9278** [0.8833, 0.9667] | **0.067** |
 
-**+0.8833**, paired cluster permutation over 30 SVGs, p at the test's floor. The model can
-perform these edits. It cannot work out *which* element is meant — even when handed exact
-coordinates. → [`docs/06-study-v2-results.md`](docs/06-study-v2-results.md)
+**+0.8833**, paired cluster permutation over 30 SVGs, p at the test's floor.
+
+So execution capability is **not** the limiting factor here. On this corpus, prompt,
+scorer and model, explicit ids produce high edit accuracy while descriptive references do
+not — even with exact geometry supplied. Whether that dissociation holds for other models
+or realistic SVGs is untested.
+→ [`docs/06-study-v2-results.md`](docs/06-study-v2-results.md)
 
 ---
 

@@ -60,16 +60,24 @@ design is 0.0404; the observed effect is roughly **twenty-two times** that.
 
 ## What this establishes
 
-The model can perform every operation in this corpus. It performs them at 0.93 when the
-element is identified for it, and at 0.04 - indistinguishable from supplying nothing -
-when it must work out which element is meant.
+The model performs these operations at 0.93 when the element is identified for it, and at
+0.04 - indistinguishable from supplying nothing - when the element must be picked out
+from a description.
 
-That resolves the ambiguity V1 could not:
+Stated at the width the evidence supports: **under this corpus, this prompt template,
+this scorer and this model, explicit element ids produce high edit accuracy while
+descriptive references do not, even with exact geometry supplied.** That is a statement
+about a measured dissociation, not about the model's cognition. The tempting shorter
+version - *"the model cannot work out which element is meant"* - asserts a general
+inability this design cannot establish, and is avoided deliberately.
 
-- **R1 (reference resolution) is supported.** The bottleneck is identifying *which*
-  element the instruction refers to.
+Within that scope the ambiguity V1 could not resolve is resolved:
+
 - **R2 (execution) is rejected.** Inability to perform the edit does not explain V1's
   null. The capability is present and the manipulation had ample headroom to act in.
+- **R1 (reference resolution) is supported** as the locus of the failure *in this
+  setting*. What remains unexplained is the mechanism - see "What this does not
+  establish" below.
 
 The `NO_EDIT` rate is the clearest single number. It falls from **0.444-0.483** across
 the V1 arms to **0.067** here - a factor of about seven. The V1 declines were not the
