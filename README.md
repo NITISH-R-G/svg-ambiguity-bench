@@ -46,6 +46,22 @@ Random-selection reference **0.1852** · every pairwise difference **+0.0000** �
 > more extreme, so p = 1.000 by construction and carries no information. The claim is
 > that **no effect larger than ~3 points occurred** — not that the effect is zero.
 
+### Is the model simply unable to edit?
+
+No. That was the obvious objection to the result above, so it was
+[pre-registered and measured](docs/05-study-v2-preregistration.md) as a separate study.
+Name the target element by id, change nothing else, and the same model on the same 180
+cases scores:
+
+| condition | target specified by | identification accuracy | `NO_EDIT` |
+|---|---|---|---|
+| `enhanced` — geometry supplied | description | 0.0444 | 0.478 |
+| **`named_id`** | **element id** | **0.9278** [0.8833, 0.9667] | **0.067** |
+
+**+0.8833**, paired cluster permutation over 30 SVGs, p at the test's floor. The model can
+perform these edits. It cannot work out *which* element is meant — even when handed exact
+coordinates. → [`docs/06-study-v2-results.md`](docs/06-study-v2-results.md)
+
 ---
 
 ## Quick start
@@ -132,6 +148,8 @@ want.
 | [`METHOD.md`](METHOD.md) | **the transferable part** — format-matched controls, domain-independent |
 | [`docs/essay.md`](docs/essay.md) | *How we almost measured the wrong thing* — the essay |
 | [`docs/04-results.md`](docs/04-results.md) | full write-up |
+| [`docs/05-study-v2-preregistration.md`](docs/05-study-v2-preregistration.md) | Study V2, registered before it was run |
+| [`docs/06-study-v2-results.md`](docs/06-study-v2-results.md) | Study V2 result — the model can edit; it cannot identify |
 | [`VALIDITY.md`](VALIDITY.md) | internal / construct / external / statistical validity |
 | [`LIMITATIONS.md`](LIMITATIONS.md) | 17 things this does not show |
 | [`CLAIMS.md`](CLAIMS.md) | every module maps to one claim, and what falsifies it |

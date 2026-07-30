@@ -129,6 +129,14 @@ abstention boundary is drawn wrong has no counter-evidence from this run: the mo
 said it could not tell, it simply returned the document unchanged (44–48% of cases),
 which the frozen rules score `NO_EDIT`.
 
+**Updated by Study V2.** Those unchanged-document returns are now known not to be
+incapacity: naming the target by id drops `NO_EDIT` from 44–48% to 6.7% and raises
+identification to 0.9278. So the V1 declines track *inability to identify the target*
+rather than inability to edit — which is what the prompt asks the model to do when it
+cannot tell. The abstention boundary still never fired in its explicit form, so the
+limitation above stands as written; what has changed is that the `NO_EDIT` mass is no
+longer ambiguous in origin. See `docs/06-study-v2-results.md`.
+
 ### 14. The central claim is undetermined, not answered
 
 C3 asks whether an improvement comes from information or format. The treatment effect was

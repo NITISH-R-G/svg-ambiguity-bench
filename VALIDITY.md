@@ -60,6 +60,7 @@ is the strongest remaining internal-validity objection. It is stated rather than
 | Corner predicates crown a mid-canvas shape | Quadrant conjunct | Established |
 | "Edit accuracy" conflates distinct abilities | Reported as identification / execution / collateral, not one bit | Specified; Step 9 |
 | Declining to guess is scored as failure | `ABSTAINED` is its own outcome; accuracy reported with and without | Specified; Step 9 |
+| **The task may measure execution capability, not reference resolution** | **Study V2: name the target by id, change nothing else** | **Retired - `named_id` scores 0.9278 against 0.0444, so the ability to perform the edit is present and is not what V1 measured. Pre-registered; see `docs/06-study-v2-results.md`** |
 
 **Residual, and it is real.** Operationalization invariance is a *proxy* for human
 agreement, not a measurement of it. No human study was run. The claim is "reasonable
