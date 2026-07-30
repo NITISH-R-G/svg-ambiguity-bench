@@ -1,0 +1,25 @@
+{
+  "condition": "permuted",
+  "context_provider": "permuted",
+  "experiment_id": "v3-llama3.2-3b-permuted",
+  "manipulated_variable": "context",
+  "model": {
+    "backend": "ollama",
+    "base_url": "http://localhost:11434",
+    "context_limit": 32768,
+    "max_output_tokens": 4096,
+    "name": "llama3.2:3b",
+    "seed": 0,
+    "temperature": 0.0,
+    "timeout_s": 300,
+    "top_p": 1.0
+  },
+  "preregistration": "docs/07-study-v3-preregistration.md",
+  "preregistration_tag": "study-v3-preregistration",
+  "prompt": {
+    "template_id": "edit_svg_v1",
+    "template_version": "1.1"
+  },
+  "replicates": 1,
+  "study": "v3"
+}

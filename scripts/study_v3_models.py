@@ -9,7 +9,7 @@ Sweeps four conditions per model over the frozen corpus:
     baseline   no context
     permuted   geometry table, values shuffled between elements  <- the control
     enhanced   geometry table, correct
-    named_id   no context; the instruction names the target element by id (Study V2)
+    named-id   no context; the instruction names the target element by id (Study V2)
 
 The primary outcome is `enhanced - permuted`, per model. Not `enhanced - baseline`,
 which confounds the information with the format it arrives in.
@@ -61,7 +61,7 @@ MODELS: tuple[str, ...] = (
 # `named_id` is not a context arm - it varies the instruction and leaves context empty.
 # See ADR-0005: providers are instruction-blind by type signature, so naming the target
 # is not expressible as a provider.
-CONDITIONS: tuple[str, ...] = ("baseline", "permuted", "enhanced", "named_id")
+CONDITIONS: tuple[str, ...] = ("baseline", "permuted", "enhanced", "named-id")
 
 _PROVIDER_FOR = {"baseline": "null", "permuted": "permuted", "enhanced": "enhanced"}
 
@@ -71,6 +71,14 @@ def _slug(model: str) -> str:
 
 
 def experiment_id(model: str, condition: str) -> str:
+    """Directory name for one (model, condition).
+
+    No underscores. `metrics.load_rows` derives an arm key with
+    `directory.name.split("_")[0]` in order to strip the config-hash suffix from V1's
+    directories, so an underscore anywhere in the name silently truncates the key - and
+    two conditions truncating to the same key would overwrite each other in the results
+    dict with nothing raising.
+    """
     return f"v3-{_slug(model)}-{condition}"
 
 
@@ -171,7 +179,7 @@ def run_condition(model: str, condition: str) -> None:
     store = ResponseStore(REPO_ROOT / "experiments", experiment_id(model, condition))
 
     context_by_svg: dict[str, str] = {}
-    if condition != "named_id":
+    if condition != "named-id":
         provider = build_provider(_PROVIDER_FOR[condition], config.context.permutation_seed)
         context_by_svg = {s: provider.provide(s, g) for s, g in geometry.items()}
 
@@ -182,7 +190,7 @@ def run_condition(model: str, condition: str) -> None:
         "preregistration_tag": "study-v3-preregistration",
         "condition": condition,
         "context_provider": _PROVIDER_FOR.get(condition, "null"),
-        "manipulated_variable": "instruction" if condition == "named_id" else "context",
+        "manipulated_variable": "instruction" if condition == "named-id" else "context",
         "prompt": {"template_id": TEMPLATE_ID, "template_version": TEMPLATE_VERSION},
         "model": model_config.model_dump(mode="json"),
         "replicates": 1,
@@ -196,7 +204,7 @@ def run_condition(model: str, condition: str) -> None:
     for index, instruction in enumerate(instructions, start=1):
         if store.has(instruction.case_id, 0):
             continue
-        text = named_id_text(instruction) if condition == "named_id" else instruction.text
+        text = named_id_text(instruction) if condition == "named-id" else instruction.text
         prompt = build_prompt(
             svg=model_visible[instruction.svg_id],
             instruction=text,
