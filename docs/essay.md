@@ -188,9 +188,24 @@ result come out the other way*, and the answer is obviously no — if it had sho
 would have written "excluded, made no difference" and moved on. Wanting it admitted
 *because of what it showed* is the exact reasoning the rule exists to stop.
 
-So a scoring rule is not neutral infrastructure. It is an empirical claim about the space
-of model behaviour, made with whatever models happened to be on hand, and it deserves the
-same tentativeness as any other claim in the paper.
+So a scoring rule is not neutral infrastructure.
+
+> **A scoring rule is an empirical hypothesis about the space of permissible model
+> behaviour. Freezing it makes that hypothesis auditable rather than timeless.**
+
+I want to be careful about how far that generalises. It is one observation, on one axis —
+how a model declines — across four models in one project. The honest name for what
+happened is **instrument drift**: the instrument held still, the behaviour it measures
+moved, and an outcome class kept a name that no longer described its contents. Most
+discussion of benchmark durability assumes that a fixed metric plus fixed ground truth
+keeps future models comparable. Here both were fixed and comparability degraded anyway.
+Whether that matters elsewhere is a question, not a result.
+
+And the excluded observation is not being disappeared. It happened; it is reported in
+full; it motivates a pre-registered follow-up. What it is *not* is confirmatory evidence
+for the hypothesis I was testing — because the criterion that excluded it was written
+before I saw it. An exploratory observation awaiting prospective confirmation is a
+different thing from a finding, and a different thing from nothing.
 
 ---
 

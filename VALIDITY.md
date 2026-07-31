@@ -86,6 +86,26 @@ ecological validity for the ability to attribute failure to a specific cause.
 | **Not beyond the tested predicates** | The enhancement is blind to the *instruction* (enforced by type) but not to the *benchmark*: choosing to emit centroid and area is informed by knowing which families are tested |
 | **Not an argument for using an LLM** | A deterministic solver scores 100%. The instrument measures in-context reference resolution, not whether that is the right engineering choice |
 | **Not a comparison against vision** | No VLM arm. If a small VLM handles this trivially, the text-only framing is much less interesting. Addressed in discussion only, which is weaker than measuring it |
+| **Not stable across model behaviour, as measured** | **Established by Study V3.** The frozen abstention rule encodes an assumption about *how a model declines*, calibrated on the one model available at freeze time. `qwen2.5-coder:7b` declines in prose those patterns do not match, so 237 reasoned refusals were scored `MALFORMED`. Nothing in the scorer is broken; the behaviour it measures moved. See FA-013 |
+
+### Instrument drift
+
+The last row deserves separating out, because it is not the usual external-validity
+caveat and it was not anticipated at pre-registration.
+
+The standard assumption is that a fixed metric plus fixed ground truth keeps future
+models comparable. Study V3 is a counterexample within this instrument: both were fixed,
+and comparability degraded anyway, because an outcome class kept a name that no longer
+described its contents.
+
+> A scoring rule is an empirical hypothesis about the space of permissible model
+> behaviour. Freezing it makes that hypothesis auditable rather than timeless.
+
+Scope, stated deliberately narrowly: one axis (how a model declines), four models, one
+project. It is a lesson drawn from this work, not an established principle, and it would
+need replication in other evaluation settings before deserving stronger wording. What can
+be said now is that this instrument has a documented instance of it, and that any
+benchmark permitting abstention has the same exposure.
 
 ---
 

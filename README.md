@@ -83,13 +83,20 @@ to 0.61–0.93 in every model tested.
 **The control still has not fired** — on admissible evidence. The 7B is the one model
 whose information effect exceeds its MDE, and it is **excluded by a pre-registered
 data-quality falsifier** that fired on its malformed rate. It stays excluded, because the
-rule was written before the result was seen.
+rule was written before the result was seen. The observation is reported in full and
+motivates a pre-registered follow-up; it is simply **not confirmatory evidence** for the
+primary hypothesis.
 
-But characterising that excluded class changed what it means: **237 of 237** of the 7B's
-`MALFORMED` responses are *prose refusals* — the model explaining that it cannot identify
-the target — not corrupt output. The falsifier was procedurally right and substantively
-mis-motivated. That is [FA-013](FAILED_ASSUMPTIONS.md), and it is the most consequential
-defect this project has found.
+Characterising that excluded class is what made the study interesting: **237 of 237** of
+the 7B's `MALFORMED` responses are *prose refusals* — the model explaining it cannot
+identify the target — with zero truncations or parse failures. The scorer was not broken;
+it did exactly what it was frozen to do. Its abstention patterns simply encoded an
+assumption about *how models decline*, calibrated on the one model available at freeze
+time. **[FA-013 — instrument drift](FAILED_ASSUMPTIONS.md).**
+
+> A scoring rule is an empirical hypothesis about the space of permissible model
+> behaviour. Freezing it makes that hypothesis auditable rather than timeless.
+
 → [`docs/08-study-v3-results.md`](docs/08-study-v3-results.md)
 
 ---

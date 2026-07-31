@@ -181,7 +181,10 @@ evidentiary claim. It has been replaced with the live workflow badge, which can 
 
 ---
 
-## FA-013 - the abstention rule was calibrated on one model's way of refusing
+## FA-013 - instrument drift: the scoring rule encoded an assumption about how models decline
+
+**Not a defect.** The scorer did exactly what it was frozen to do. What changed was the
+distribution of model behaviour it was applied to. That distinction is the entry.
 
 | | |
 |---|---|
@@ -211,12 +214,25 @@ before the result was seen, and it stays excluded, because the test for whether 
 post-registration change is legitimate - *would this have been done identically had the
 result come out the other way* - answers itself here.
 
-**The generalisable form.** Any benchmark on a task where abstention is permitted must
-decide what counts as abstention, and that decision is necessarily made against whatever
-models are on hand. Freezing it makes the choice honest but not correct. The exposure
-scales with how different a future model's behaviour is from the calibration set, which is
-precisely what nobody can anticipate. A scoring rule is an empirical claim about the space
-of model behaviour, and it should be stated with the same tentativeness as any other.
+**The generalisable form, stated tentatively.** Any benchmark on a task where abstention
+is permitted must decide what counts as abstention, and that decision is necessarily made
+against whatever models are on hand. Freezing it makes the choice honest but not correct.
+The exposure scales with how different a future model's behaviour is from the calibration
+set, which is precisely what nobody can anticipate.
+
+> **A scoring rule is an empirical hypothesis about the space of permissible model
+> behaviour. Freezing it makes that hypothesis auditable rather than timeless.**
+
+Call the failure mode **instrument drift**: the instrument holds still, the behaviour it
+measures moves, and the semantics of an outcome class change underneath a name that no
+longer describes its contents. It is distinct from the usual reproducibility concerns,
+which assume that a fixed metric plus a fixed ground truth makes future models comparable.
+Here both were fixed and comparability still degraded.
+
+This is one observation in one project, on one axis (how a model declines), across four
+models. It is offered as a lesson drawn from this work rather than an established
+principle, and it would need replication in other evaluation settings before it deserves
+stronger wording.
 
 ---
 

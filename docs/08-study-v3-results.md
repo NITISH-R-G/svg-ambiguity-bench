@@ -201,15 +201,33 @@ detectable use of it, while all four could execute the edits when the target was
 **On the instrument.** The most consequential finding is not about the models. The frozen
 scorer's `MALFORMED` class conflates corrupt output with unrecognised abstention, and that
 conflation is invisible until a model with a different refusal style is run. It cost this
-study its most informative data point. That is recorded as **FA-013**.
+study its most informative data point. That is recorded as **FA-013**, under the name
+**instrument drift** - the instrument held still while the behaviour it measures moved,
+so the semantics of an outcome class changed underneath a name that no longer described
+its contents. Nothing in the scorer was broken.
 
 ## What follows
 
-A Study V4 is warranted and is **not** a fix to V3. It would require a new
-pre-registration with a revised `abstention_rule_version`, developed against held-out
-responses rather than tuned on these, and it would re-run the same four models under the
-revised rule. Adjusting the abstention rule now and re-scoring these responses would be
-exactly the post-hoc adjustment this project has refused throughout - the rule would be
-chosen knowing which result it produces.
+**Study V4 does not fix V3.** V3 discovered instrument drift; V4 would test a revised
+account of abstention semantics. That is a new hypothesis, not a patch:
 
-The 7B result is a hypothesis for V4 to test, not a finding.
+```
+V3  ->  discovers instrument drift  ->  V4  ->  tests revised abstention semantics
+```
+
+It requires a new pre-registration with a revised `abstention_rule_version`, developed
+against held-out responses rather than tuned on these, and a re-run of the same four
+models under it. Adjusting the rule now and re-scoring these responses would be exactly
+the post-hoc adjustment this project has refused throughout, because the rule would be
+chosen already knowing which result it produces.
+
+**On the status of the 7B observation.** It happened, it is reported in full, and the
+exclusion is not a way of pretending otherwise:
+
+> The observed 7B pattern motivates a pre-registered V4. Because the pre-registered
+> exclusion criterion was triggered, it is **not interpreted as confirmatory evidence**
+> for the primary hypothesis.
+
+That is the accurate description. An exploratory observation awaiting prospective
+confirmation is a different thing from a finding - and also a different thing from
+nothing.
