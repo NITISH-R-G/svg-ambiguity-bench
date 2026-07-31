@@ -205,6 +205,28 @@ Independent implementation (8) and independent replication (14) are parallel and
 nobody but a volunteer. They are the two things that cannot be bought with more effort by
 the author, which is precisely why they are worth the most.
 
+### Evidential milestones vs ecosystem milestones
+
+These are different bottlenecks and are easy to confuse, because both feel like progress.
+
+| | Evidential | Ecosystem |
+|---|---|---|
+| **What it changes** | what the evidence warrants | who knows or trusts it |
+| **Controlled by** | the author, given effort | other people, given interest |
+| **Examples** | V4; frontier models; a second domain; testing whether the permuted arm is neutral | a paper; an independent implementation; an external replication; a framework integration; a lab reporting a format-matched result |
+| **Failure if over-invested** | an artefact nobody encounters | claims outrunning their evidence |
+
+The current bottleneck is **evidential** — the control has never fired, and the abstention
+rule is known wrong for one model. Building adoption machinery before that is resolved
+optimises the wrong axis: it makes more people encounter a method whose central claim is
+still unexercised.
+
+The order that follows is: settle the evidence, publish it, and let ecosystem milestones
+be pulled by the result rather than pushed by infrastructure. Concretely, model adapters
+for hosted providers are worth building — **after V4**, because frontier models are
+blocked behind it, and building them earlier is building ahead of the roadmap this
+document derives.
+
 ---
 
 ## What is genuinely settled
