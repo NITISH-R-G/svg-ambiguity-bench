@@ -3,6 +3,11 @@
 This repository has a lot of documents. Each exists for a reason, but you almost
 certainly do not need all of them. Pick your row.
 
+**If you only read one:** [`TRUST.md`](TRUST.md). It is the synthesis layer — the one-page
+thesis, the three concepts worth remembering, and every objection a sceptic would raise
+with what answers it, what remains, and which experiment would settle it. It also derives
+what to do next, and says plainly which four things are still unanswered.
+
 ---
 
 ### I want the method, not the benchmark

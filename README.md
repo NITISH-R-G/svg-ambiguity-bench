@@ -182,7 +182,9 @@ want.
 
 | | |
 |---|---|
+| [`TRUST.md`](TRUST.md) | **start here** — the one-page thesis, and every objection with what answers it |
 | [`METHOD.md`](METHOD.md) | **the transferable part** — format-matched controls, domain-independent |
+| [`src/fmtcontrol/`](src/fmtcontrol/) | the extracted package + [`SPEC.md`](src/fmtcontrol/SPEC.md) and conformance vectors |
 | [`docs/essay.md`](docs/essay.md) | *How we almost measured the wrong thing* — the essay |
 | [`docs/04-results.md`](docs/04-results.md) | full write-up |
 | [`docs/05-study-v2-preregistration.md`](docs/05-study-v2-preregistration.md) | Study V2, registered before it was run |
