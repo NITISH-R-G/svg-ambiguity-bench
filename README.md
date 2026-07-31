@@ -62,9 +62,35 @@ cases scores:
 
 So execution capability is **not** the limiting factor here. On this corpus, prompt,
 scorer and model, explicit ids produce high edit accuracy while descriptive references do
-not — even with exact geometry supplied. Whether that dissociation holds for other models
-or realistic SVGs is untested.
+not — even with exact geometry supplied.
 → [`docs/06-study-v2-results.md`](docs/06-study-v2-results.md)
+
+### Does it hold across models?
+
+[Study V3](docs/07-study-v3-preregistration.md) ran all four conditions on four models —
+two families, three scales — over the same frozen corpus.
+
+| model | `enhanced − permuted` | MDE | `named-id` |
+|---|---|---|---|
+| `qwen2.5-coder:1.5b` | +0.0111 | 0.0211 | 0.6500 |
+| `qwen2.5-coder:3b` | +0.0000 | 0.0289 | 0.9278 |
+| `llama3.2:3b` | −0.0111 | 0.0297 | 0.7389 |
+| `qwen2.5-coder:7b` | **+0.0944** | 0.0582 | 0.6111 |
+
+**The dissociation replicates on all four.** Naming the target moves accuracy from ~0.05
+to 0.61–0.93 in every model tested.
+
+**The control still has not fired** — on admissible evidence. The 7B is the one model
+whose information effect exceeds its MDE, and it is **excluded by a pre-registered
+data-quality falsifier** that fired on its malformed rate. It stays excluded, because the
+rule was written before the result was seen.
+
+But characterising that excluded class changed what it means: **237 of 237** of the 7B's
+`MALFORMED` responses are *prose refusals* — the model explaining that it cannot identify
+the target — not corrupt output. The falsifier was procedurally right and substantively
+mis-motivated. That is [FA-013](FAILED_ASSUMPTIONS.md), and it is the most consequential
+defect this project has found.
+→ [`docs/08-study-v3-results.md`](docs/08-study-v3-results.md)
 
 ---
 
@@ -154,10 +180,12 @@ want.
 | [`docs/04-results.md`](docs/04-results.md) | full write-up |
 | [`docs/05-study-v2-preregistration.md`](docs/05-study-v2-preregistration.md) | Study V2, registered before it was run |
 | [`docs/06-study-v2-results.md`](docs/06-study-v2-results.md) | Study V2 result — the model can edit; it cannot identify |
+| [`docs/07-study-v3-preregistration.md`](docs/07-study-v3-preregistration.md) | Study V3, four models, registered before it was run |
+| [`docs/08-study-v3-results.md`](docs/08-study-v3-results.md) | Study V3 result — and the falsifier that excluded the best data point |
 | [`VALIDITY.md`](VALIDITY.md) | internal / construct / external / statistical validity |
 | [`LIMITATIONS.md`](LIMITATIONS.md) | 17 things this does not show |
 | [`CLAIMS.md`](CLAIMS.md) | every module maps to one claim, and what falsifies it |
-| [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) | twelve times this project proved itself wrong |
+| [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) | thirteen times this project proved itself wrong |
 | [`RESULTS.md`](RESULTS.md) | what may not change once results exist |
 | [`docs/adr/`](docs/adr/) | eleven decision records |
 

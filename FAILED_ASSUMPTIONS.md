@@ -181,16 +181,55 @@ evidentiary claim. It has been replaced with the live workflow badge, which can 
 
 ---
 
+## FA-013 - the abstention rule was calibrated on one model's way of refusing
+
+| | |
+|---|---|
+| **Assumed** | `MALFORMED` means the model failed to produce usable output, and a high rate of it indicates the measurement has become about format compliance. The V3 falsifier was written on that premise |
+| **Evidence** | `qwen2.5-coder:7b` produced `MALFORMED` rates of 0.14-0.65. Characterising the class showed **237 of 237** were prose refusals - explicit statements that the target could not be identified - with zero truncations, zero parse failures and zero transport errors. Across all models, 318 of 330 (96.4%) were refusals |
+| **Resolution** | **None applied, deliberately.** The frozen scorer and `abstention_rule_version` 1.0 are unchanged, and the V3 falsifier was applied as written, excluding the 7B. A revised rule belongs to a newly pre-registered V4, developed against held-out responses |
+| **Impact if missed** | The 7B would have been reported as a model that fails to follow output format. It is a model that declines in prose the frozen patterns do not match. Every conclusion about it would have had the wrong subject |
+| **Found by** | Reading the responses inside an outcome class rather than trusting the class name, after a falsifier fired |
+| **Step** | V3 |
+
+The frozen scorer is not wrong as specified. It classifies any response yielding no
+well-formed SVG as `MALFORMED`, which is what it was written to do, and the abstention
+patterns are deliberately narrow so that ordinary commentary cannot be read as refusal -
+still the right trade-off. The defect is narrower and harder to see: **the patterns were
+calibrated against the refusal style of the one model available when they were frozen.**
+
+`NO_EDIT` and `MALFORMED` turned out to be the same behaviour in two registers. The 3B and
+Llama models decline by silently returning the document unchanged; the 7B declines by
+explaining itself. A scorer frozen against the first register cannot see the second, and
+nothing about that failure is visible from the rate alone - a model that refuses
+articulately is indistinguishable, in the aggregate, from one that emits garbage.
+
+The cost was concrete. The 7B was the only model whose primary outcome exceeded its MDE
+(`enhanced - permuted` = +0.0944, MDE 0.0582), which is the pattern that would have
+exercised the format-matched control for the first time. It was excluded by a rule written
+before the result was seen, and it stays excluded, because the test for whether a
+post-registration change is legitimate - *would this have been done identically had the
+result come out the other way* - answers itself here.
+
+**The generalisable form.** Any benchmark on a task where abstention is permitted must
+decide what counts as abstention, and that decision is necessarily made against whatever
+models are on hand. Freezing it makes the choice honest but not correct. The exposure
+scales with how different a future model's behaviour is from the calibration set, which is
+precisely what nobody can anticipate. A scoring rule is an empirical claim about the space
+of model behaviour, and it should be stated with the same tentativeness as any other.
+
+---
+
 ## Taxonomy
 
-The twelve entries fall into four classes, and the classes matter because they have
+The thirteen entries fall into four classes, and the classes matter because they have
 different prevention strategies. Grouping them makes visible which kinds of mistake this
 project is good at catching and which it is not.
 
 | Class | Entries | What catches them |
 |---|---|---|
 | **Measurement** - the instrument reports the wrong number | FA-002 (analytic z), FA-003 (ordinal ranks), FA-005 (loose tolerances) | Comparing the instrument against a case whose answer is known independently - a uniform-by-construction null, a hand-computed shape |
-| **Construct validity** - the number is right but measures the wrong thing | FA-001 (placement anchor vs centroid), FA-007 (margin threshold) | Asking what a reasonable person would say, not what the formula says |
+| **Construct validity** - the number is right but measures the wrong thing | FA-001 (placement anchor vs centroid), FA-007 (margin threshold), FA-013 (abstention register) | Asking what a reasonable person would say, not what the formula says |
 | **Experimental design** - the measurement is sound but the design is skewed | FA-008 (uneven availability), FA-009 (predicate vs family balance) | Asserting the property you actually report, at the level you report it |
 | **Systems integration** - every component is correct and the composition is not | FA-006 (encoding round-trip), FA-011 (git line endings), FA-012 (CI never triggered), hash scope | Nothing in the test suite. These live *between* systems, where no single component owns the invariant |
 

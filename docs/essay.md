@@ -66,11 +66,11 @@ routinely leave uncontrolled. A small claim, and the one the evidence supports.
 
 ---
 
-## Twelve times the instrument was wrong
+## Thirteen times the instrument was wrong
 
 Here is the thing I did not expect.
 
-Over the project, twelve assumptions turned out to be false. **Every single one was in
+Over the project, thirteen assumptions turned out to be false. **Every single one was in
 the measuring apparatus, not in the thing being measured.** Not one was a wrong guess
 about how the model would behave.
 
@@ -138,9 +138,8 @@ The second-order version of this is the one I'd underline: **a verification tool
 the same scepticism as the thing it verifies.** My leak detector, my margin test and my
 mutation harness were all wrong at some point. Each was written to check something else.
 
-There is a twelfth entry, and it arrived after this essay was first written, which is the
-only reason I am confident the habit above is a real finding rather than a story told in
-hindsight.
+Two more entries arrived after this essay was first written, which is the only reason I am
+confident the habit above is a real finding rather than a story told in hindsight.
 
 The CI workflow had never run. Not once. It triggered on pushes to `main`; the branch is
 `master`. Every push for the repository's entire public life matched nothing, and the
@@ -159,6 +158,39 @@ is indistinguishable from working.
 The generalisable form is narrow but I think it holds: **periodically enumerate the state
 of the systems you believe are watching you.** Not their output — their existence. A
 watchdog that has died makes exactly as much noise as one with nothing to report.
+
+The thirteenth is the one that cost something, and it is the best illustration of the
+whole essay.
+
+Running the experiment on four models, a larger one produced a `MALFORMED` rate of 0.65 —
+tripping a data-quality falsifier I had pre-registered, which excluded it. Reading the
+responses inside that class showed **all 237 of them were prose refusals**: *"the document
+does not contain any explicit sizing or positioning information that would allow us to
+determine which shape is largest."* Not garbage. Not truncation. The model doing exactly
+what the prompt asks a model to do when it cannot identify the target — in wording my
+frozen abstention patterns did not match, because I had calibrated them against the one
+model I had at freeze time.
+
+The frozen scorer was not wrong as written. `MALFORMED` means "no well-formed document
+came back", and none did. But the class *name* asserts corruption, and the falsifier built
+on it assumed the measurement had degenerated into format compliance. It hadn't. Two
+outcome classes I had treated as distinct — `NO_EDIT` and `MALFORMED` — turned out to be
+the same behaviour in two registers, and a scorer frozen against one register is blind to
+the other.
+
+What makes it sting: the excluded model was the **only** one whose information effect
+exceeded its detection threshold. It is the result that would have exercised the
+format-matched control for the first time in the project's life. And the rule that
+excluded it was written by me, months earlier, before I could know which way it would cut.
+
+I kept the exclusion. The test is *would I have made this change identically had the
+result come out the other way*, and the answer is obviously no — if it had shown zero I
+would have written "excluded, made no difference" and moved on. Wanting it admitted
+*because of what it showed* is the exact reasoning the rule exists to stop.
+
+So a scoring rule is not neutral infrastructure. It is an empirical claim about the space
+of model behaviour, made with whatever models happened to be on hand, and it deserves the
+same tentativeness as any other claim in the paper.
 
 ---
 

@@ -58,7 +58,7 @@ Start with `VALIDITY.md`. It states what is established, what is planned, and wh
 
 → [`CLAIMS.md`](CLAIMS.md) — every module maps to one claim; what would falsify each
 → [`RESULTS.md`](RESULTS.md) — what may and may not change once results exist
-→ [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) — twelve times the project proved itself wrong
+→ [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) — thirteen times the project proved itself wrong
 → [`DESIGN_FREEZE.md`](DESIGN_FREEZE.md) — the Phase I / Phase II boundary
 → [`docs/verification-policy.md`](docs/verification-policy.md) — why a fixture must fail differently than the implementation
 
