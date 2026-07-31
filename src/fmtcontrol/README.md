@@ -97,3 +97,22 @@ decompose — see [`LIMITATIONS.md`](../../LIMITATIONS.md) §14 and
 [`docs/08-study-v3-results.md`](../../docs/08-study-v3-results.md). It is known to be
 buildable, auditable and behaviour-preserving under extraction. It is not known to resolve
 what it was designed to resolve.
+
+Put precisely: **the implementation currently has stronger evidence behind it than the
+hypothesis it was built to test.** The code is validated by 10 conformance vectors and by
+540 prompts committed before it was extracted. The hypothesis — that separating
+information from format changes a conclusion someone would otherwise have drawn — awaits a
+model that produces an effect to separate.
+
+## Specification
+
+[`SPEC.md`](SPEC.md) defines the control independently of this code: nine invariants, the
+algorithm, the boundary cases, and two conformance levels. An implementation in another
+language can be checked against [`conformance_vectors.json`](conformance_vectors.json)
+without reading any Python.
+
+**Level 1** (invariants hold; any PRNG) is what you need to run your own experiment.
+**Level 2** (bit-exact vector reproduction) is only needed to reproduce this project's
+published prompts, and carries a documented wart: it pins MT19937 because the frozen
+instrument was built against it. `SPEC.md` §8 explains why that cannot be changed
+retroactively and what a v2 should do instead.
