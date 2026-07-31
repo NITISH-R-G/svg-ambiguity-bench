@@ -171,3 +171,43 @@ Survey 1: applicability **20-40%**, revised down from the original 40-60% after 
 pilot. Survey 2: separating controls in **under 20%** of applicable papers.
 
 Both recorded before either sample is drawn.
+
+## The naming rule
+
+The bands above say how to *read* a result. This says what the method is **called**
+afterwards, which is the decision the number actually forces and the one most vulnerable
+to being made after the fact.
+
+Fixed now, before Survey 1 is drawn:
+
+| Applicability | What the method is called, from the first line of every document |
+|---|---|
+| **< 10%** | **A specialised control for a narrow representation class.** Named examples only. The applicability condition moves into the opening paragraph of `METHOD.md`, not a later section |
+| **10-30%** | **A control for structured-context augmentation.** Scope stated as structured context throughout; free-text context named as out of scope wherever the method is introduced |
+| **> 30%** | **A control for context-augmentation experiments.** The current framing stands unchanged |
+
+Why this exists: observing **18%** and then reasoning that 18% is really quite broad is a
+move available to anyone, and it does not feel like motivated reasoning at the time. The
+rule removes the choice. 18% lands in the middle band and the method gets called a
+structured-context control, whatever seems reasonable on the day.
+
+**A low number is not a failure of the survey.** A 9% result is a *successful* survey that
+has narrowed an overbroad research programme before another six months went into it — and
+narrowing is the outcome this project has repeatedly found makes claims more believable,
+not less. Nobody says Dijkstra failed because it does not handle negative edge weights;
+they say it solves shortest paths under stated assumptions. An unusable method with a
+clear boundary is more useful than a plausible method with a vague one.
+
+## What a low number does *not* change
+
+Survey 1 measures Hypothesis B (applicability). It says **nothing** about Hypothesis A
+(validity), and the two must not be allowed to contaminate each other in either direction.
+
+If applicability comes back at 10%, V4 does not become less worth running and its result
+does not become less valid. **Its audience changes.** The experiment is identical; the
+sentence introducing it is not. Conversely, a high applicability rate would not repair the
+fact that the control has never been exercised.
+
+Stated here because the temptation runs both ways, and because a project that let a survey
+about relevance quietly revise its claims about validity would have destroyed the only
+thing it has consistently got right.

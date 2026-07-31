@@ -235,13 +235,30 @@ introduces a confound of its own.
 
 ### The applicability condition
 
-That list is examples. The condition is a property, and stating it as a property rather
-than a list leaves room for representations nobody has thought of yet:
+That table is examples. The condition is a property of the *representation*, and stating
+it as a property leaves room for representations nobody has thought of yet:
 
 > **The method requires a representation that admits a value permutation while preserving
 > its presentation-level invariants** — token count, field structure, ordering, and
 > width. Where a representation does not admit such a permutation, a format-matched
 > control cannot be constructed for it by this method.
+
+Stated precisely, with `P` the presentation functional (everything about the rendered
+string except which entity holds which value):
+
+| | |
+|---|---|
+| **C1 Permutability** | values may be reassigned between entities independently |
+| **C2 Presentation invariance** | `P(render(f)) = P(render(f ∘ π))` for every permutation `π` |
+| **C3 Assignment-carried semantics** | the information under test lives in the assignment, not in the entity labels or the values alone |
+
+C2 is what free text fails: passages differ in length, so token count becomes a function
+of the assignment. C3 is what a sorted table fails: order carries the information, so
+permuting values leaves it legible.
+
+Full treatment, including the fourth condition that is **deliberately not** part of the
+definition because it is an empirical claim about models rather than a checkable property
+of representations, is in [`SPEC.md` §6a](src/fmtcontrol/SPEC.md).
 
 Fixed-schema, bounded-width representations satisfy this: tables, metadata records, tool
 argument lists, structured facts. **Whether other representations do is an open question**,

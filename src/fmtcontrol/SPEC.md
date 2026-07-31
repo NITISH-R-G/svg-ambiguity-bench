@@ -114,6 +114,65 @@ rendered strings. Once text exists, the distinction between value, format and re
 gone, and no implementation can determine whether it is producing a valid control. This is
 an information-theoretic boundary, not a stylistic preference.
 
+## 6a. Which representations admit a control
+
+§6 says the caller must render. This says which representations *can* be rendered such
+that a control exists at all. It is a characterisation rather than a list of domains,
+because a list is only ever as good as the domains someone thought of.
+
+Let `E` be a finite entity set, `V` a value set, `f : E -> V` the assignment, and
+`render : (E -> V) -> String` the caller's renderer. Let `S_E` be the permutations of `E`.
+
+Define a **presentation functional** `P` — everything about the rendered string that is
+not which entity has which value. Concretely: token count, line count, field names, column
+widths, row order.
+
+> **A representation admits a format-matched control iff:**
+>
+> **C1 — Permutability.** Values may be reassigned between entities independently. No
+> value is constrained to a particular entity by the representation itself.
+>
+> **C2 — Presentation invariance.** `P(render(f)) = P(render(f ∘ π))` for every `π ∈ S_E`
+> and every admissible `f`. Permuting changes *which* value appears where, and nothing a
+> reader could measure about the container.
+>
+> **C3 — Assignment-carried semantics.** The information under test is carried **only** by
+> the assignment `f`, not by the entity labels or by the values in isolation. If entity
+> ids already encoded position, permuting values would leave the channel intact and the
+> control would measure nothing.
+
+**C2 is the discriminating condition**, and it is where free text fails. Passages of
+differing length make token count a function of the assignment, so `P` is not invariant,
+and the permuted arm differs from the treatment in a property a model can detect. Padding
+or length-stratified permutation can restore C2, and each introduces a confound of its
+own — which is a design decision, not a repair.
+
+**C3 is the one most often violated silently.** A table whose row order is sorted by the
+quantity of interest fails it: order carries the information, so permuting the values
+leaves the ranking legible. This is why the reference implementation preserves iteration
+order (I2) rather than sorting.
+
+### The fourth condition, and why it is not listed
+
+A natural fourth condition would be:
+
+> **C4 — Non-substitution.** Permutation destroys the target information channel without
+> introducing a *different* manipulation.
+
+C4 is deliberately **excluded from the definition**, because unlike C1-C3 it is not a
+property of the representation that can be checked by inspection. It is an empirical claim
+about how a *model* responds: a model that treats an authoritative-looking table as
+trustworthy may be actively misled by permuted values rather than merely uninformed, which
+is a different manipulation from the intended one.
+
+**This is currently untested.** See `TRUST.md`, "What would change our minds", falsifier 1.
+Making C4 definitional would let the definition quietly assume the thing the experiment is
+supposed to establish. It is recorded here as an open condition on *use* rather than a
+closed condition on *representations*.
+
+So: C1-C3 characterise where a control can be **constructed**. C4 governs whether the
+constructed control means what it is taken to mean, and is a matter for measurement.
+
 ## 7. Validation
 
 An implementation should also provide checks over a candidate control, since the failures
