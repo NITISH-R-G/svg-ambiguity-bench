@@ -158,7 +158,35 @@ recorded here rather than discovered by whoever implements it second.
 **Level 1 is what most users need.** If you are running your own experiment rather than
 reproducing this one, ignore Level 2 entirely and use any PRNG you like.
 
-## 9. Conformance vector format
+## 9. Versioning — a methodological contract, not an API one
+
+Ordinary semantic versioning promises that code keeps compiling. That is the wrong
+promise here. Someone citing a version needs to know their **numbers** still reproduce,
+which is a stronger and different guarantee.
+
+> **Within a major version, the published conformance vectors never change.**
+
+| change | version | means |
+|---|---|---|
+| bug fix, docs, performance, new checks that reject nothing previously accepted | **patch** — 1.0.x | vectors unchanged; results unaffected |
+| new optional capability; additional vectors appended | **minor** — 1.x.0 | every existing vector still reproduces exactly |
+| **any change to the permutation, the digest, the RNG, or an existing vector** | **major** — 2.0.0 | results from 1.x do **not** reproduce under 2.x, and must not be compared as if they did |
+
+A major bump is therefore a claim that the *method* changed, not that the code was
+restructured. It requires a new spec version, regenerated vectors, and an account of what
+the change does to previously published results.
+
+**What this means if you cite it.** Cite the major version — `fmtcontrol 1.x` — and your
+permutations are stable. If you need bit-exactness for a published table, pin the exact
+version and record the `spec_version` from the vectors file alongside your results.
+
+**The migration this anticipates.** §8 records that Level 2 conformance pins MT19937 for
+inherited reasons, and that a future spec should use a portable PRNG. That is exactly a
+major bump: it changes every permutation. It is deliberately deferred rather than done
+quietly, because doing it quietly would silently invalidate every number published under
+1.x while leaving all the code working.
+
+## 10. Conformance vector format
 
 ```json
 {
@@ -185,7 +213,7 @@ reproducing this one, ignore Level 2 entirely and use any PRNG you like.
 fact appears as an array; compare in the JSON domain to avoid a type mismatch that is not
 a conformance failure.
 
-## 10. Reference implementation
+## 11. Reference implementation
 
 Python, in this directory. It is *a* conformant implementation, not the definition — the
 definition is §3 plus the vectors.
@@ -194,7 +222,7 @@ The reference implementation is validated two ways: against the vectors, and aga
 prompts committed before it was extracted from the benchmark it came from. The second is
 the stronger check, because those prompts were produced by different code.
 
-## 11. Provenance and status
+## 12. Provenance and status
 
 Matched controls are standard experimental design — placebo arms, matched-noise conditions
 in psychophysics, matched-random ablations. **Applying one to prompt context appears to be

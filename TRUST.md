@@ -46,6 +46,28 @@ no test failing and no number looking wrong.
 
 ---
 
+## Card
+
+The same facts in the shape labs already read model and dataset cards in. Kept on this
+page rather than in a file of its own, so it cannot drift away from the evidence beside
+it.
+
+| | |
+|---|---|
+| **Question** | When added context improves a model, was it the information or the format? |
+| **Measures** | The information component of a context-augmentation effect, isolated from the format component, via a third arm that is format-identical and information-destroyed |
+| **Does not measure** | Whether context augmentation is worth doing; retrieval quality; anything about a model's internals; anything outside the applicability condition |
+| **Applicability condition** | A representation that admits a value permutation while preserving its presentation-level invariants — token count, field structure, ordering, width. Fixed-schema bounded-width representations satisfy it. Raw variable-length text may not |
+| **Core assumptions** | (1) permuting removes the information; (2) permuting introduces no *new* manipulation. **Assumption 2 has never been directly tested** — see falsifier 1 |
+| **Known failure modes** | Identity permutation silently recreating the treatment arm (guarded); different renderers between arms (guarded by API shape); a permuted arm that misleads rather than merely uninforms (**untested**); representations that admit no format-preserving permutation |
+| **Evidence** | 3 pre-registered studies, 4 models, 2,880 committed responses, 330 tests, 10 conformance vectors, 13 documented failed assumptions |
+| **Central claim status** | **Unexercised.** No admissible arm has yet produced an effect to decompose |
+| **Independent replications** | **0** |
+| **Independent implementations** | **0** |
+| **Protocol version** | instrument `instrument-freeze-v1`; `abstention_rule_version` 1.0 (**known wrong for ≥1 model** — FA-013); `fmtcontrol` spec 1.0 |
+| **Cost to adopt** | ~200 lines, standard library only, vendorable by copying two files |
+| **Licence / DOI** | MIT · [10.5281/zenodo.21682240](https://doi.org/10.5281/zenodo.21682240) |
+
 ## Three concepts
 
 If nothing else survives, these should:
