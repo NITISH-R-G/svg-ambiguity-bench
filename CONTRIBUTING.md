@@ -18,7 +18,27 @@ produced it. The operational test:
 
 If no, it is not a fix. It is a new experiment, and it should be one.
 
-## What is genuinely useful
+## The two contributions worth the most
+
+Both are things the author **cannot** produce, which is exactly why they carry more weight
+than anything added here alone. `TRUST.md` records both counts as **0**. They are meant to
+change.
+
+| | | |
+|---|---|---|
+| **An independent implementation** | Implement the control in any language from [`SPEC.md`](src/fmtcontrol/SPEC.md) and run the [conformance vectors](src/fmtcontrol/conformance_vectors.json). It tests whether the specification is actually sufficient — a claim the author cannot check, having written both | [open an implementation report](../../issues/new?template=independent-implementation.md) |
+| **An independent replication** | Re-score the committed responses with your own scorer, re-run a study, or apply the control in a different domain | [open a replication report](../../issues/new?template=replication-report.md) |
+
+A **failing** report is more useful than a passing one. If your implementation diverges,
+the specification is ambiguous somewhere, and that is a defect in the specification. If
+your replication disagrees with a published number, the disagreement gets recorded rather
+than argued away.
+
+A domain in which a valid control **cannot** be constructed is also a real result. The
+applicability condition in [`METHOD.md`](METHOD.md) is currently drawn from reasoning, not
+from evidence, and a counterexample would bound the method properly.
+
+## What else is genuinely useful
 
 | Contribution | Why it works |
 |---|---|

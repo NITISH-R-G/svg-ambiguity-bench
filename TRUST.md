@@ -62,8 +62,8 @@ it.
 | **Known failure modes** | Identity permutation silently recreating the treatment arm (guarded); different renderers between arms (guarded by API shape); a permuted arm that misleads rather than merely uninforms (**untested**); representations that admit no format-preserving permutation |
 | **Evidence** | 3 pre-registered studies, 4 models, 2,880 committed responses, 330 tests, 10 conformance vectors, 13 documented failed assumptions |
 | **Central claim status** | **Unexercised.** No admissible arm has yet produced an effect to decompose |
-| **Independent replications** | **0** |
-| **Independent implementations** | **0** |
+| **Independent replications** | **0** — [how to report one](CONTRIBUTING.md#the-two-contributions-worth-the-most) |
+| **Independent implementations** | **0** — [how to report one](CONTRIBUTING.md#the-two-contributions-worth-the-most) |
 | **Protocol version** | instrument `instrument-freeze-v1`; `abstention_rule_version` 1.0 (**known wrong for ≥1 model** — FA-013); `fmtcontrol` spec 1.0 |
 | **Cost to adopt** | ~200 lines, standard library only, vendorable by copying two files |
 | **Licence / DOI** | MIT · [10.5281/zenodo.21682240](https://doi.org/10.5281/zenodo.21682240) |
@@ -226,6 +226,24 @@ second domain    (objection 7)
 Independent implementation (8) and independent replication (14) are parallel and depend on
 nobody but a volunteer. They are the two things that cannot be bought with more effort by
 the author, which is precisely why they are worth the most.
+
+### External evidence, as it arrives
+
+Empty by design, and published empty on purpose: the absence is part of what a reader
+should know, and treating it as a section that exists from the start makes clear that
+independent evidence was designed for rather than hoped for. Issue templates and the
+contribution path are in [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+| Source | Kind | Language / setup | Spec or protocol | Result |
+|---|---|---|---|---|
+| this repository | reference implementation | Python | spec 1.0 | Level 2, 10/10 vectors |
+| — | independent implementation | — | — | **none yet** |
+| — | independent replication | — | — | **none yet** |
+| — | different-domain application | — | — | **none yet** |
+
+A row is added for every report received, including ones that **fail** or **disagree**. A
+failing implementation report means the specification is ambiguous; a disagreeing
+replication is recorded as a disagreement rather than resolved in the project's favour.
 
 ### Three kinds of work, with three different bottlenecks
 
