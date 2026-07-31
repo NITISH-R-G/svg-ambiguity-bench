@@ -139,19 +139,22 @@ would have read roughly 43% format / 57% information.
 
 ### 2. The method is broadly applicable
 
-> **Would change our minds:** repeated failure to construct a valid control in
-> structurally different domains.
+> **Would change our minds:** repeated failure to construct a valid control for
+> representations that satisfy the applicability condition.
 
-There is a specific, foreseeable version of this. The control preserves token count by
-permuting values within a fixed schema. **Retrieved passages are not fixed-schema** — they
-differ in length, so permuting passages between queries changes each query's token count,
-and the format match fails on the property that matters most.
+The condition is stated in `METHOD.md` as a property rather than a list of domains:
 
-So the method may be limited to **fixed-schema, bounded-width contexts** — tables,
-metadata, tool arguments, structured records — and may not extend to free-text retrieval
-at all without a different matching strategy (length-stratified permutation, or padding,
-each of which introduces its own confound). RAG is the headline application in
-`METHOD.md`; it is also the case most likely to break it.
+> The method requires a representation that admits a value permutation while preserving
+> its presentation-level invariants — token count, field structure, ordering, width.
+
+Fixed-schema bounded-width representations satisfy it. **Retrieved passages may not**:
+they differ in length, so permuting them between queries changes each query's token count
+and breaks the match on the property that matters most. RAG is simultaneously the most
+valuable application and the one most likely to break the method.
+
+Note this claim has been **narrowed**, not broadened, as evidence accumulated. That is the
+intended direction. A method with explicit assumptions is more useful than one whose scope
+is asserted broadly and found to be narrow by someone else.
 
 ### 3. Instrument drift is a real phenomenon rather than one bad regex
 
@@ -227,6 +230,46 @@ Worth stating positively, because the table above is deliberately adversarial:
   constructible for one.
 - Nothing has been externally replicated, implemented, or reviewed.
 - Nothing generalises beyond a synthetic corpus and four small local models.
+
+---
+
+## The ratchet rule
+
+There is a failure mode on the other side of all this, and it is easier to fall into than
+the one this document mostly guards against.
+
+Every study so far has produced a new subtlety. V2 raised the execution confound. V3
+raised instrument drift. Writing the falsifiers raised the possibility that the permuted
+arm is misleading rather than neutral. Each was legitimate. But a process that generates a
+new objection every time it runs a study, and treats each as a reason to withhold a
+conclusion, will never conclude anything — and it would *feel* rigorous the whole way
+down. Perpetual scepticism is not a higher standard; it is an unfalsifiable position
+wearing the costume of one.
+
+So, fixed now, before the study it governs:
+
+> **A study's acceptance criteria are fixed at its registration. A threat discovered
+> afterwards does not retroactively raise that study's bar. It becomes the next study's
+> business.**
+
+Concretely: if V4 meets the criteria in its own pre-registration, its conclusion stands —
+even if, by the time it finishes, something new has occurred to me. The new concern gets
+registered as V5's, in writing, in advance. It does not get applied backwards.
+
+This is the same discipline that excluded the 7B, pointed the other way. That rule stopped
+a result being admitted because it was wanted. This one stops a result being withheld
+because a further doubt is always available. Both are the same commitment: **the criteria
+are set before the outcome is known, and then they are honoured.**
+
+The test is symmetrical to the one in `RESULTS.md`:
+
+> Would this standard have been applied identically had the result come out the other way
+> around?
+
+**Applied to what is already on record:** the permuted-corruption threat was found after
+V3 concluded. Under this rule it does **not** invalidate V3. V3's conclusion — SILENT on
+admissible evidence — stands as registered. The threat is V4's business, and is listed as
+a pre-registered secondary outcome there rather than as a retrospective caveat here.
 
 ---
 

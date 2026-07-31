@@ -184,18 +184,37 @@ That is a smaller claim than a new method, and it is the one the evidence suppor
 
 Anywhere added context is credited with an improvement:
 
-- **RAG** — retrieved passages vs. passages permuted between queries. **Caveat, and it is
-  a real one:** passages are not fixed-schema. They differ in length, so permuting them
-  between queries changes each query's token count and breaks the format match on the
-  property that matters most. Length-stratified permutation or padding can restore it, and
-  each introduces its own confound. This is the application most likely to break the
-  method — see `TRUST.md`, "What would change our minds"
+- **RAG** — retrieved passages vs. passages permuted between queries. **Subject to the
+  applicability condition below**, which retrieved passages may not satisfy
 - **Tool use** — real schemas vs. schemas with arguments permuted between tools
 - **Memory / personalisation** — a user's facts vs. facts permuted between users
 - **Structured prompting** — a populated table vs. the same table with cells shuffled
 - **Metadata augmentation** — correct labels vs. labels permuted between items
 
 The recipe is constant: *same shape, wrong contents*.
+
+### The applicability condition
+
+That list is examples. The condition is a property, and stating it as a property rather
+than a list leaves room for representations nobody has thought of yet:
+
+> **The method requires a representation that admits a value permutation while preserving
+> its presentation-level invariants** — token count, field structure, ordering, and
+> width. Where a representation does not admit such a permutation, a format-matched
+> control cannot be constructed for it by this method.
+
+Fixed-schema, bounded-width representations satisfy this: tables, metadata records, tool
+argument lists, structured facts. **Whether other representations do is an open question**,
+and there is one foreseeable failure.
+
+Retrieved passages are not fixed-schema. They differ in length, so permuting them between
+queries changes each query's token count and breaks the match on the property that matters
+most. Length-stratified permutation or padding can restore it, and each introduces a
+confound of its own. **RAG is simultaneously the most valuable application and the one
+most likely to break the method** — see `TRUST.md`, *"What would change our minds"*.
+
+This narrowing is deliberate. A method whose assumptions are explicit is more useful than
+one whose scope is asserted broadly and discovered to be narrow later.
 
 ---
 

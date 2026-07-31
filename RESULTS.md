@@ -115,3 +115,13 @@ amendment procedure exists because they will. It is a claim that *the direction 
 result* is never an acceptable reason for the fix, and that the test for whether a
 post-tag change is legitimate is whether it would have been made identically had the
 arms come out the other way around.
+
+It also does not license the opposite failure. A rule that only ever withholds conclusions
+is not a stricter version of this one - it is an unfalsifiable position that happens to
+look rigorous. The symmetric commitment is in [`TRUST.md`](TRUST.md), under **the ratchet
+rule**: a study's acceptance criteria are fixed at its registration, and a threat
+discovered afterwards becomes the *next* study's business rather than a retroactive reason
+to disbelieve the one that already met its criteria.
+
+Both rules say the same thing from opposite sides. Criteria are set before the outcome is
+known, and then they are honoured - whichever way honouring them cuts.
