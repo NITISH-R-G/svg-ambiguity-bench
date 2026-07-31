@@ -205,26 +205,43 @@ Independent implementation (8) and independent replication (14) are parallel and
 nobody but a volunteer. They are the two things that cannot be bought with more effort by
 the author, which is precisely why they are worth the most.
 
-### Evidential milestones vs ecosystem milestones
+### Three kinds of work, with three different bottlenecks
 
-These are different bottlenecks and are easy to confuse, because both feel like progress.
+Easy to conflate, because all three feel like progress.
 
-| | Evidential | Ecosystem |
+| | **Evidential** | **Adoptability** | **Ecosystem** |
+|---|---|---|---|
+| **Changes** | what the evidence warrants | the cost of adopting it | who knows or trusts it |
+| **Controlled by** | the author, given effort | **the author, entirely** | other people, given interest |
+| **Examples** | V4; frontier models; a second domain; whether the permuted arm is neutral | `SPEC.md`; conformance vectors; this document; stdlib-only packaging; the runnable example | a paper; an independent implementation; an external replication; a lab reporting a format-matched result |
+| **Build before demand?** | yes | **yes** | no — it is pulled, not pushed |
+
+The distinction that matters is **adoptability versus scale**. Adoptability removes
+friction that exists *today* for a hypothetical adopter; scale optimises for demand that
+does not exist yet.
+
+Concretely: a specification removes the "I can't reimplement this" barrier whether or not
+anyone is reimplementing. A GPT-5 adapter removes no barrier at all until somebody wants
+to run GPT-5, and by then it is an afternoon's work informed by an actual requirement.
+
+The test is: **if a researcher wanted to adopt this tomorrow, what would stop them?**
+
+| Barrier | Answer | Status |
 |---|---|---|
-| **What it changes** | what the evidence warrants | who knows or trusts it |
-| **Controlled by** | the author, given effort | other people, given interest |
-| **Examples** | V4; frontier models; a second domain; testing whether the permuted arm is neutral | a paper; an independent implementation; an external replication; a framework integration; a lab reporting a format-matched result |
-| **Failure if over-invested** | an artefact nobody encounters | claims outrunning their evidence |
+| can't understand the method | `METHOD.md`, `README.md` | done |
+| can't reimplement it | `SPEC.md` — 9 invariants, algorithm, boundary cases | done |
+| can't verify their implementation | 10 conformance vectors + 2 must-raise | done |
+| don't know the limitations | this document; `LIMITATIONS.md` | done |
+| **can't install it without a Rust rasterizer** | stdlib-only; vendorable by copying two files; asserted by test | done |
+| **can't see it work in 30 seconds** | `examples/rag_style_control.py`, runnable on bare Python | done |
+| want it in their eval framework | — | **not yet, and correctly so** |
 
-The current bottleneck is **evidential** — the control has never fired, and the abstention
-rule is known wrong for one model. Building adoption machinery before that is resolved
-optimises the wrong axis: it makes more people encounter a method whose central claim is
-still unexercised.
+The current **evidential** bottleneck is that the control has never fired and the
+abstention rule is known wrong for one model. **Ecosystem** work before that resolves
+would make more people encounter a method whose central claim is unexercised.
 
-The order that follows is: settle the evidence, publish it, and let ecosystem milestones
-be pulled by the result rather than pushed by infrastructure. Concretely, model adapters
-for hosted providers are worth building — **after V4**, because frontier models are
-blocked behind it, and building them earlier is building ahead of the roadmap this
+So: model adapters for hosted providers are worth building **after V4**, because frontier
+models are blocked behind it. Building them now is building ahead of the roadmap this
 document derives.
 
 ---

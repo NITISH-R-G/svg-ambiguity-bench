@@ -30,6 +30,31 @@ mapping is broken and nothing else is.
 | `permuted − baseline` | **format** component |
 | `enhanced − permuted` | **information** component ← the claim |
 
+## Getting it
+
+**Copy it.** `fmtcontrol` imports nothing outside the Python standard library — no numpy,
+no pydantic, nothing. Two files, ~200 lines:
+
+```
+src/fmtcontrol/__init__.py
+src/fmtcontrol/control.py
+```
+
+Drop them into your evaluation harness and it works. A test asserts the stdlib-only
+property so a future edit cannot quietly break it.
+
+This matters because the alternative today is installing the benchmark this came from,
+which pulls a Rust rasterizer and an SVG library to get 200 lines of permutation logic.
+Not published to PyPI yet — deliberately; see the status note at the end.
+
+**See it work first**, in about thirty seconds, in a domain that is not SVG:
+
+```bash
+python examples/rag_style_control.py
+```
+
+Runs on a bare Python interpreter. No virtualenv, no install, no model, no network.
+
 ## Usage
 
 ```python
