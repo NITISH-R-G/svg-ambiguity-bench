@@ -110,7 +110,10 @@ select = [
 [tool.mypy]
 python_version = "3.12"
 mypy_path = "src"
-packages = ["svgbench"]
+# `fmtcontrol` is listed explicitly rather than relied on via svgbench's import of it.
+# It is intended to be extractable to its own distribution, so it must type-check on its
+# own terms and not only as a dependency of the benchmark.
+packages = ["svgbench", "fmtcontrol"]
 strict = true
 warn_unreachable = true
 # Third-party libraries without type stubs. Listed individually rather than with

@@ -22,10 +22,9 @@ condition exists separately as `ceiling`, excluded from the headline by construc
 
 from __future__ import annotations
 
-import hashlib
-import random
 from typing import Protocol
 
+from fmtcontrol import permute
 from svgbench.geometry import ElementGeometry
 
 
@@ -110,23 +109,13 @@ class PermutedProvider:
 
     def provide(self, svg_id: str, geometry: dict[str, ElementGeometry]) -> str:
         rows = _rows(geometry)
-        # Derived per SVG so every sample gets a different permutation, but
-        # deterministically - the same corpus and seed always produce the same context.
-        key = f"{self._seed}:{svg_id}".encode()
-        rng = random.Random(int.from_bytes(hashlib.sha256(key).digest()[:8], "big"))
-
-        facts = [(x, y, area) for _, x, y, area in rows]
-        shuffled = facts[:]
-        # A permutation that happened to be the identity would silently turn this arm
-        # into `enhanced`. Retry until at least one element is displaced.
-        for _ in range(32):
-            rng.shuffle(shuffled)
-            if any(a != b for a, b in zip(facts, shuffled, strict=True)):
-                break
-
-        return _format_facts(
-            [(element_id, *values) for (element_id, *_), values in zip(rows, shuffled, strict=True)]
-        )
+        # Delegates to `fmtcontrol`, which is domain-independent and knows nothing about
+        # SVG. The extraction is behaviour-preserving: an audit asserts that all 540
+        # committed V1 prompts still reconstruct byte-for-byte through this path, so the
+        # frozen instrument is unchanged and V1's numbers still describe this code.
+        facts = {element_id: (x, y, area) for element_id, x, y, area in rows}
+        permuted = permute(facts, key=svg_id, seed=self._seed)
+        return _format_facts([(element_id, *permuted[element_id]) for element_id, *_ in rows])
 
 
 class CeilingProvider:
