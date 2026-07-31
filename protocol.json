@@ -1,0 +1,88 @@
+{
+  "$comment": "Machine-readable protocol identity. Every published result is produced under exactly one of these version sets. Verify with: python -m svgbench.cli status",
+  "protocol_version": "1.0",
+  "repository": "https://github.com/NITISH-R-G/svg-ambiguity-bench",
+  "concept_doi": "10.5281/zenodo.21682240",
+
+  "instrument": {
+    "freeze_tag": "instrument-freeze-v1",
+    "dataset_hash": "a2938bb031c0220abb45df12b7bc3eaa19a33484ac15592e59c62247010d2b35",
+    "config_hash": "c8b06c9d02d1fae82fe9e3ec9271bd3328f776403b601d76a7abd71f2ffe3ea8",
+    "corpus_config_hash": "f2a6e5b2a40142659a786c6b1f2df26d50ef1218231ba5ccc97659a50d0846dd",
+    "seed": 20260728,
+    "cases": 180,
+    "clusters": 30,
+    "cluster_unit": "svg"
+  },
+
+  "prompt": {
+    "template_id": "edit_svg_v1",
+    "template_version": "1.1",
+    "$comment": "1.1 amended at Step 10 before any baseline run; disclosed in CHANGELOG."
+  },
+
+  "scoring": {
+    "abstention_rule_version": "1.0",
+    "known_defects": [
+      {
+        "id": "FA-013",
+        "summary": "Abstention patterns were calibrated on one model's refusal style. Models that decline in prose the patterns do not match are scored MALFORMED rather than ABSTAINED.",
+        "affects": ["qwen2.5-coder:7b", "qwen2.5-coder:1.5b"],
+        "status": "open; a revised rule requires a newly pre-registered study (V4)"
+      }
+    ]
+  },
+
+  "fmtcontrol": {
+    "version": "0.1.0",
+    "spec_version": "1.0",
+    "conformance_level": "2",
+    "$comment": "Within a major version the published conformance vectors never change. See src/fmtcontrol/SPEC.md section 9."
+  },
+
+  "studies": [
+    {
+      "id": "V1",
+      "question": "Does supplying the missing geometry improve reference resolution, and if so is the gain information or format?",
+      "preregistration": "DESIGN_FREEZE.md",
+      "tag": "instrument-freeze-v1",
+      "conditions": ["baseline", "permuted", "enhanced"],
+      "models": ["qwen2.5-coder:3b"],
+      "outcome": "constrained null; all arms 0.0444; MDE 0.0289",
+      "results": "docs/04-results.md"
+    },
+    {
+      "id": "V2",
+      "question": "Is the failure reference resolution, or can the model not perform the edit at all?",
+      "preregistration": "docs/05-study-v2-preregistration.md",
+      "tag": "study-v2-preregistration",
+      "conditions": ["named-id"],
+      "models": ["qwen2.5-coder:3b"],
+      "outcome": "band A; named-id 0.9278 vs 0.0444; execution is not the limiting factor",
+      "results": "docs/06-study-v2-results.md"
+    },
+    {
+      "id": "V3",
+      "question": "Does the pattern hold across model scale and family, and does the control ever fire?",
+      "preregistration": "docs/07-study-v3-preregistration.md",
+      "tag": "study-v3-preregistration",
+      "conditions": ["baseline", "permuted", "enhanced", "named-id"],
+      "models": [
+        "qwen2.5-coder:1.5b",
+        "qwen2.5-coder:3b",
+        "llama3.2:3b",
+        "qwen2.5-coder:7b"
+      ],
+      "outcome": "SILENT on admissible evidence; 1.5b and 7b excluded by a pre-registered malformed-rate falsifier; FA-013 discovered",
+      "results": "docs/08-study-v3-results.md"
+    }
+  ],
+
+  "open": {
+    "central_claim_exercised": false,
+    "independent_implementations": 0,
+    "independent_replications": 0,
+    "next_study": "V4 - revised abstention semantics, pre-registered, developed on held-out responses",
+    "blocked_behind_v4": ["frontier models", "second domain"]
+  }
+}

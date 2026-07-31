@@ -55,10 +55,30 @@ def test_subpackage_is_importable(name: str) -> None:
     assert module.__doc__, f"svgbench.{name} must document what it is responsible for"
 
 
-def test_status_command_succeeds(capsys: pytest.CaptureFixture[str]) -> None:
+def test_status_reports_actual_state_and_verifies_the_protocol(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """`status` must measure, not assert.
+
+    This test previously required the output to contain "No experiments have been run" -
+    a hardcoded string that stayed true for about a week and then became a confident
+    falsehood while 2,880 responses sat in `experiments/`. The test was not merely
+    failing to catch the defect; it was pinning it in place.
+
+    The contract now is that the command reports what is on disk and cross-checks
+    `protocol.json` against the frozen manifest, exiting non-zero on a mismatch.
+    """
     assert main(["status"]) == 0
     out = capsys.readouterr().out
-    assert "No experiments have been run" in out
+
+    assert "No experiments have been run" not in out, "the stale hardcoded claim is back"
+    assert "Stored responses" in out
+    assert "protocol.json agrees" in out
+
+    # The count must come from the filesystem, so it cannot be a literal in the source.
+    stored = [line for line in out.splitlines() if line.strip().startswith("Stored responses")]
+    assert stored, "status did not report a response count"
+    assert any(character.isdigit() for character in stored[0])
 
 
 def test_unimplemented_command_fails_cleanly(capsys: pytest.CaptureFixture[str]) -> None:

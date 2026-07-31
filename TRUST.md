@@ -68,6 +68,36 @@ it.
 | **Cost to adopt** | ~200 lines, standard library only, vendorable by copying two files |
 | **Licence / DOI** | MIT · [10.5281/zenodo.21682240](https://doi.org/10.5281/zenodo.21682240) |
 
+## The research programme, as questions
+
+The objection table below says why to believe the answers. This says why the questions
+were asked, which is the part that becomes invisible six months later. Machine-readable in
+[`protocol.json`](protocol.json); `python -m svgbench.cli status` prints it and verifies
+the identifiers against the artefacts.
+
+| | Question | Study | Answer |
+|---|---|---|---|
+| **Q1** | Does supplying the missing geometry improve reference resolution — and if so, is the gain *information* or *format*? | **V1** | No detectable effect at all. Constrained null, all arms 0.0444, MDE 0.0289. The decomposition had nothing to operate on |
+| **Q2** | Is that a failure of *reference resolution*, or can the model simply not perform the edit? | **V2** | Reference resolution. Naming the target moves accuracy to 0.9278. Execution is not the limiting factor |
+| **Q3** | Does the pattern hold across model scale and family — and does the control ever fire? | **V3** | Replicates on four models. Control **SILENT** on admissible evidence. The one model that would have fired it was excluded by a pre-registered falsifier |
+| **Q4** | Do the scoring rules recognise how *other* models decline? | **V3, unplanned** | No — FA-013, instrument drift. 318/330 `MALFORMED` responses are reasoned refusals |
+| **Q5** | Is the permuted arm neutral, or actively misleading? | **not yet asked** | Untested. Pre-registered as a secondary outcome for V4 |
+
+Each question exists because the previous answer raised it. None was chosen because it
+would be interesting to build.
+
+## Reference implementation
+
+[`src/fmtcontrol/`](src/fmtcontrol/) is the **reference implementation** of the
+[specification](src/fmtcontrol/SPEC.md) — the term used in its ordinary sense: *a*
+conformant implementation that resolves ambiguity by example, not the definition. The
+definition is the nine invariants plus the
+[conformance vectors](src/fmtcontrol/conformance_vectors.json).
+
+An implementation that disagrees with the reference but satisfies the specification has
+found a specification defect, and that is the outcome
+[worth reporting most](CONTRIBUTING.md#the-two-contributions-worth-the-most).
+
 ## Three concepts
 
 If nothing else survives, these should:

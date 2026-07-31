@@ -402,27 +402,107 @@ def _cmd_report(_args: argparse.Namespace) -> int:
 
 
 def _cmd_status(_args: argparse.Namespace) -> int:
-    print(f"svgbench {__version__}")
-    print("\nPipeline steps (frozen order):")
-    steps = [
-        ("1.  Repository scaffolding", True),
-        ("2.  Configuration system", True),
-        ("3.  Dataset generator", True),
-        ("4.  Geometry engine", True),
-        ("5.  Ground-truth engine", True),
-        ("6.  Predicate registry", True),
-        ("7.  Instruction generator", True),
-        ("8.  Dataset freezing", True),
-        ("9.  Evaluation engine", True),
-        ("10. Model runner", True),
-        ("11. Baseline experiment", True),
-        ("12. Enhancement implementation", True),
-        ("13. Enhanced experiment", True),
-        ("14. Reporting", True),
-    ]
-    for label, done in steps:
-        print(f"  [{'x' if done else ' '}] {label}")
-    print("\nNo experiments have been run. No results exist yet.")
+    """Print the protocol identity and VERIFY it against what is on disk.
+
+    This command previously printed a hardcoded step list ending in "No experiments have
+    been run", which stayed in place after 2,880 responses had been committed. A status
+    command that asserts rather than measures is worse than none: it is the first thing a
+    visitor runs, and it was confidently wrong.
+
+    Everything below is read from `protocol.json`, the frozen manifest, and the
+    experiments directory, and cross-checked. A mismatch is reported and exits non-zero.
+    """
+    import json
+
+    from svgbench.dataset import find_frozen_datasets
+
+    protocol_path = REPO_ROOT / "protocol.json"
+    if not protocol_path.exists():
+        print("protocol.json not found", file=sys.stderr)
+        return 1
+    protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+
+    problems: list[str] = []
+
+    print(f"svgbench {__version__}   protocol {protocol['protocol_version']}")
+
+    instrument = protocol["instrument"]
+    print("\nInstrument")
+    print(f"  freeze tag          {instrument['freeze_tag']}")
+    print(f"  dataset hash        {instrument['dataset_hash']}")
+    print(f"  config hash         {instrument['config_hash']}")
+    print(f"  corpus config hash  {instrument['corpus_config_hash']}")
+    print(f"  seed                {instrument['seed']}")
+
+    # The dataset directory is named for its own hash, so agreement here is a real check
+    # rather than two copies of the same string.
+    datasets = find_frozen_datasets(REPO_ROOT / "data" / "frozen")
+    if not datasets:
+        problems.append("no frozen dataset on disk")
+    else:
+        frozen = datasets[0]
+        manifest = json.loads((frozen / "manifest.json").read_text(encoding="utf-8"))
+        for field in ("dataset_hash", "config_hash", "corpus_config_hash", "seed"):
+            if manifest.get(field) != instrument[field]:
+                problems.append(
+                    f"{field}: protocol.json says {instrument[field]!r}, "
+                    f"frozen manifest says {manifest.get(field)!r}"
+                )
+        if manifest.get("model_outputs_observed") is not False:
+            problems.append("frozen manifest no longer records model_outputs_observed=false")
+
+    print("\nScoring")
+    scoring = protocol["scoring"]
+    print(f"  abstention rule     {scoring['abstention_rule_version']}")
+    for defect in scoring.get("known_defects", ()):
+        print(f"  KNOWN DEFECT        {defect['id']}: {defect['summary'][:64]}...")
+        print(f"                      status: {defect['status']}")
+
+    fmt = protocol["fmtcontrol"]
+    print("\nfmtcontrol")
+    print(f"  version             {fmt['version']}")
+    print(f"  spec version        {fmt['spec_version']}")
+    vectors_path = REPO_ROOT / "src" / "fmtcontrol" / "conformance_vectors.json"
+    if vectors_path.exists():
+        vectors = json.loads(vectors_path.read_text(encoding="utf-8"))
+        n_vectors = len(vectors["vectors"])
+        n_raise = len(vectors["must_raise"])
+        print(f"  conformance vectors {n_vectors} + {n_raise} must-raise")
+        if vectors["spec_version"] != fmt["spec_version"]:
+            problems.append(
+                f"spec version: protocol.json says {fmt['spec_version']!r}, "
+                f"vectors say {vectors['spec_version']!r}"
+            )
+    else:
+        problems.append("conformance vectors missing")
+
+    print("\nStudies")
+    for study in protocol["studies"]:
+        print(f"  {study['id']:4s} {study['question'][:66]}")
+        print(f"       -> {study['outcome']}")
+
+    experiments = REPO_ROOT / "experiments"
+    stored = sorted(p for p in experiments.iterdir() if (p / "responses.jsonl").exists())
+    total = 0
+    for directory in stored:
+        with (directory / "responses.jsonl").open("r", encoding="utf-8") as handle:
+            total += sum(1 for line in handle if line.strip())
+    print(f"\nStored responses      {total} across {len(stored)} conditions")
+
+    open_items = protocol["open"]
+    print("\nOpen")
+    print(f"  central claim exercised     {open_items['central_claim_exercised']}")
+    print(f"  independent implementations {open_items['independent_implementations']}")
+    print(f"  independent replications    {open_items['independent_replications']}")
+    print(f"  next study                  {open_items['next_study']}")
+
+    if problems:
+        print(f"\nPROTOCOL MISMATCH ({len(problems)}):", file=sys.stderr)
+        for problem in problems:
+            print(f"  - {problem}", file=sys.stderr)
+        return 1
+
+    print("\nprotocol.json agrees with the frozen manifest and the committed vectors.")
     return 0
 
 

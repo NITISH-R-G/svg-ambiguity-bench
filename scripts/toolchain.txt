@@ -1,0 +1,25 @@
+# Resolved toolchain for the environment the published results were produced in,
+# and which CI is verified green against.
+#
+# Regenerate: python scripts/record_toolchain.py
+#
+# This is a RECORD, not a constraint. pyproject.toml holds the constraints.
+
+python 3.12.3  (CPython)
+platform Windows 11 AMD64
+
+# CI additionally runs ubuntu-latest and windows-latest on python 3.12.
+
+ruff==0.16.0
+mypy==1.20.2
+pytest==8.4.2
+pytest-cov==7.1.0
+matplotlib==3.11.1
+types-PyYAML==6.0.12.20260724
+pydantic==2.13.4
+PyYAML==6.0.3
+numpy==2.5.1
+svgelements==1.9.6
+resvg_py==0.3.3
+pillow==12.3.0
+httpx==0.28.1
