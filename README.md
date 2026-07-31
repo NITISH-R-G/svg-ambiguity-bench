@@ -18,6 +18,30 @@ and the information destroyed.
 
 ---
 
+## Start where you are
+
+| I want to… | Do this |
+|---|---|
+| **Try the method** — 2 minutes, no install | `python examples/rag_style_control.py` — runs on bare Python, no venv, no model, no network. Shows the three arms and the validation checks in a domain that is not SVG |
+| **Use it in my own evaluation** | Copy `src/fmtcontrol/` — two files, ~200 lines, **standard library only**. → [`fmtcontrol/README`](src/fmtcontrol/README.md) |
+| **Reimplement it in another language** | [`SPEC.md`](src/fmtcontrol/SPEC.md) — 9 invariants, the algorithm, 10 [conformance vectors](src/fmtcontrol/conformance_vectors.json). Written to be sufficient without reading the Python |
+| **Decide whether to believe it** | [`TRUST.md`](TRUST.md) — 14 objections, what answers each, what is still open. **Start here if you are evaluating the work** |
+| **Reproduce the numbers** | `pip install -e ".[dev]" && python -m svgbench.cli report` — every published figure in ~2s, no model, no renderer |
+| **Cite it** | [10.5281/zenodo.21682241](https://doi.org/10.5281/zenodo.21682241) · [`CITATION.cff`](CITATION.cff) |
+| **Report an implementation or replication** | [`CONTRIBUTING.md`](CONTRIBUTING.md#the-two-contributions-worth-the-most) — the two contributions worth the most, and both currently at zero |
+
+**Stability.** Within a major version of `fmtcontrol`, the published conformance vectors
+never change. Any change to the permutation, digest, or RNG is a major bump, because it
+means results from the previous version no longer reproduce.
+→ [`SPEC.md` §9](src/fmtcontrol/SPEC.md)
+
+> **Before you invest time:** the central claim is **not yet exercised**. Across three
+> pre-registered studies and four models, no admissible arm has produced an effect for the
+> control to decompose. The instrument is validated; the hypothesis it was built to test is
+> still open. [`TRUST.md`](TRUST.md) says exactly what is settled and what is not.
+
+---
+
 ## TL;DR
 
 - **Question.** Does context augmentation help because of the information it supplies, or
