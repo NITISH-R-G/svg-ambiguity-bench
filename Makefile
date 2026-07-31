@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install check lint format typecheck test audit figures status generate freeze verify run evaluate report clean
+.PHONY: help install check lint format format-check typecheck test audit figures status generate freeze verify run evaluate report clean
 
 PY ?= python
 
@@ -10,12 +10,19 @@ help:  ## Show this help
 install:  ## Install the package with dev extras
 	$(PY) -m pip install -e ".[dev]"
 
-check: lint typecheck test  ## Lint, type-check and test
+# MUST stay identical to the steps in .github/workflows/ci.yml, in the same order.
+# It previously omitted `format-check`, so `make check` passed while CI failed on every
+# push for a week - a green local signal that could not detect the thing CI tests.
+# A convenience target that is a subset of CI is worse than no target at all.
+check: lint format-check typecheck test audit  ## Everything CI runs, in CI's order
 
 lint:  ## Static lint
 	ruff check .
 
-format:  ## Auto-format
+format-check:  ## Formatting check - the one CI runs. Does not modify files
+	ruff format --check .
+
+format:  ## Auto-format (modifies files)
 	ruff format .
 	ruff check --fix .
 

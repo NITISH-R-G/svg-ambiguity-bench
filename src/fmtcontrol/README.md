@@ -64,8 +64,8 @@ facts = {"doc_1": ("Paris", 2.1), "doc_2": ("Berlin", 3.4), "doc_3": ("Rome", 0.
 
 permuted = permute(facts, key="query_42", seed=991)
 
-enhanced_text = my_renderer(facts)      # the SAME renderer for both arms,
-permuted_text = my_renderer(permuted)   # or format is no longer held fixed
+enhanced_text = my_renderer(facts)  # the SAME renderer for both arms,
+permuted_text = my_renderer(permuted)  # or format is no longer held fixed
 
 report = check_control(facts, permuted, enhanced_text, permuted_text)
 assert report.ok, report.failures

@@ -8,7 +8,7 @@
 #>
 param(
     [Parameter(Position = 0)]
-    [ValidateSet('help', 'install', 'check', 'lint', 'format', 'typecheck', 'test',
+    [ValidateSet('help', 'install', 'check', 'lint', 'format', 'format-check', 'typecheck', 'test',
                  'audit', 'status', 'generate', 'freeze', 'verify', 'run',
                  'evaluate', 'report', 'clean')]
     [string]$Task = 'help'
@@ -34,9 +34,10 @@ switch ($Task) {
         Write-Host "Tasks:" -ForegroundColor Cyan
         @(
             @{ n = 'install';   d = 'Install the package with dev extras' }
-            @{ n = 'check';     d = 'Lint, type-check and test' }
+            @{ n = 'check';     d = 'Everything CI runs, in CI order' }
             @{ n = 'lint';      d = 'Static lint' }
-            @{ n = 'format';    d = 'Auto-format' }
+            @{ n = 'format';    d = 'Auto-format (modifies files)' }
+            @{ n = 'format-check'; d = 'Formatting check CI runs (no changes)' }
             @{ n = 'typecheck'; d = 'Strict type check' }
             @{ n = 'test';      d = 'Run the test suite' }
             @{ n = 'audit';     d = 'Run only publication-gating audit checks' }
@@ -53,14 +54,20 @@ switch ($Task) {
     'install'   { Invoke-Step 'install'   { & $Py -m pip install -e ".[dev]" } }
     'lint'      { Invoke-Step 'lint'      { & $Py -m ruff check . } }
     'format'    { Invoke-Step 'format'    { & $Py -m ruff format .; & $Py -m ruff check --fix . } }
+    'format-check' { Invoke-Step 'format-check' { & $Py -m ruff format --check . } }
     'typecheck' { Invoke-Step 'typecheck' { & $Py -m mypy } }
     'test'      { Invoke-Step 'test'      { & $Py -m pytest } }
     'audit'     { Invoke-Step 'audit'     { & $Py -m pytest -m audit } }
     'status'    { & $Py -m svgbench.cli status }
     'check' {
-        Invoke-Step 'lint'      { & $Py -m ruff check . }
-        Invoke-Step 'typecheck' { & $Py -m mypy }
-        Invoke-Step 'test'      { & $Py -m pytest }
+        # MUST stay identical to .github/workflows/ci.yml, in the same order. This
+        # previously omitted the format check, so it passed while CI failed on every
+        # push - a local signal that could not detect what CI tests.
+        Invoke-Step 'lint'         { & $Py -m ruff check . }
+        Invoke-Step 'format-check' { & $Py -m ruff format --check . }
+        Invoke-Step 'typecheck'    { & $Py -m mypy }
+        Invoke-Step 'test'         { & $Py -m pytest }
+        Invoke-Step 'audit'        { & $Py -m pytest -m audit }
     }
     'clean' {
         foreach ($d in '.pytest_cache', '.ruff_cache', '.mypy_cache') {
