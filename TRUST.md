@@ -17,10 +17,17 @@ objection, not whichever feature seems interesting.
 **Thesis.** Evaluation methodology should distinguish *information* effects from *format*
 effects.
 
-**Observation.** Context-augmentation experiments generally do not isolate these. A
-two-arm comparison — augmented against unaugmented — cannot tell whether the retrieved
-facts helped or whether a table helped. A survey of the SVG-editing and structured-editing
-benchmark literature found none applying such a control.
+**Observation.** A two-arm comparison — augmented against unaugmented — cannot tell
+whether the retrieved facts helped or whether a table helped.
+
+**Prior art, stated up front.** Permuting content while holding format fixed is **not
+new**. Context-aware MT shuffles context as an ablation; RAG separates random from
+distracting passages; representation learning permutes association pairs. An earlier
+version of this document claimed otherwise and was corrected after an external critic
+pointed at the prior art — **FA-014**. What is contributed is a *specification* of that
+convention (invariants, conformance vectors, named failure modes) and the three-way
+decomposition reported as the result rather than as a sanity check, plus the narrower
+observation that SVG and structured-editing benchmarks do not use it.
 
 **Method.** Construct a format-matched control by permuting the entity→fact assignment
 while preserving every representational property: rows, fields, widths, ordering, token

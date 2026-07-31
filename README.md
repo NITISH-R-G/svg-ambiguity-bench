@@ -3,9 +3,15 @@
 **An evaluation methodology for context-augmentation experiments, demonstrated through a
 pre-registered SVG reference-resolution study.**
 
-When added context improves a model, was it the *information* or the *format*? Most
-evaluations cannot tell. This one can, because it runs a third arm with the same format
-and the information destroyed.
+When added context improves a model, was it the *information* or the *format*? A two-arm
+comparison cannot tell. A third arm with the same format and the information destroyed
+can.
+
+**That idea is not new** — context-aware MT, RAG and representation learning all permute
+content while holding format fixed. What is here is a **specification** of it (invariants,
+conformance vectors, named failure modes), the decomposition reported as the result rather
+than as a sanity check, and a pre-registered worked example. See
+[FA-014](FAILED_ASSUMPTIONS.md) for the overclaim this replaced and who caught it.
 
 [![CI](https://github.com/NITISH-R-G/svg-ambiguity-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/NITISH-R-G/svg-ambiguity-bench/actions/workflows/ci.yml)
 [![mypy](https://img.shields.io/badge/mypy-strict-2c6fa8)](pyproject.toml)
@@ -218,7 +224,7 @@ want.
 | [`VALIDITY.md`](VALIDITY.md) | internal / construct / external / statistical validity |
 | [`LIMITATIONS.md`](LIMITATIONS.md) | 17 things this does not show |
 | [`CLAIMS.md`](CLAIMS.md) | every module maps to one claim, and what falsifies it |
-| [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) | thirteen times this project proved itself wrong |
+| [`FAILED_ASSUMPTIONS.md`](FAILED_ASSUMPTIONS.md) | fourteen times this project proved itself wrong |
 | [`RESULTS.md`](RESULTS.md) | what may not change once results exist |
 | [`docs/adr/`](docs/adr/) | eleven decision records |
 

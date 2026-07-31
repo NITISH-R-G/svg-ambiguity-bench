@@ -110,11 +110,24 @@ permuted between queries), **tool use** (schemas vs arguments permuted between t
 ## Provenance
 
 Matched controls are not new — placebo arms, matched-noise conditions in psychophysics,
-matched-random ablations. What appears to be missing, per a
-[2026 review](../../docs/03-review.md) of the SVG-editing and structured-editing benchmark
-literature, is anyone applying that control to **prompt context**.
+matched-random ablations. **Nor is permuting content while holding format fixed:** it is
+established practice in context-aware MT (shuffled context as an ablation), in RAG
+(random vs. distracting passages), and in representation learning (permuted association
+pairs). An earlier version of this file implied otherwise; see **FA-014**.
 
-So: an application, not an invention.
+So this is **not a new idea**. It is a specification and reference implementation of an
+existing one, contributing:
+
+1. an **executable definition** — invariants plus conformance vectors, so implementations
+   can be checked against each other rather than against prose
+2. the **three-way decomposition** as the reported quantity, rather than a binary
+   does-it-use-the-context sanity check
+3. the **failure modes named** — identity permutation, differing renderers, multiset
+   drift, the applicability condition — which is what a specification buys over a
+   convention
+
+Plus the narrower empirical observation that SVG-editing and structured-editing
+benchmarks do not use it.
 
 **Status: the control has not yet been exercised in the role it was built for.** Across
 three pre-registered studies and four models it has never had a positive effect to

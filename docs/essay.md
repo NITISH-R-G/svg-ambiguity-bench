@@ -57,20 +57,32 @@ Then:
 | enhanced − permuted | the **information** component ← the claim |
 
 None of this is new. Matched controls are ordinary experimental design — placebo arms,
-matched-noise conditions in psychophysics, matched-random ablations. What seems to be
-missing is anyone applying that control to *prompt context*. The benchmarks I surveyed
-report a single augmented-versus-unaugmented number.
+matched-noise conditions in psychophysics, matched-random ablations.
 
-So: a standard control, applied to a confound that context-augmentation evaluations
-routinely leave uncontrolled. A small claim, and the one the evidence supports.
+I originally wrote that what *seemed* missing was anyone applying that control to prompt
+context. That was wrong, and I found out the way you always find out: someone who was not
+trying to be helpful pointed at prior art. Context-aware machine translation has shuffled
+context between sentences as an ablation since at least 2021. RAG work separates random
+from distracting passages. Representation learning permutes association pairs. My review
+covered SVG and structured-editing benchmarks thoroughly and simply did not look one field
+over.
+
+It is recorded as FA-014, and it is the first entry found by an outside reader rather than
+by me.
+
+What survives is smaller and, I think, still worth having: a *specification* of a control
+that elsewhere lives as a convention — named invariants, conformance vectors, stated
+boundary conditions — and the decomposition reported as the result rather than as a
+sanity check. The benchmarks I surveyed still report a single augmented-versus-unaugmented
+number.
 
 ---
 
-## Thirteen times the instrument was wrong
+## Fourteen times the instrument was wrong
 
 Here is the thing I did not expect.
 
-Over the project, thirteen assumptions turned out to be false. **Every single one was in
+Over the project, fourteen assumptions turned out to be false. **Every single one was in
 the measuring apparatus, not in the thing being measured.** Not one was a wrong guess
 about how the model would behave.
 

@@ -236,9 +236,39 @@ stronger wording.
 
 ---
 
+## FA-014 - the novelty claim was scoped by where I looked, not by what exists
+
+| | |
+|---|---|
+| **Assumed** | Applying a format-matched, content-permuted control to *prompt context* was uncommon. `METHOD.md`, `docs/essay.md` and the package README all said a literature review "found no one applying that control to prompt context" |
+| **Evidence** | A hostile reader asserted this was standard practice. Checking rather than arguing: context-aware MT shuffles context between sentences as an ablation to verify context reliance ([2103.17151](https://arxiv.org/pdf/2103.17151), 2021); RAG separates random from *distracting* irrelevant passages ([Cuconasu et al. 2024](https://arxiv.org/pdf/2505.06914), [ACL 2025](https://aclanthology.org/2025.acl-long.892.pdf)); representation-learning work permutes association pairs while holding training fixed. The reader was right |
+| **Resolution** | Claim narrowed everywhere it appeared. The contribution is restated as a **specification and reference implementation** of an existing convention - invariants, conformance vectors, named failure modes, and the decomposition reported as the result rather than as a sanity check - plus the narrower observation that SVG and structured-editing benchmarks do not use it |
+| **Impact if missed** | The most prominent claim in the project would have been an overclaim, in a repository whose entire argument is that it does not overclaim. Any reviewer who knew the MT literature would have found it in a minute, and would then have been right to distrust everything else |
+| **Found by** | An external critic, arguing the work was unoriginal. The first entry in this file not found by the author |
+| **Step** | post-publication |
+
+The review that produced the original claim was not lazy. It covered SVG editing,
+structured editing, referring-expression grounding, and evaluation methodology, and it
+was right about all of them. **It was scoped by domain, and the prior art was one domain
+over** - in machine translation, where nobody would think to look for an SVG benchmark's
+related work.
+
+That is the generalisable form, and it is uncomfortable because thoroughness does not fix
+it: *a literature review bounded by your own domain returns a novelty claim bounded by
+your own domain, and reports it with the confidence of the search rather than the
+confidence of the conclusion.* The search was exhaustive. The boundary was the error.
+
+Worth noting how it was found. The critic did not cite these papers - they asserted the
+technique was standard and moved on. Treating that as a claim to check rather than an
+attack to rebut is what surfaced it. **The most valuable review this project has received
+came from someone trying to dismiss it**, which is an argument for reading hostile
+readings closely rather than defensively.
+
+---
+
 ## Taxonomy
 
-The thirteen entries fall into four classes, and the classes matter because they have
+The fourteen entries fall into four classes, and the classes matter because they have
 different prevention strategies. Grouping them makes visible which kinds of mistake this
 project is good at catching and which it is not.
 
@@ -247,6 +277,7 @@ project is good at catching and which it is not.
 | **Measurement** - the instrument reports the wrong number | FA-002 (analytic z), FA-003 (ordinal ranks), FA-005 (loose tolerances) | Comparing the instrument against a case whose answer is known independently - a uniform-by-construction null, a hand-computed shape |
 | **Construct validity** - the number is right but measures the wrong thing | FA-001 (placement anchor vs centroid), FA-007 (margin threshold), FA-013 (abstention register) | Asking what a reasonable person would say, not what the formula says |
 | **Experimental design** - the measurement is sound but the design is skewed | FA-008 (uneven availability), FA-009 (predicate vs family balance) | Asserting the property you actually report, at the level you report it |
+| **Scope of search** - the work is sound but its relation to other work is misstated | FA-014 (novelty claim bounded by the domain searched) | Nothing internal. Only an outside reader with different priors |
 | **Systems integration** - every component is correct and the composition is not | FA-006 (encoding round-trip), FA-011 (git line endings), FA-012 (CI never triggered), hash scope | Nothing in the test suite. These live *between* systems, where no single component owns the invariant |
 
 The last row is the uncomfortable one. FA-011 is the clearest case: the freeze code was

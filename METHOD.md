@@ -165,18 +165,45 @@ ablations in the ML component-ablation literature. The
 [format-restriction literature](https://arxiv.org/html/2408.02442v1) already treats
 prompt format as a first-order effect.
 
-What appears to be missing, at least as far as [a 2026 literature
-review](docs/03-review.md) of the SVG-editing and structured-editing benchmark literature
-found, is anyone applying that control to **prompt context**. Benchmarks in that family
-report a single augmented-versus-unaugmented number.
+**Permuting content while holding format fixed is also not new, and an earlier version of
+this document implied otherwise.** It is established practice in adjacent fields:
 
-So the contribution here is **an application, not an invention**, and the honest framing
-is:
+- **Context-aware machine translation** shuffles context between sentences as an ablation,
+  to verify that a context-aware model relies on context at all
+  ([Divide and Rule, 2021](https://arxiv.org/pdf/2103.17151))
+- **RAG** distinguishes random from *distracting* irrelevant passages and finds they behave
+  differently ([Cuconasu et al. 2024](https://arxiv.org/pdf/2505.06914); [The Distracting
+  Effect, ACL 2025](https://aclanthology.org/2025.acl-long.892.pdf))
+- **Representation learning** permutes association pairs while holding the training
+  procedure fixed, to show a model learns nothing from arbitrary pairings
 
-> A standard experimental control, applied to a confound that context-augmentation
-> evaluations routinely leave uncontrolled.
+So the idea is standard, and it was standard before this project. That correction was
+prompted by an external critic pointing at prior art a review scoped to SVG and
+structured-editing benchmarks had missed. It is recorded as **FA-014**.
 
-That is a smaller claim than a new method, and it is the one the evidence supports.
+What remains, stated at the width the evidence actually supports:
+
+> This is a **specification and reference implementation** of a control that is used
+> informally elsewhere — with named invariants, conformance vectors, and stated
+> boundary conditions — together with the observation that the SVG-editing and
+> structured-editing benchmark literature does not use it.
+
+Concretely, what is contributed is not the idea but:
+
+1. **An executable definition.** Nine invariants, an algorithm, and 10 conformance vectors,
+   so two implementations can be checked against each other rather than against a
+   description. The shuffled-context ablations above are described in prose, per paper,
+   and are not reusable across them.
+2. **The three-way decomposition as the reported quantity.** Prior uses ask a binary
+   question — *does the model use the context at all?* This reports
+   `enhanced − permuted` as the information component alongside `permuted − baseline` as
+   the format component, as the headline rather than as a sanity check.
+3. **The failure modes, named.** Identity permutation, differing renderers, multiset
+   drift, the applicability condition. These are the things that silently invalidate the
+   control, and they are what a specification buys over a convention.
+
+That is a much smaller claim than "a new method", and it is the one that survives contact
+with the literature.
 
 ---
 
