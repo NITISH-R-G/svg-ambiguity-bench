@@ -29,6 +29,7 @@ ALLOWED_TOP_LEVEL = {
     "collections",
     "dataclasses",
     "hashlib",
+    "itertools",
     "random",
     "typing",
     "fmtcontrol",

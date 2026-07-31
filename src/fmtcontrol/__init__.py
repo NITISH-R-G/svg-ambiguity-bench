@@ -36,7 +36,16 @@ format-matched control. Passing the mapping back keeps the single-renderer requi
 where the caller can see it.
 """
 
+from fmtcontrol.admits import AdmissibilityReport, Presentation, admits_control, presentation_of
 from fmtcontrol.control import ControlReport, check_control, permute
 
-__all__ = ["ControlReport", "check_control", "permute"]
-__version__ = "0.1.0"
+__all__ = [
+    "AdmissibilityReport",
+    "ControlReport",
+    "Presentation",
+    "admits_control",
+    "check_control",
+    "permute",
+    "presentation_of",
+]
+__version__ = "0.2.0"

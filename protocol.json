@@ -34,10 +34,10 @@
   },
 
   "fmtcontrol": {
-    "version": "0.1.0",
+    "version": "0.2.0",
     "spec_version": "1.0",
     "conformance_level": "2",
-    "$comment": "Within a major version the published conformance vectors never change. See src/fmtcontrol/SPEC.md section 9."
+    "$comment": "0.2.0 adds admits_control (SPEC 6a-6b) as new public API. Minor bump, not major: the permutation, digest and RNG are untouched and all 10 conformance vectors reproduce exactly. Within a major version the published vectors never change. See src/fmtcontrol/SPEC.md section 9."
   },
 
   "studies": [

@@ -173,6 +173,92 @@ closed condition on *representations*.
 So: C1-C3 characterise where a control can be **constructed**. C4 governs whether the
 constructed control means what it is taken to mean, and is a matter for measurement.
 
+### 6b. Necessity of C2 and C3
+
+The conditions are not stipulations. C2 and C3 are **necessary**, and the argument is
+short enough to give in full. It matters because it converts "this representation does not
+work with our tool" into "no value-permutation control exists for this representation" —
+a statement about the problem rather than about the implementation.
+
+**Notation.** `E` finite with `|E| = n >= 2`; `f : E -> V` the assignment;
+`render : (E -> V) -> String`; `P` the presentation functional; `π ∈ S_E` a permutation
+with `f ∘ π ≠ f`. Write `T = render(f)` for the treatment arm and `C = render(f ∘ π)` for
+the control arm. Let `M` be any outcome metric computed from a model's response to an arm.
+
+---
+
+**Proposition 1 (C2 is necessary for identification).**
+If `P(T) ≠ P(C)`, then `M(T) − M(C)` does not identify an information effect.
+
+*Proof.* The arms differ in two respects: the assignment, and at least one component of
+`P`. `P` is by construction observable in the rendered string, so a model's response may
+depend on it. Then
+
+```
+M(T) − M(C) = [effect of assignment] + [effect of the P-difference]
+```
+
+and no further measurement on these two arms separates the terms, since every case in
+which the assignment differs is also a case in which `P` differs. The difference is
+confounded exactly as the two-arm augmented-vs-unaugmented comparison is confounded, which
+is the confound the control exists to remove. ∎
+
+*Corollary.* A representation violating C2 does not merely make the control awkward. It
+reproduces the original confound inside the control, so the control is not weaker — it is
+**inert**.
+
+---
+
+**Proposition 2 (C3 is forced, given C2).**
+Suppose C2 holds, and suppose the information under test is recoverable from the
+presentation — that is, there exists `g` with `g(P(render(f)))` yielding that information.
+Then the control is **vacuous**: it destroys nothing.
+
+*Proof.* By C2, `P(C) = P(T)`. Applying `g` to both,
+
+```
+g(P(C)) = g(P(T))
+```
+
+so the information recoverable from the control equals the information recoverable from
+the treatment. Permutation moved values between entities but left the channel intact,
+because the channel was never in the assignment. Hence `enhanced − permuted` measures the
+absence of an effect that was never manipulated, and returns zero *whatever the model
+does*. ∎
+
+*Corollary.* A sorted table fails. If rows are ordered by the quantity of interest, rank
+is legible from row position, `P` includes row order, and C2 holds — so by Proposition 2
+the control is vacuous. This is why the reference implementation preserves document order
+(**I2**) rather than sorting: sorting would satisfy C2 and destroy the experiment.
+
+*Remark.* C2 and C3 pull in opposite directions, which is why the class is narrow. C2
+demands that presentation be **insensitive** to the assignment; C3 demands that the
+information be **absent** from presentation. Together: the presentation must be rich
+enough to be identical across arms, and poor enough to carry nothing.
+
+---
+
+**Theorem (impossibility).**
+If a representation violates C2 or C3, then no value-permutation control isolates
+information from presentation while preserving observable structure.
+
+*Proof.* Violating C2 gives Proposition 1: any measured difference is confounded.
+Violating C3 — under C2 — gives Proposition 2: the measured difference is identically
+zero. In the remaining case, C2 fails, which is the first branch. ∎
+
+---
+
+**What is not claimed.** C1-C3 are **necessary, not sufficient.** A representation
+satisfying all three admits a *constructible* control; whether that control *means* what
+it is taken to mean depends on C4 — non-substitution — which is an empirical property of
+model behaviour and is currently **untested** (see `TRUST.md`, falsifier 1). Sufficiency
+is not proved here and should not be assumed.
+
+**Status.** Propositions 1 and 2 are proved above under their stated assumptions. They are
+elementary, and their value is not depth but placement: they move the applicability
+boundary from a list of domains someone happened to try, to a property of the
+representation that can be checked without running a model.
+
 ## 7. Validation
 
 An implementation should also provide checks over a candidate control, since the failures
