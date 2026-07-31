@@ -120,37 +120,48 @@ an information-theoretic boundary, not a stylistic preference.
 that a control exists at all. It is a characterisation rather than a list of domains,
 because a list is only ever as good as the domains someone thought of.
 
-Let `E` be a finite entity set, `V` a value set, `f : E -> V` the assignment, and
-`render : (E -> V) -> String` the caller's renderer. Let `S_E` be the permutations of `E`.
+### Setting
 
-Define a **presentation functional** `P` — everything about the rendered string that is
-not which entity has which value. Concretely: token count, line count, field names, column
-widths, row order.
+Everything below is a statement about **representations and functions**. No model appears
+in any definition or proof, which is deliberate: a result that mentions no model survives
+model turnover.
 
-> **A representation admits a format-matched control iff:**
+| | |
+|---|---|
+| `E` | finite entity set, `\|E\| = n >= 2` |
+| `V` | value set |
+| `f : E -> V` | the assignment |
+| `S_E` | permutations of `E` |
+| `render : (E -> V) -> String` | the caller's renderer |
+| `P : String -> Π` | the **presentation functional** — everything about the rendered string other than which entity holds which value: token count, line count, field names, column widths, row order |
+| `τ : (E -> V) -> A` | the **target**: what the experiment wants computed from the context |
+| `S : String -> A` | a **strategy**: any function from rendered context to answer. Unrestricted — no computability, complexity or continuity assumption |
+
+The last row matters. `S` ranges over *all* functions, so the results below hold for any
+solver whatsoever: a model, a program, an oracle, a person.
+
+> **A representation admits a format-matched control if:**
 >
 > **C1 — Permutability.** Values may be reassigned between entities independently. No
 > value is constrained to a particular entity by the representation itself.
 >
 > **C2 — Presentation invariance.** `P(render(f)) = P(render(f ∘ π))` for every `π ∈ S_E`
-> and every admissible `f`. Permuting changes *which* value appears where, and nothing a
-> reader could measure about the container.
+> and every admissible `f`.
 >
-> **C3 — Assignment-carried semantics.** The information under test is carried **only** by
-> the assignment `f`, not by the entity labels or by the values in isolation. If entity
-> ids already encoded position, permuting values would leave the channel intact and the
-> control would measure nothing.
+> **C3 — Assignment-carried semantics.** The target `τ` does **not** factor through `P`:
+> there is no `h : Π -> A` with `τ = h ∘ P ∘ render`.
 
-**C2 is the discriminating condition**, and it is where free text fails. Passages of
-differing length make token count a function of the assignment, so `P` is not invariant,
-and the permuted arm differs from the treatment in a property a model can detect. Padding
-or length-stratified permutation can restore C2, and each introduces a confound of its
-own — which is a design decision, not a repair.
+**C2 is where free text fails.** Passages of differing length make token count a function
+of the assignment, so `P` is not invariant. Padding or length-stratified permutation can
+restore C2, and each introduces a confound of its own — a design decision, not a repair.
 
-**C3 is the one most often violated silently.** A table whose row order is sorted by the
-quantity of interest fails it: order carries the information, so permuting the values
-leaves the ranking legible. This is why the reference implementation preserves iteration
-order (I2) rather than sorting.
+**C3 is where a sorted table fails**, and §6b shows C3 is not an independent requirement
+but a consequence of wanting the contrast to have any power at all.
+
+Note the precise form of C3. It is **not** "presentation reveals nothing" — presentation
+always reveals something. It is the exact statement that the *target* is not a function of
+the presentation alone. That is what the quantifier `∃h` pins down, and the earlier
+informal phrasing ("the information is carried only by the assignment") did not.
 
 ### The fourth condition, and why it is not listed
 
@@ -173,91 +184,108 @@ closed condition on *representations*.
 So: C1-C3 characterise where a control can be **constructed**. C4 governs whether the
 constructed control means what it is taken to mean, and is a matter for measurement.
 
-### 6b. Necessity of C2 and C3
+### 6b. Why C2 and C3 are not stipulations
 
-The conditions are not stipulations. C2 and C3 are **necessary**, and the argument is
-short enough to give in full. It matters because it converts "this representation does not
-work with our tool" into "no value-permutation control exists for this representation" —
-a statement about the problem rather than about the implementation.
+Both are forced. The arguments are elementary and given in full so they can be checked
+rather than believed. They convert *"this representation does not work with our tool"*
+into *"no value-permutation control exists for this representation"* — a statement about
+the problem, not the implementation.
 
-**Notation.** `E` finite with `|E| = n >= 2`; `f : E -> V` the assignment;
-`render : (E -> V) -> String`; `P` the presentation functional; `π ∈ S_E` a permutation
-with `f ∘ π ≠ f`. Write `T = render(f)` for the treatment arm and `C = render(f ∘ π)` for
-the control arm. Let `M` be any outcome metric computed from a model's response to an arm.
+Write `T = render(f)` for the treatment arm and `C = render(f ∘ π)` for the control arm,
+with `f ∘ π ≠ f`.
 
 ---
 
-**Proposition 1 (C2 is necessary for identification).**
-If `P(T) ≠ P(C)`, then `M(T) − M(C)` does not identify an information effect.
+**Proposition 1 — C2 is necessary for identification.**
+
+*If `P(T) ≠ P(C)`, the contrast between the arms does not identify an effect of the
+assignment.*
 
 *Proof.* The arms differ in two respects: the assignment, and at least one component of
-`P`. `P` is by construction observable in the rendered string, so a model's response may
-depend on it. Then
+`P`. Both are present in the rendered string, so a strategy may depend on either. For any
+strategy `S`, the difference `S(T) − S(C)` is a sum of a term attributable to the
+assignment and a term attributable to the `P`-difference. The two arms provide one
+equation in two unknowns, and no further observation on these arms separates them, because
+every case in which the assignment differs is also a case in which `P` differs. ∎
 
-```
-M(T) − M(C) = [effect of assignment] + [effect of the P-difference]
-```
-
-and no further measurement on these two arms separates the terms, since every case in
-which the assignment differs is also a case in which `P` differs. The difference is
-confounded exactly as the two-arm augmented-vs-unaugmented comparison is confounded, which
-is the confound the control exists to remove. ∎
-
-*Corollary.* A representation violating C2 does not merely make the control awkward. It
-reproduces the original confound inside the control, so the control is not weaker — it is
-**inert**.
+*Corollary.* A representation violating C2 does not make the control weaker. It reproduces
+the augmented-vs-unaugmented confound *inside* the control, so the control is **inert**.
 
 ---
 
-**Proposition 2 (C3 is forced, given C2).**
-Suppose C2 holds, and suppose the information under test is recoverable from the
-presentation — that is, there exists `g` with `g(P(render(f)))` yielding that information.
-Then the control is **vacuous**: it destroys nothing.
+**Proposition 2 — a target that factors through `P` makes the contrast powerless.**
 
-*Proof.* By C2, `P(C) = P(T)`. Applying `g` to both,
+*Assume C2. If `S = h ∘ P` for some `h : Π -> A` — that is, the strategy depends on the
+rendered context only through its presentation — then `S(T) = S(C)`. Consequently the
+contrast has zero power against every such strategy, whatever `h` is.*
 
-```
-g(P(C)) = g(P(T))
-```
+*Proof.* `S(T) = h(P(T)) = h(P(C)) = S(C)`, the middle equality by C2. ∎
 
-so the information recoverable from the control equals the information recoverable from
-the treatment. Permutation moved values between entities but left the channel intact,
-because the channel was never in the assignment. Hence `enhanced − permuted` measures the
-absence of an effect that was never manipulated, and returns zero *whatever the model
-does*. ∎
+*Corollary (C3 is derived, not assumed).* Suppose the target `τ` factors through `P`, so
+some `h` computes it exactly. Then by Proposition 2 that strategy is **perfectly correct
+and perfectly invariant**: it scores identically on both arms. The contrast returns zero
+not because the strategy ignores the information, but because the information it uses was
+never manipulated. C3 is therefore not an extra requirement imposed by this method — it is
+the condition under which the contrast has any power at all.
 
-*Corollary.* A sorted table fails. If rows are ordered by the quantity of interest, rank
-is legible from row position, `P` includes row order, and C2 holds — so by Proposition 2
-the control is vacuous. This is why the reference implementation preserves document order
-(**I2**) rather than sorting: sorting would satisfy C2 and destroy the experiment.
-
-*Remark.* C2 and C3 pull in opposite directions, which is why the class is narrow. C2
-demands that presentation be **insensitive** to the assignment; C3 demands that the
-information be **absent** from presentation. Together: the presentation must be rich
-enough to be identical across arms, and poor enough to carry nothing.
+*Corollary (sorted tables).* If rows are ordered by the quantity of interest, rank is
+legible from row position; row order is a component of `P`; so `τ` factors through `P` and
+the contrast is powerless. This is why the reference implementation preserves document
+order (**I2**) rather than sorting — **sorting would satisfy C2 and destroy the
+experiment**, which is exactly the combination that is easiest to ship by accident.
 
 ---
 
-**Theorem (impossibility).**
-If a representation violates C2 or C3, then no value-permutation control isolates
-information from presentation while preserving observable structure.
+**Proposition 3 — impossibility.**
 
-*Proof.* Violating C2 gives Proposition 1: any measured difference is confounded.
-Violating C3 — under C2 — gives Proposition 2: the measured difference is identically
-zero. In the remaining case, C2 fails, which is the first branch. ∎
+*If a representation violates C2 or C3, no value-permutation control isolates the effect
+of the assignment while preserving observable structure.*
+
+*Proof.* If C2 fails, Proposition 1: the contrast is confounded. If C2 holds and C3 fails,
+Proposition 2: the contrast is powerless against a strategy that solves the task. Those
+cases are exhaustive. ∎
 
 ---
 
-**What is not claimed.** C1-C3 are **necessary, not sufficient.** A representation
-satisfying all three admits a *constructible* control; whether that control *means* what
-it is taken to mean depends on C4 — non-substitution — which is an empirical property of
-model behaviour and is currently **untested** (see `TRUST.md`, falsifier 1). Sufficiency
-is not proved here and should not be assumed.
+### What these do and do not say
 
-**Status.** Propositions 1 and 2 are proved above under their stated assumptions. They are
-elementary, and their value is not depth but placement: they move the applicability
-boundary from a list of domains someone happened to try, to a property of the
-representation that can be checked without running a model.
+**They are about representations, not about models.** `S` ranges over all functions with
+no computability or complexity restriction, so nothing here depends on which model is used
+or on how models behave. That is the point of stating it this way: a result naming no
+model does not expire when models change.
+
+**"Recoverable" is not used.** An earlier draft said the information must not be
+"recoverable" from the presentation, which meant nothing precise — recoverable by whom,
+under what resource bound? The statement above replaces it with **factoring**: `∃h` such
+that `τ = h ∘ P ∘ render`. That is a definite mathematical condition, and it is
+deliberately generous — it quantifies over *all* `h`, so C3 fails whenever *any* function
+could extract the target from presentation, however impractical.
+
+**They are necessary, not sufficient.** A representation satisfying C1–C3 admits a
+*constructible* control. Whether that control means what it is taken to mean depends on
+C4, which is empirical and untested.
+
+**The tension is structural.** C2 requires presentation to be **insensitive** to the
+assignment; C3 requires the target to be **absent** from presentation. Presentation must
+be rich enough to be identical across arms and poor enough to determine nothing. The
+admissible region is the intersection, and it is small — which is the likeliest
+explanation for why the applicability estimate has fallen at every revision. That is a
+property of the constraints, not a weakness of the method.
+
+### Status of these arguments
+
+Deliberately labelled **propositions**, not theorems, and the reason is the project's own
+standard rather than modesty. They are elementary, they have been written out in full so
+that the assumptions are visible, and they have had **no independent review**. Calling
+something a theorem invites scrutiny of the proof, which is healthy but raises the
+evidential bar — and the bar should rise with the strength of the claim.
+
+The same rule applied to the experiments applies here: a claim is worth exactly the
+evidence behind it, and "I checked it myself" is the weakest admissible evidence in this
+repository. **Review of these proofs is solicited** as a first-class contribution, on the
+same footing as an independent implementation — see
+[`CONTRIBUTING.md`](../../CONTRIBUTING.md). A refutation, or a demonstration that an
+assumption is doing hidden work, is more useful than a confirmation.
 
 ## 7. Validation
 

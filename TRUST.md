@@ -69,8 +69,9 @@ it.
 | **Known failure modes** | Identity permutation silently recreating the treatment arm (guarded); different renderers between arms (guarded by API shape); a permuted arm that misleads rather than merely uninforms (**untested**); representations that admit no format-preserving permutation |
 | **Evidence** | 3 pre-registered studies, 4 models, 2,880 committed responses, 330 tests, 10 conformance vectors, 13 documented failed assumptions |
 | **Central claim status** | **Unexercised.** No admissible arm has yet produced an effect to decompose |
-| **Independent replications** | **0** — [how to report one](CONTRIBUTING.md#the-two-contributions-worth-the-most) |
-| **Independent implementations** | **0** — [how to report one](CONTRIBUTING.md#the-two-contributions-worth-the-most) |
+| **Independent replications** | **0** — [how to report one](CONTRIBUTING.md#the-three-contributions-worth-the-most) |
+| **Independent implementations** | **0** — [how to report one](CONTRIBUTING.md#the-three-contributions-worth-the-most) |
+| **Independent proof reviews** | **0** — SPEC §6b is unreviewed; labelled *propositions*, not theorems |
 | **Protocol version** | instrument `instrument-freeze-v1`; `abstention_rule_version` 1.0 (**known wrong for ≥1 model** — FA-013); `fmtcontrol` spec 1.0 |
 | **Cost to adopt** | ~200 lines, standard library only, vendorable by copying two files |
 | **Licence / DOI** | MIT · [10.5281/zenodo.21682240](https://doi.org/10.5281/zenodo.21682240) |
@@ -280,8 +281,8 @@ frontier models  (objection 10, and possibly 11)
 second domain    (objection 7)
 ```
 
-Independent implementation (8) and independent replication (14) are parallel and depend on
-nobody but a volunteer. They are the two things that cannot be bought with more effort by
+Independent implementation (8), independent replication (14) and review of the §6b proofs
+are parallel and depend on nobody but a volunteer. They are the two things that cannot be bought with more effort by
 the author, which is precisely why they are worth the most.
 
 ### External evidence, as it arrives
@@ -294,6 +295,7 @@ contribution path are in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 | Source | Kind | Language / setup | Spec or protocol | Result |
 |---|---|---|---|---|
 | this repository | reference implementation | Python | spec 1.0 | Level 2, 10/10 vectors |
+| — | proof review of SPEC §6b | — | spec 1.0 | **none yet** |
 | — | independent implementation | — | — | **none yet** |
 | — | independent replication | — | — | **none yet** |
 | — | different-domain application | — | — | **none yet** |

@@ -18,16 +18,36 @@ produced it. The operational test:
 
 If no, it is not a fix. It is a new experiment, and it should be one.
 
-## The two contributions worth the most
+## The three contributions worth the most
 
-Both are things the author **cannot** produce, which is exactly why they carry more weight
-than anything added here alone. `TRUST.md` records both counts as **0**. They are meant to
-change.
+All three are things the author **cannot** produce, which is exactly why they carry more
+weight than anything added here alone. All three counts are currently **0**. They are meant
+to change.
 
 | | | |
 |---|---|---|
 | **An independent implementation** | Implement the control in any language from [`SPEC.md`](src/fmtcontrol/SPEC.md) and run the [conformance vectors](src/fmtcontrol/conformance_vectors.json). It tests whether the specification is actually sufficient — a claim the author cannot check, having written both | [open an implementation report](../../issues/new?template=independent-implementation.md) |
 | **An independent replication** | Re-score the committed responses with your own scorer, re-run a study, or apply the control in a different domain | [open a replication report](../../issues/new?template=replication-report.md) |
+| **A review of the proofs** | [`SPEC.md` §6b](src/fmtcontrol/SPEC.md) argues that C2 and C3 are forced rather than stipulated. The arguments are elementary and written out in full, and they have had **no independent review** | open an issue titled `[proofs]` |
+
+**On the proofs specifically.** They are labelled *propositions* rather than theorems
+precisely because nobody else has checked them. A reviewer comfortable with formal
+reasoning — theoretical CS, formal methods, mathematics — is being asked for one of three
+things:
+
+1. **an error**, or
+2. **a hidden assumption** doing work the statement does not declare, or
+3. **confirmation that the conclusions follow from the stated assumptions.**
+
+Only the third permits upgrading the label, and a refutation is more useful than a
+confirmation. The most likely place for a problem is the definition of `P`: it is
+introduced as "everything about the rendered string other than which entity holds which
+value", and whether that is well-defined independently of the renderer is exactly the sort
+of thing an author checking their own work will not see.
+
+That definition has already been wrong twice in the *implementation* — once measuring
+value content, once measuring the manipulation itself — which is weak evidence that it is
+harder to pin down than it looks.
 
 A **failing** report is more useful than a passing one. If your implementation diverges,
 the specification is ambiguous somewhere, and that is a defect in the specification. If
