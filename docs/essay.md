@@ -303,6 +303,55 @@ considered and declined rather than overlooked.
 
 ---
 
+## What the protocol cost, and what it bought
+
+There is a version of this project that went better on paper.
+
+Run the 7B. Observe `enhanced − permuted` = +0.0944 at p = 0.0061. Write *"larger models
+begin exploiting structured geometric context."* Submit. Nobody opens the `MALFORMED`
+bucket, because why would you — it is the bucket for things that went wrong, and the
+result was already good.
+
+That project looks more successful and understands less. It never learns that 237 of those
+"malformed" outputs are the model carefully explaining that it cannot identify the target.
+It never notices that two of its outcome classes are the same behaviour in different
+registers. It ships an instrument with a stale assumption baked in and no idea the
+assumption exists.
+
+What happened instead was worse in the short run and better in every other way. The
+positive result was excluded by a rule I had written months earlier. Excluding it demanded
+an explanation. Producing that explanation meant reading every excluded response — which
+is how the drift surfaced at all.
+
+**The discipline that cost this project its best result is the only reason it found its
+second question.** I don't think that's a coincidence, and I don't think it generalises
+into advice more useful than: build the constraint before you need it, then honour it when
+it hurts, because the moment it hurts is the moment it is doing something.
+
+It also separates two kinds of methodology I had been treating as one. The
+format-matched control, the pre-registration, the frozen scorer, the provenance tiers —
+those were **designed**. They are hypotheses about how to evaluate better, and I can take
+credit for them in the ordinary way. Instrument drift was not designed. It **emerged**,
+and only because the designed part was strict enough to force a contradiction I could not
+argue away.
+
+That suggests something about evaluation I had not considered when I started:
+
+> An evaluation does not only measure the model. It simultaneously tests its own
+> assumptions about what model output can look like — and as models change, those
+> assumptions stop being passive plumbing and become claims that can fail.
+
+Benchmarks are usually described as ageing because tasks get easier. This is a different
+ageing: the space of valid behaviour moves, and a rule that was right about that space
+quietly stops being right, with no test failing and no number looking wrong.
+
+I want to be careful about how much weight that carries. One project, one axis, four
+models. It is a hypothesis this work suggests, not a law it establishes, and the reason to
+state it carefully is the same reason the exclusion held: a claim is worth exactly the
+evidence behind it.
+
+---
+
 ## What transfers
 
 If you're running an experiment where added context is credited with an improvement — RAG,
@@ -319,3 +368,9 @@ and the instrument that produced them are in the repository.
 The SVG benchmark answers one narrow question and is explicit about the boundary. The
 habit of asking *"could my measuring instrument be wrong?"* before *"could my hypothesis
 be wrong?"* is the part I'd carry to the next project.
+
+The sequence is the argument, more than any single result in it. V2 contradicted what I
+had predicted. V3 excluded the result I most wanted to keep. Neither time did the right
+move turn out to be weakening the rule — it was asking why the rule had fired. Three
+studies in, the thing I would defend is not a number. It is that the evidence was allowed
+to win every time it disagreed with the story I wanted to tell.
