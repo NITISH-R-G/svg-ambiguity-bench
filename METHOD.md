@@ -184,7 +184,12 @@ That is a smaller claim than a new method, and it is the one the evidence suppor
 
 Anywhere added context is credited with an improvement:
 
-- **RAG** — retrieved passages vs. passages permuted between queries
+- **RAG** — retrieved passages vs. passages permuted between queries. **Caveat, and it is
+  a real one:** passages are not fixed-schema. They differ in length, so permuting them
+  between queries changes each query's token count and breaks the format match on the
+  property that matters most. Length-stratified permutation or padding can restore it, and
+  each introduces its own confound. This is the application most likely to break the
+  method — see `TRUST.md`, "What would change our minds"
 - **Tool use** — real schemas vs. schemas with arguments permuted between tools
 - **Memory / personalisation** — a user's facts vs. facts permuted between users
 - **Structured prompting** — a populated table vs. the same table with cells shuffled
