@@ -209,16 +209,29 @@ with the literature.
 
 ## Where this applies
 
-Anywhere added context is credited with an improvement:
+Wherever added context is credited with an improvement **and the context is structured**.
+That second clause is not a caveat; it is the boundary, and the examples are ordered by
+how well they satisfy it:
 
-- **RAG** — retrieved passages vs. passages permuted between queries. **Subject to the
-  applicability condition below**, which retrieved passages may not satisfy
-- **Tool use** — real schemas vs. schemas with arguments permuted between tools
-- **Memory / personalisation** — a user's facts vs. facts permuted between users
-- **Structured prompting** — a populated table vs. the same table with cells shuffled
-- **Metadata augmentation** — correct labels vs. labels permuted between items
+| | Treatment vs control | Satisfies the condition? |
+|---|---|---|
+| **Metadata conditioning** | correct field values vs. values permuted between items | **Yes** — fixed schema, bounded width |
+| **Tool arguments** | real schemas vs. arguments permuted between tools | **Yes** — typed fields |
+| **Attribute augmentation** | a user's attributes vs. attributes permuted between users | **Yes**, when attributes are a record |
+| **Structured prompting** | a populated table vs. the same table with cells shuffled | **Yes** |
+| **Retrieved *records*** | row values permuted between queries | **Yes** — if retrieval returns rows |
+| **Retrieved *passages*** (classic RAG) | passages permuted between queries | **Often no** — passages differ in length, so permuting changes token counts and breaks the format match |
 
-The recipe is constant: *same shape, wrong contents*.
+The recipe is constant: *same shape, wrong contents*. What varies is whether a
+representation *has* a shape that survives having its contents replaced.
+
+**A note on RAG.** Earlier versions of this document led with RAG as the headline
+application. That was a framing error: retrieved free-text passages are the case
+**least** likely to satisfy the applicability condition, and leading with it advertised
+the method at its weakest point. A [pilot survey](docs/10-applicability-survey-interim.md)
+found free-text context to be the dominant reason papers fall outside the condition.
+Length-stratified permutation or padding can sometimes restore the match, and each
+introduces a confound of its own.
 
 ### The applicability condition
 

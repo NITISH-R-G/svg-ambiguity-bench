@@ -75,6 +75,26 @@ it.
 | **Cost to adopt** | ~200 lines, standard library only, vendorable by copying two files |
 | **Licence / DOI** | MIT · [10.5281/zenodo.21682240](https://doi.org/10.5281/zenodo.21682240) |
 
+## Two independent hypotheses
+
+Every study through V4 tests one thing. The survey tests a different one, and conflating
+them is how a project spends years perfecting a method nobody needs.
+
+| | **Hypothesis A — validity** | **Hypothesis B — applicability** |
+|---|---|---|
+| **Claim** | The control does what it says: isolates information from format | Enough published work satisfies its preconditions for it to matter |
+| **Tested by** | V1, V2, V3, V4 | the [applicability survey](docs/09-applicability-survey-preregistration.md) |
+| **Status** | instrument validated; central claim **unexercised** | **3-paper pilot only.** 2 of 3 fell outside the applicability condition |
+| **Failure looks like** | the control fires but does not decompose cleanly | a valid method with a domain too small to be worth specifying |
+
+**These are independent.** A method can be perfectly valid and apply almost nowhere. Every
+objection in the table below is about A. Until this session, nothing in the repository
+tested B — which meant the project could not fail in the way that matters most.
+
+If Survey 1 returns ~10% applicability, Hypothesis B is substantially rejected, and the
+right response is to present the method as **specialised** from the first line rather than
+to argue the number up. That is stated here, before the number exists.
+
 ## The research programme, as questions
 
 The objection table below says why to believe the answers. This says why the questions

@@ -102,3 +102,72 @@ prediction recorded before searching.
 
 It is weaker evidence than an independent survey would be, and is reported as a **pilot**
 rather than as a result.
+
+---
+
+# Amendment 1 — two estimands, two samples
+
+**Made after the 3-paper pilot, before any further assessment.** Disclosed rather than
+silently applied, per `DESIGN_FREEZE.md`. The original text above is unchanged; this
+supersedes its sampling section.
+
+## The defect
+
+The pilot note proposed finishing by "oversampling structured context, since the pilot
+suggests that is where applicability lives." That is not a sampling preference — it is a
+**category error**, and it would have invalidated the primary outcome.
+
+A sample deliberately enriched for structured context cannot estimate how *common*
+structured context is. Applicability rate would rise by construction, and the number
+reported as "the fraction of context-augmentation papers this method applies to" would
+actually be "the fraction of a sample I chose because it was applicable." The original
+design conflated a marginal with a conditional and did not notice, because the pilot's
+three papers happened to make the conditional look like the interesting quantity.
+
+## The correction
+
+Two surveys, two samples, two questions. Neither is a subset of the other's analysis.
+
+| | **Survey 1 — applicability** | **Survey 2 — controls** |
+|---|---|---|
+| **Question** | Among context-augmentation papers, what fraction satisfy the applicability condition? | Among papers that *do* satisfy it, what fraction already run a separating control? |
+| **Estimand** | marginal: `P(applicable)` | conditional: `P(separating control \| applicable)` |
+| **Sampling** | **Random** over context-augmentation papers. No enrichment, no filtering on structure | **Conditional**. Deliberately drawn from applicable settings — metadata conditioning, tool arguments, attribute augmentation, schema-constrained context |
+| **Reported as** | a rate over the sampled population | a rate over applicable settings **only**, never over papers in general |
+| **Blocking** | none | none — may run in parallel, since it does not inform Survey 1's sample |
+
+Survey 2's sample **must not** contribute to Survey 1's numerator or denominator, and
+Survey 1's number must never be quoted alongside Survey 2's without both denominators
+stated.
+
+## Revised outcomes
+
+Survey 1's result is interesting in all three directions, which is the test that it is
+worth running:
+
+| Applicability | Reading |
+|---|---|
+| **~10%** | The method is **specialised**. That is a respectable outcome, not a failure — an algorithm with narrow, explicit preconditions beats one with broad, vague ones. It must then be presented as specialised from the first line |
+| **~40%** | The niche the pilot suspects: structured context augmentation. Large enough to matter, small enough that the boundary is load-bearing |
+| **~80%** | The applicability condition is stricter on paper than in practice, and the method is **underclaimed**. Would require re-examining why the pilot's free-text cases seemed disqualifying |
+
+Survey 2 only becomes interesting if Survey 1 finds a non-trivial applicable population.
+A high missing-control rate over a 5% population is a footnote; over a 40% population it
+is a quantified methodological gap.
+
+## Consequence for the framing
+
+The pilot's two inapplicable papers were both **free text** — retrieved passages, a
+narrative persona. `METHOD.md` has led with **RAG** as the headline application since it
+was written, and RAG-with-passages is now the case *least* likely to satisfy the
+condition.
+
+Leading with the example most likely to be out of scope is a framing error independent of
+the survey's outcome, and is corrected now rather than after Survey 1 reports.
+
+## Prediction, re-recorded
+
+Survey 1: applicability **20-40%**, revised down from the original 40-60% after the
+pilot. Survey 2: separating controls in **under 20%** of applicable papers.
+
+Both recorded before either sample is drawn.

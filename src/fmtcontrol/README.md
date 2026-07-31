@@ -102,10 +102,19 @@ than X occurred* — not *the effect is zero*.
 
 ## Where it applies
 
-Anywhere added context is credited with an improvement: **RAG** (passages vs passages
-permuted between queries), **tool use** (schemas vs arguments permuted between tools),
-**memory** (a user's facts vs facts permuted between users), **structured prompting**,
-**metadata augmentation**. The recipe is constant: *same shape, wrong contents.*
+Wherever added context is credited with an improvement **and the context is structured**:
+**metadata conditioning** (field values permuted between items), **tool arguments**
+(permuted between tools), **attribute augmentation** (a user's record vs another's),
+**structured prompting** (a table with cells shuffled), **retrieved records** (rows
+permuted between queries).
+
+The recipe is constant: *same shape, wrong contents.* What varies is whether a
+representation has a shape that survives having its contents replaced.
+
+**Classic RAG over free-text passages is usually out of scope** — passages differ in
+length, so permuting them changes token counts and breaks the format match on the property
+that matters most. Earlier versions of this file led with RAG; that advertised the method
+at its weakest point. See [`../../METHOD.md`](../../METHOD.md).
 
 ## Provenance
 

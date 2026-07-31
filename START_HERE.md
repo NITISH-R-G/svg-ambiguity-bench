@@ -17,8 +17,10 @@ The transferable part. Domain-independent, two pages, with pseudocode.
 → **[`METHOD.md`](METHOD.md)** — format-matched controls for context-augmentation
 experiments
 
-If you are running a RAG, tool-use, memory, or structured-prompting experiment and
-claiming that *the information* helped, this is the part that applies to you.
+If you are running a metadata-conditioning, tool-argument, attribute-augmentation or
+structured-prompting experiment and claiming that *the information* helped, this is the
+part that applies to you. Classic RAG over free-text passages usually is **not** in scope
+— see the applicability condition in `METHOD.md`.
 
 → **[`docs/essay.md`](docs/essay.md)** — *How we almost measured the wrong thing*
 
